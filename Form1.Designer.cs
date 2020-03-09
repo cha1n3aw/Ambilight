@@ -1,4 +1,4 @@
-﻿namespace WindowsForm1
+﻿namespace Ambilight
 {
     partial class Form1
     {
@@ -30,46 +30,38 @@
         {
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.FPS_Spinbox = new System.Windows.Forms.NumericUpDown();
+            this.SelectComPort = new System.Windows.Forms.ListBox();
+            this.SelectBaudRate = new System.Windows.Forms.ListBox();
+            ((System.ComponentModel.ISupportInitialize)(this.FPS_Spinbox)).BeginInit();
             this.SuspendLayout();
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(98, 12);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(74, 47);
+            this.button2.Size = new System.Drawing.Size(74, 56);
             this.button2.TabIndex = 0;
             this.button2.Text = "Start";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Start_Clicked);
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(178, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(74, 47);
+            this.button1.Size = new System.Drawing.Size(74, 56);
             this.button1.TabIndex = 3;
             this.button1.Text = "Stop";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(12, 38);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(80, 21);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Save";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Abort_Clicked);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 62);
+            this.label2.Location = new System.Drawing.Point(13, 77);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 2;
@@ -78,41 +70,61 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 83);
+            this.label1.Location = new System.Drawing.Point(12, 90);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(45, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Custom:";
             // 
-            // numericUpDown1
+            // FPS_Spinbox
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(15, 12);
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.FPS_Spinbox.Location = new System.Drawing.Point(15, 12);
+            this.FPS_Spinbox.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(77, 20);
-            this.numericUpDown1.TabIndex = 7;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.FPS_Spinbox.Name = "FPS_Spinbox";
+            this.FPS_Spinbox.Size = new System.Drawing.Size(77, 20);
+            this.FPS_Spinbox.TabIndex = 7;
+            this.FPS_Spinbox.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.FPS_Spinbox.ValueChanged += new System.EventHandler(this.FPS_Spinbox_Changed);
+            // 
+            // SelectComPort
+            // 
+            this.SelectComPort.FormattingEnabled = true;
+            this.SelectComPort.Location = new System.Drawing.Point(15, 38);
+            this.SelectComPort.Name = "SelectComPort";
+            this.SelectComPort.Size = new System.Drawing.Size(77, 30);
+            this.SelectComPort.Sorted = true;
+            this.SelectComPort.TabIndex = 8;
+            this.SelectComPort.SelectedIndexChanged += new System.EventHandler(this.ComPortName_Selection_Changed);
+            // 
+            // SelectBaudRate
+            // 
+            this.SelectBaudRate.FormattingEnabled = true;
+            this.SelectBaudRate.Location = new System.Drawing.Point(258, 12);
+            this.SelectBaudRate.Name = "SelectBaudRate";
+            this.SelectBaudRate.Size = new System.Drawing.Size(95, 95);
+            this.SelectBaudRate.TabIndex = 9;
+            this.SelectBaudRate.SelectedIndexChanged += new System.EventHandler(this.BaudRate_Selection_Changed);
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(538, 202);
-            this.Controls.Add(this.numericUpDown1);
+            this.ClientSize = new System.Drawing.Size(514, 110);
+            this.Controls.Add(this.SelectBaudRate);
+            this.Controls.Add(this.SelectComPort);
+            this.Controls.Add(this.FPS_Spinbox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button2);
             this.Name = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FPS_Spinbox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,10 +134,11 @@
 
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown FPS_Spinbox;
+        private System.Windows.Forms.ListBox SelectComPort;
+        private System.Windows.Forms.ListBox SelectBaudRate;
     }
 }
 

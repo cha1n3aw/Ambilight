@@ -1,5 +1,9 @@
 # Prerequisites
 *.d
+*.ide
+*.ide-shm
+*.ide-wal
+*.cache
 
 # Compiled Object files
 *.slo
@@ -30,3 +34,11 @@
 *.exe
 *.out
 *.app
+
+.vs/Ambilight/v16/
+
+bin/Debug/
+
+obj/Debug/
+
+packages/System.Collections.NonGeneric.4.3.0/
