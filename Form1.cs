@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.IO.Ports;
 using System.Threading;
 using System.Drawing;
 using System.Windows.Forms;
@@ -16,6 +16,7 @@ namespace WindowsForm1
         private readonly Stopwatch sw = new Stopwatch(); //stopwatch is being used once on startup, it determines how much time does one iteration take
         //private readonly Random rnd = new Random(); //currently unused, was used as a source of random names for files
         private List<int[]> colorarray = new List<int[]>(); //this list contains int{ r, g, b } arrays
+        private SerialPort serial = new SerialPort() { PortName = "COM6", BaudRate = 230400, Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 7, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
         Thread thread;
         private void Main() //this thread is forever alive, it execs capturethread every 1000/fps milliseconds, so stable desired fps can be achieved
         {
@@ -54,8 +55,9 @@ namespace WindowsForm1
                 Interp(srcbmp, 0, y); //capture & interp left vertical border
                 Interp(srcbmp, 1880, y); //capture & interp right vertical border
             }
-            using (TextWriter textwriter = new StreamWriter("RGBvalues.txt")) foreach (int[] i in colorarray) for (int z = 0; z < 3; z++) textwriter.WriteLine(i[z]); 
-            //just a debug feature, it'll be cut when ill work with i2c bus         
+            //using (TextWriter textwriter = new StreamWriter("RGBvalues.txt")) foreach (int[] i in colorarray) for (int z = 0; z < 3; z++) textwriter.WriteLine(i[z]);
+            //textwriter is just a debug feature, it'll be shut down when ill work directly with usb hid packets (or CDC uart)
+            foreach (int[] i in colorarray) serial.WriteLine(i[0].ToString() + ":" + i[1].ToString() + ":" + i[2].ToString());
             Thread.Sleep(0); //to let other threads do their job, in case this thread is alive for too long
             GC.Collect(); //manual exec of garbage collection, prevents RAM overflow (its god damn fast on 20+ fps)
         }
