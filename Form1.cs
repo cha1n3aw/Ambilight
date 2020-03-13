@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ambilight
 {
@@ -15,8 +16,8 @@ namespace Ambilight
         int timingtests = 5; //startup tests amount
         private readonly Stopwatch sw = new Stopwatch(); //stopwatch is being used once on startup, it determines how much time does one iteration take
         //private readonly Random rnd = new Random(); //currently unused, was used as a source of random names for files
-        private List<int[]> colorarray = new List<int[]>(); //this list contains int{ r, g, b } arrays
-        private String[] BaudRatesList = new string[12] { "1200", "2400", "4800", "9600", "14400", "19200", "38400", "57600", "115200", "230400", "460800", "921600‬" };
+        //private List<int[]> colorarray = new List<int[]>(); //this list contains int{ r, g, b } arrays
+        private String[] BaudRatesList = new string[12] { "1200", "2400", "4800", "9600", "14400", "19200", "38400", "57600", "115200", "230400", "460800", "1000000" };
         private SerialPort serial = new SerialPort() { Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 8, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
         Thread thread;
         private void Main() //this thread is forever alive, it execs capturethread every 1000/fps milliseconds, so stable desired fps can be achieved
@@ -25,43 +26,54 @@ namespace Ambilight
             {
                 Thread CaptureThread = new Thread(CaptureScreen);
                 CaptureThread.Start();
-                Thread.Sleep(1000/fps); //this acts like a delay between frames, so desired fps will be stable and interping is being done every x milliseconds
+                Thread.Sleep(1000 / fps); //this acts like a delay between frames, so desired fps will be stable and interping is being done every x milliseconds
             }
         }
-        private void Interp(Image srcbmp, int x, int y) //here i'm interping source bmp divided by 40x40 squares
+        private string Interp(Image srcbmp, int x, int y) //here i'm interping source bmp divided by 40x40 squares
         {
             Bitmap tempbmp = new Bitmap(1, 1); //temporary bitmap used to store 1 pixel
-            Color color;
             using (Graphics intrp = Graphics.FromImage(tempbmp))
             {
                 intrp.InterpolationMode = InterpolationMode.Bicubic; //setup interpolation mode as bicubic
                 intrp.DrawImage(srcbmp, new Rectangle(0, 0, 1, 1), x, y, 40, 40, GraphicsUnit.Pixel); //downscale the image by drawing it on the 1x1 bitmap, downscaling uses bicubic interpolation
                 //rectangle fits bitmap, int x int y is for upper left corner, int width int height is for width and height of portion of src img
             }
-            color = tempbmp.GetPixel(0, 0); //gets the color of interpolated 1x1 bitmap
-            colorarray.Add(new int[] { color.R, color.G, color.B }); //add int{ r, g, b } to list of int[]
+            Color color = tempbmp.GetPixel(0, 0);
+            //gets the color of interpolated 1x1 bitmap
+            //colorarray.Add(new int[] { color.R, color.G, color.B }); //add int{ r, g, b } to list of int[]
+            return color.R.ToString() + color.G.ToString() + color.B.ToString();
         }
         private void CaptureScreen() //this thread captures screen and calls for interp method
         {
             Bitmap srcbmp = new Bitmap(1920, 1200); //custom resolutions are going to be implemented soon
-            Graphics screencapture = Graphics.FromImage(srcbmp);
-            screencapture.CopyFromScreen(0, 0, 0, 0, srcbmp.Size);
-            for (int x = 0; x < 1920; x+=40) //48 iterations, both horizontal borders are interpolated, all corners are interpolated
+            Graphics.FromImage(srcbmp).CopyFromScreen(0, 0, 0, 0, srcbmp.Size);
+            string frameRGBs = String.Empty;
+            for (int x = 48; x < 1872; x += 48) //40 iterations, both horizontal borders are interpolated, all corners are interpolated
             {
-                Interp(srcbmp, x, 0); //capture & interp upper horizontal border
-                Interp(srcbmp, x, 1160); //capture & interp lower horizontal border
+                frameRGBs += Interp(srcbmp, x, 0) + Interp(srcbmp, x, 1152); //capture & interp upper horizontal border
+                //capture & interp lower horizontal border
+                //serial.WriteLine(String.Join(",", Interp(srcbmp, x, 0).Select(p => p.ToString()).ToArray(), Interp(srcbmp, x, 1160).Select(p => p.ToString()).ToArray()));
+                //label3.Text = Interp(srcbmp, x, 0).ToString() + Interp(srcbmp, x, 1160).ToString();
             }
-            for (int y = 40; y < 1160; y += 40) //28 iterations, no corners are interpolated (because they were captured in horizontal part)
+            //frameRGBs = String.Empty;
+            for (int y = 0; y < 1200; y += 48) //14 iterations, no corners are interpolated (because they were captured in horizontal part)
             {
-                Interp(srcbmp, 0, y); //capture & interp left vertical border
-                Interp(srcbmp, 1880, y); //capture & interp right vertical border
+                frameRGBs += Interp(srcbmp, 0, y) + Interp(srcbmp, 1872, y); //capture & interp left vertical border
+                //capture & interp right vertical border
+                //serial.WriteLine(Interp(srcbmp, 0, y).ToString() + Interp(srcbmp, 1880, y).ToString());
+                //serial.WriteLine(String.Join(",", Interp(srcbmp, 0, y).Select(p => p.ToString()).ToArray(), Interp(srcbmp, 1880, y).Select(p => p.ToString()).ToArray()));
             }
-            //using (TextWriter textwriter = new StreamWriter("RGBvalues.txt")) foreach (int[] i in colorarray) for (int z = 0; z < 3; z++) textwriter.WriteLine(i[z]);
-            //textwriter is just a debug feature, it'll be shut down when ill work directly with usb hid packets (or CDC uart)
-            foreach (int[] rgb in colorarray) serial.WriteLine(rgb[0].ToString() + ":" + rgb[1].ToString() + ":" + rgb[2].ToString()); //this is totally SHIT, 250 ms per frame, 200 ms are taken by this GOD DAMN SERIAL FFS
-            //else MessageBox.Show("Port " + comportnames.Items[comportnames.SelectedIndex].ToString() + " is closed!");
+            serial.WriteLine(frameRGBs);
+            label3.Text = frameRGBs;
+            //serial.WriteLine(frameRGBs);
             GC.Collect(); //manual exec of garbage collection, prevents RAM overflow (its god damn fast on 20+ fps)
             Thread.Sleep(0); //to let other threads do their job, in case this thread is alive for too long         
+
+            //using (TextWriter textwriter = new StreamWriter("RGBvalues.txt")) foreach (int[] i in colorarray) for (int z = 0; z < 3; z++) textwriter.WriteLine(i[z]);
+            //textwriter is just a debug feature, it'll be shut down when ill work directly with usb hid packets (or CDC uart)
+            //foreach (int[] rgb in colorarray) str = str + rgb[0].ToString() + ":" + rgb[1].ToString() + ":" + rgb[2].ToString();
+            //foreach (int[] rgb in colorarray) serial.WriteLine(rgb[0].ToString() + ":" + rgb[1].ToString() + ":" + rgb[2].ToString()); //this is totally SHIT, 250 ms per frame, 200 ms are taken by this GOD DAMN SERIAL FFS
+            //else MessageBox.Show("Port " + comportnames.Items[comportnames.SelectedIndex].ToString() + " is closed!");
         }
         private void Start_Clicked(object sender, EventArgs e)
         {

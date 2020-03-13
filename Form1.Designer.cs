@@ -35,6 +35,7 @@
             this.FPS_Spinbox = new System.Windows.Forms.NumericUpDown();
             this.SelectComPort = new System.Windows.Forms.ListBox();
             this.SelectBaudRate = new System.Windows.Forms.ListBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.FPS_Spinbox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -113,9 +114,19 @@
             this.SelectBaudRate.TabIndex = 9;
             this.SelectBaudRate.SelectedIndexChanged += new System.EventHandler(this.BaudRate_Selection_Changed);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 157);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Custom:";
+            // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(514, 110);
+            this.ClientSize = new System.Drawing.Size(514, 246);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.SelectBaudRate);
             this.Controls.Add(this.SelectComPort);
             this.Controls.Add(this.FPS_Spinbox);
@@ -139,6 +150,7 @@
         private System.Windows.Forms.NumericUpDown FPS_Spinbox;
         private System.Windows.Forms.ListBox SelectComPort;
         private System.Windows.Forms.ListBox SelectBaudRate;
+        private System.Windows.Forms.Label label3;
     }
 }
 
