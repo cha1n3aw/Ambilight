@@ -35,7 +35,7 @@ namespace Ambilight
             using (Graphics intrp = Graphics.FromImage(tempbmp))
             {
                 intrp.InterpolationMode = InterpolationMode.Bicubic; //setup interpolation mode as bicubic
-                intrp.DrawImage(srcbmp, new Rectangle(0, 0, 1, 1), x, y, 40, 40, GraphicsUnit.Pixel); //downscale the image by drawing it on the 1x1 bitmap, downscaling uses bicubic interpolation
+                intrp.DrawImage(srcbmp, new Rectangle(0, 0, 1, 1), x, y, 60, 60, GraphicsUnit.Pixel); //downscale the image by drawing it on the 1x1 bitmap, downscaling uses bicubic interpolation
                 //rectangle fits bitmap, int x int y is for upper left corner, int width int height is for width and height of portion of src img
             }
             Color color = tempbmp.GetPixel(0, 0);
@@ -48,17 +48,17 @@ namespace Ambilight
             Bitmap srcbmp = new Bitmap(1920, 1200); //custom resolutions are going to be implemented soon
             Graphics.FromImage(srcbmp).CopyFromScreen(0, 0, 0, 0, srcbmp.Size);
             string frameRGBs = String.Empty;
-            for (int x = 48; x < 1872; x += 48) //40 iterations, both horizontal borders are interpolated, all corners are interpolated
+            for (int x = 60; x < 1860; x += 60) //40 iterations, both horizontal borders are interpolated, no corners are interpolated
             {
-                frameRGBs += Interp(srcbmp, x, 0) + Interp(srcbmp, x, 1152); //capture & interp upper horizontal border
+                frameRGBs += Interp(srcbmp, x, 0) + Interp(srcbmp, x, 1140); //interp upper horizontal border
                 //capture & interp lower horizontal border
                 //serial.WriteLine(String.Join(",", Interp(srcbmp, x, 0).Select(p => p.ToString()).ToArray(), Interp(srcbmp, x, 1160).Select(p => p.ToString()).ToArray()));
                 //label3.Text = Interp(srcbmp, x, 0).ToString() + Interp(srcbmp, x, 1160).ToString();
             }
             //frameRGBs = String.Empty;
-            for (int y = 0; y < 1200; y += 48) //14 iterations, no corners are interpolated (because they were captured in horizontal part)
+            for (int y = 0; y < 1200; y += 60) //14 iterations, no corners are interpolated (because they were captured in horizontal part)
             {
-                frameRGBs += Interp(srcbmp, 0, y) + Interp(srcbmp, 1872, y); //capture & interp left vertical border
+                frameRGBs += Interp(srcbmp, 0, y) + Interp(srcbmp, 1860, y); //interp left vertical border
                 //capture & interp right vertical border
                 //serial.WriteLine(Interp(srcbmp, 0, y).ToString() + Interp(srcbmp, 1880, y).ToString());
                 //serial.WriteLine(String.Join(",", Interp(srcbmp, 0, y).Select(p => p.ToString()).ToArray(), Interp(srcbmp, 1880, y).Select(p => p.ToString()).ToArray()));
