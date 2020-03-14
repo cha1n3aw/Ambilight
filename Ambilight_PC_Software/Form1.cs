@@ -8,16 +8,16 @@ using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.Linq;
 
+
+
 namespace Ambilight
 {
     public partial class Form1 : Form
     {
-        private int fps, timing;
-        int timingtests = 5; //startup tests amount
+        private int fps = 1, timing;
+        const int timingtests = 5; //startup tests amount
         private readonly Stopwatch sw = new Stopwatch(); //stopwatch is being used once on startup, it determines how much time does one iteration take
-        //private readonly Random rnd = new Random(); //currently unused, was used as a source of random names for files
-        //private List<int[]> colorarray = new List<int[]>(); //this list contains int{ r, g, b } arrays
-        private String[] BaudRatesList = new string[12] { "1200", "2400", "4800", "9600", "14400", "19200", "38400", "57600", "115200", "230400", "460800", "1000000" };
+        private readonly String[] BaudRatesList = new string[8] { "5000000", "2000000", "1000000", "921600‬", "460800", "230400", "115200", "57600" };
         private SerialPort serial = new SerialPort() { Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 8, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
         Thread thread;
         private void Main() //this thread is forever alive, it execs capturethread every 1000/fps milliseconds, so stable desired fps can be achieved
@@ -29,51 +29,40 @@ namespace Ambilight
                 Thread.Sleep(1000 / fps); //this acts like a delay between frames, so desired fps will be stable and interping is being done every x milliseconds
             }
         }
-        private string Interp(Image srcbmp, int x, int y) //here i'm interping source bmp divided by 40x40 squares
-        {
-            Bitmap tempbmp = new Bitmap(1, 1); //temporary bitmap used to store 1 pixel
-            using (Graphics intrp = Graphics.FromImage(tempbmp))
-            {
-                intrp.InterpolationMode = InterpolationMode.Bicubic; //setup interpolation mode as bicubic
-                intrp.DrawImage(srcbmp, new Rectangle(0, 0, 1, 1), x, y, 60, 60, GraphicsUnit.Pixel); //downscale the image by drawing it on the 1x1 bitmap, downscaling uses bicubic interpolation
-                //rectangle fits bitmap, int x int y is for upper left corner, int width int height is for width and height of portion of src img
-            }
-            Color color = tempbmp.GetPixel(0, 0);
-            //gets the color of interpolated 1x1 bitmap
-            //colorarray.Add(new int[] { color.R, color.G, color.B }); //add int{ r, g, b } to list of int[]
-            return color.R.ToString() + color.G.ToString() + color.B.ToString();
-        }
         private void CaptureScreen() //this thread captures screen and calls for interp method
         {
             Bitmap srcbmp = new Bitmap(1920, 1200); //custom resolutions are going to be implemented soon
+            Bitmap tempbmp = new Bitmap(1, 1);
+            Color color;
+            Graphics intrp = Graphics.FromImage(tempbmp);
+            intrp.InterpolationMode = InterpolationMode.Bicubic;
             Graphics.FromImage(srcbmp).CopyFromScreen(0, 0, 0, 0, srcbmp.Size);
-            string frameRGBs = String.Empty;
-            for (int x = 60; x < 1860; x += 60) //40 iterations, both horizontal borders are interpolated, no corners are interpolated
+            for (int y = 1200; y > 0; y -= 60) //no corners are interpolated (because they were captured in horizontal part)
             {
-                frameRGBs += Interp(srcbmp, x, 0) + Interp(srcbmp, x, 1140); //interp upper horizontal border
-                //capture & interp lower horizontal border
-                //serial.WriteLine(String.Join(",", Interp(srcbmp, x, 0).Select(p => p.ToString()).ToArray(), Interp(srcbmp, x, 1160).Select(p => p.ToString()).ToArray()));
-                //label3.Text = Interp(srcbmp, x, 0).ToString() + Interp(srcbmp, x, 1160).ToString();
+                intrp.DrawImage(srcbmp, new Rectangle(0, 0, 1, 1), 0, y, 30, 60, GraphicsUnit.Pixel); ; //interp left vertical border
+                color = tempbmp.GetPixel(0, 0); //gets the color of interpolated 1x1 bitmap
+                serial.Write(new byte[] { color.G, color.R, color.B }, 0, 3); //not R G B due to weird ws2812b G R B bytes layout
             }
-            //frameRGBs = String.Empty;
-            for (int y = 0; y < 1200; y += 60) //14 iterations, no corners are interpolated (because they were captured in horizontal part)
+            for (int x = 0; x < 1920; x += 60) //both horizontal borders are interpolated, no corners are interpolated
             {
-                frameRGBs += Interp(srcbmp, 0, y) + Interp(srcbmp, 1860, y); //interp left vertical border
-                //capture & interp right vertical border
-                //serial.WriteLine(Interp(srcbmp, 0, y).ToString() + Interp(srcbmp, 1880, y).ToString());
-                //serial.WriteLine(String.Join(",", Interp(srcbmp, 0, y).Select(p => p.ToString()).ToArray(), Interp(srcbmp, 1880, y).Select(p => p.ToString()).ToArray()));
+                intrp.DrawImage(srcbmp, new Rectangle(0, 0, 1, 1), x, 355, 60, 30, GraphicsUnit.Pixel); //interp upper horizontal border
+                color = tempbmp.GetPixel(0, 0); //gets the color of interpolated 1x1 bitmap
+                serial.Write(new byte[] { color.G, color.R, color.B }, 0, 3);
             }
-            serial.WriteLine(frameRGBs);
-            label3.Text = frameRGBs;
-            //serial.WriteLine(frameRGBs);
+            for (int y = 0; y < 1200; y += 60) //no corners are interpolated (because they were captured in horizontal part)
+            {
+                intrp.DrawImage(srcbmp, new Rectangle(0, 0, 1, 1), 1860, y, 30, 60, GraphicsUnit.Pixel); //interp right vertical border
+                color = tempbmp.GetPixel(0, 0); //gets the color of interpolated 1x1 bitmap
+                serial.Write(new byte[] { color.G, color.R, color.B }, 0, 3);
+            }
+            for (int x = 1920; x > 0; x -= 60) //both horizontal borders are interpolated, no corners are interpolated
+            { 
+                intrp.DrawImage(srcbmp, new Rectangle(0, 0, 1, 1), x, 1140, 60, 30, GraphicsUnit.Pixel); //interp lower horizontal border
+                color = tempbmp.GetPixel(0, 0); //gets the color of interpolated 1x1 bitmap
+                serial.Write(new byte[] { color.G, color.R, color.B }, 0, 3);
+            }
             GC.Collect(); //manual exec of garbage collection, prevents RAM overflow (its god damn fast on 20+ fps)
-            Thread.Sleep(0); //to let other threads do their job, in case this thread is alive for too long         
-
-            //using (TextWriter textwriter = new StreamWriter("RGBvalues.txt")) foreach (int[] i in colorarray) for (int z = 0; z < 3; z++) textwriter.WriteLine(i[z]);
-            //textwriter is just a debug feature, it'll be shut down when ill work directly with usb hid packets (or CDC uart)
-            //foreach (int[] rgb in colorarray) str = str + rgb[0].ToString() + ":" + rgb[1].ToString() + ":" + rgb[2].ToString();
-            //foreach (int[] rgb in colorarray) serial.WriteLine(rgb[0].ToString() + ":" + rgb[1].ToString() + ":" + rgb[2].ToString()); //this is totally SHIT, 250 ms per frame, 200 ms are taken by this GOD DAMN SERIAL FFS
-            //else MessageBox.Show("Port " + comportnames.Items[comportnames.SelectedIndex].ToString() + " is closed!");
+            Thread.Sleep(0); //to let other threads do their job, in case this thread is alive for too long
         }
         private void Start_Clicked(object sender, EventArgs e)
         {
@@ -84,12 +73,13 @@ namespace Ambilight
         private void Abort_Clicked(object sender, EventArgs e) //stop capturing and interpolating screen
         {
             thread.Abort();
+            Thread.Sleep(100);
             serial.Close();
         }
         private void FPS_Spinbox_Changed(object sender, EventArgs e) //spinbox to set custom fps, just an easy feature
         {
             fps = Convert.ToInt32(FPS_Spinbox.Value);
-            label1.Text = "Custom: " + 1000 / fps + " ms per frame, " + fps + " fps";
+            Custom_Timings.Text = "Custom: " + 1000 / fps + " ms per frame, " + fps + " fps";
         }
         private void ComPortName_Selection_Changed(object sender, EventArgs e) //choose desired COM port online from list of availaible ports
         { 
@@ -101,22 +91,27 @@ namespace Ambilight
             serial.BaudRate = Convert.ToInt32(SelectBaudRate.Items[SelectBaudRate.SelectedIndex]);
         }
 
+        private void Test_Clicked(object sender, EventArgs e)
+        {
+            if (this.SelectComPort.SelectedIndex == -1) SelectComPort.SetSelected(0, true); //if none selected, then preselect first COM port in list (so timing checks wont fail)
+            if (this.SelectBaudRate.SelectedIndex == -1) SelectBaudRate.SetSelected(7, true); //if none selected, then preselect lowest baudrate 57600 (so timing checks wont fail)
+            serial.Open();
+            while (serial.IsOpen == false) ; //waits till the port will open, it takes around 50ms actually
+            sw.Restart(); //start timer to check capturescreen timing
+            for (int i = 0; i < timingtests; i++) CaptureScreen(); //it performs 5 (or any custom timingtests value) iterations of capturescreen
+            sw.Stop();
+            serial.Close();
+            timing = Convert.ToInt32(sw.ElapsedMilliseconds / timingtests);
+            fps = Convert.ToInt32(Math.Floor(1000.0 / timing)); //floors down fps rating, so it will be more likely that there will be only one capturescreen thread running at once
+            Default_Timings.Text = "Default: " + timing + " ms per frame, " + fps + " fps";
+            if (fps > 0) FPS_Spinbox.Value = fps;
+        }
+
         public Form1()
         {
             InitializeComponent();
             foreach (string comportname in SerialPort.GetPortNames()) SelectComPort.Items.Add(comportname); //fetch comports that present in system
-            SelectComPort.SetSelected(0, true); //preselect first COM port in list (so timing checks wont fail)
             for (int i = 0; i < BaudRatesList.Length; i++) SelectBaudRate.Items.Add(BaudRatesList[i]);
-            SelectBaudRate.SetSelected(8, true); //preselect baudrate 115200 (so timing checks wont fail)
-            serial.Open();
-            while (serial.IsOpen == false); //waits till the port will open, it takes around 50ms actually
-            sw.Restart(); //start timer to check capturescreen timing
-            for (int i = 0; i < timingtests; i++) CaptureScreen(); //it performs 5 (or any custom timingtests value) iterations of capturescreen
-            sw.Stop();
-            timing = Convert.ToInt32(sw.ElapsedMilliseconds/timingtests);
-            fps = Convert.ToInt32(Math.Floor(1000.0/timing)); //floors down fps rating, so it will be more likely that there will be only one capturescreen thread running at once
-            label2.Text = "Default: " + timing + " ms per frame, " + fps + " fps";
-            if (fps > 0) FPS_Spinbox.Value = fps;
         }
     }
 }
