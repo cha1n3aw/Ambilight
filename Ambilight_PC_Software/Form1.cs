@@ -120,17 +120,17 @@ namespace Ambilight
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
-            if (this.WindowState.Equals(FormWindowState.Minimized)) { Hide(); Tray_Icon.ShowBalloonTip(2000); }
-        }
+            if (WindowState.Equals(FormWindowState.Minimized)) { Hide(); Tray_Icon.ShowBalloonTip(1000); }
+        }  
         private void Tray_Icon_BalloonTipClicked(object sender, EventArgs e)
         {
             Show();
-            this.WindowState = FormWindowState.Normal;
+            WindowState = FormWindowState.Normal;
         }
         private void Tray_Icon_Click(object sender, EventArgs e)
         {
-            Show();
-            this.WindowState = FormWindowState.Normal;
+            if (WindowState == FormWindowState.Minimized) { Show(); WindowState = FormWindowState.Normal; }
+            else if (WindowState == FormWindowState.Normal) WindowState = FormWindowState.Minimized;
         }
         private void ComPort_SelectedIndexChanged(object sender, EventArgs e) { if (ComPort.SelectedIndex != -1) serial.PortName = ComPort.Items[ComPort.SelectedIndex].ToString(); }//choose desired COM port online from list of availaible ports
         private void BaudRate_SelectedIndexChanged(object sender, EventArgs e) { if (ComPort.SelectedIndex != -1) serial.BaudRate = Convert.ToInt32(BaudRate.Items[BaudRate.SelectedIndex]); }

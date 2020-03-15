@@ -135,6 +135,7 @@
             // 
             // Tray_Icon
             // 
+            this.Tray_Icon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.Tray_Icon.BalloonTipText = "Click to restore";
             this.Tray_Icon.BalloonTipTitle = "Hey, I\'m here!";
             this.Tray_Icon.Icon = ((System.Drawing.Icon)(resources.GetObject("Tray_Icon.Icon")));
@@ -192,7 +193,7 @@
             // Dynamic_Ambilight
             // 
             this.BackColor = System.Drawing.Color.Teal;
-            this.ClientSize = new System.Drawing.Size(248, 149);
+            this.ClientSize = new System.Drawing.Size(250, 149);
             this.Controls.Add(this.ComPort);
             this.Controls.Add(this.BaudRate);
             this.Controls.Add(this.InterpMode);
@@ -203,7 +204,11 @@
             this.Controls.Add(this.Default_Timings);
             this.Controls.Add(this.StartStopButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Dynamic_Ambilight";
+            this.ShowIcon = false;
+            this.Text = "Dynamic Ambilight";
             ((System.ComponentModel.ISupportInitialize)(this.FPS_Spinbox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
