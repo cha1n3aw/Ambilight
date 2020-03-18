@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Dynamic_Ambilight;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Ambilight;
 
-namespace WindowsFormsApp2
+namespace WindowsFormsApp4
 {
     static class Program
     {
@@ -17,7 +17,7 @@ namespace WindowsFormsApp2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Dynamic_Ambilight());
+            Application.Run(new Dynamic_Ambilight.Dynamic_Ambilight());
         }
     }
 }
