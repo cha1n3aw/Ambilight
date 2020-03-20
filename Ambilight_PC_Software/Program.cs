@@ -1,4 +1,4 @@
-﻿using Dynamic_Ambilight;
+﻿using DynamicAmbilight;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace WindowsFormsApp4
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Dynamic_Ambilight.Dynamic_Ambilight());
+            Application.Run(new DynamicAmbilight.DynamicAmbilight());
         }
     }
 }

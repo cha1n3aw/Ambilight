@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dynamic_Ambilight.Properties {
+namespace DynamicAmbilight.Properties {
     using System;
     
     

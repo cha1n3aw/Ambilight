@@ -1,5 +1,5 @@
 #include <WS2812B.h> //this lib uses SPI1, connect the ws2812b data line to MOSI
-#define ONLINE_WAIT 1000
+#define ONLINE_WAIT 2000
 #define LED_BLINK_OFFLINE 1000
 
 int lastonline = 0;
@@ -31,9 +31,9 @@ void loop()
     if (data == 0x00) data = 0x01;
     switch (cnt) 
     {
-    case 1: { green = data; cnt++; }
+    case 1: { red = data; cnt++; }
       break;
-    case 2: { red = data; cnt++; }
+    case 2: { green = data; cnt++; }
       break;
     case 3: {
       blue = data;
@@ -49,7 +49,7 @@ void loop()
   }
   else if (state == true && millis() - lastonline > ONLINE_WAIT)
        {
-         for(uint16_t i = 0; i < NUM_LEDS; i++) strip.setPixelColor(i, strip.Color(0,100,0));
+         for(uint16_t i = 0; i < NUM_LEDS; i++) strip.setPixelColor(i, strip.Color(100,0,0));
          strip.show();
          cnt = 1;
          green = 0;
