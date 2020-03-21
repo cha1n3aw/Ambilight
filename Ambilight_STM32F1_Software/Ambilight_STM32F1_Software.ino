@@ -10,7 +10,7 @@ int red = 0;
 int green = 0;
 int blue = 0;
 bool state = true;
-int NUM_LEDS = 104;
+int NUM_LEDS = 100;
 WS2812B strip = WS2812B(NUM_LEDS);
 
 void setup()

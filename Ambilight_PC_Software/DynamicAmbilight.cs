@@ -16,7 +16,7 @@ namespace DynamicAmbilight
 {
     public partial class DynamicAmbilight : MetroForm
     {
-        private int fps = 10, LEDS_X = 32, LEDS_Y = 20, width = 1920, height = 1200, timing;
+        private int fps = 10, LEDS_X = 32, LEDS_Y = 18, width = 1920, height = 1080, timing;
         private int[] offsets = new int[4] { 0, 0, 0, 0 };
         private readonly Stopwatch sw = new Stopwatch(); //stopwatch is being used once on startup, it determines how much time does one iteration take
         private readonly SerialPort serial = new SerialPort() { Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 8, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
@@ -62,12 +62,12 @@ namespace DynamicAmbilight
             if (state)
             {
                 Selection_Check();
-                ComPort.Enabled = BaudRate.Enabled = InterpMode.Enabled = TestButton.Enabled = RefreshButton.Enabled = false;
+                TestButton.Enabled = false;
                 if (serial.IsOpen == false) { serial.Open(); while (serial.IsOpen == false) ; }
             }
             else
             {
-                ComPort.Enabled = BaudRate.Enabled = InterpMode.Enabled = TestButton.Enabled = RefreshButton.Enabled = true;
+                TestButton.Enabled = true;
                 Thread.Sleep(100);
                 serial.Close();
             }
@@ -77,11 +77,15 @@ namespace DynamicAmbilight
             while (StartStop.Checked) 
             { 
                 Thread scrcap = new Thread(ScreenCapture) { Priority = ThreadPriority.Highest }; 
-                scrcap.Start(); 
-                if (PreventAwayMode.Checked) DLLIMPORTS.SetThreadExecutionState(DLLIMPORTS.EXECUTION_STATE.ES_CONTINUOUS | DLLIMPORTS.EXECUTION_STATE.ES_SYSTEM_REQUIRED | DLLIMPORTS.EXECUTION_STATE.ES_DISPLAY_REQUIRED); 
-                else if (PreventSleep.Checked) DLLIMPORTS.SetThreadExecutionState(DLLIMPORTS.EXECUTION_STATE.ES_CONTINUOUS | DLLIMPORTS.EXECUTION_STATE.ES_SYSTEM_REQUIRED); 
+                scrcap.Start();
+                WakeUp();
                 Thread.Sleep(1000 / fps); 
             } 
+        }
+        private void WakeUp()
+        {
+            if (PreventAwayMode.Checked) DLLIMPORTS.SetThreadExecutionState(DLLIMPORTS.EXECUTION_STATE.ES_CONTINUOUS | DLLIMPORTS.EXECUTION_STATE.ES_SYSTEM_REQUIRED | DLLIMPORTS.EXECUTION_STATE.ES_DISPLAY_REQUIRED);
+            else if (PreventSleep.Checked) DLLIMPORTS.SetThreadExecutionState(DLLIMPORTS.EXECUTION_STATE.ES_CONTINUOUS | DLLIMPORTS.EXECUTION_STATE.ES_SYSTEM_REQUIRED);
         }
         private void ScreenCapture()
         {
@@ -93,17 +97,12 @@ namespace DynamicAmbilight
             tempbmpgr.InterpolationMode = intrpmode;
             bitmapgr.CopyFromScreen(offsets[2], offsets[0], 0, 0, bitmap.Size); //30ms
             tempbmpgr.DrawImage(bitmap, new Rectangle(0, 0, LEDS_X, LEDS_Y)); //15-17ms
-            for (int x = LEDS_X-1; x >=0; x--) //these for's take 5-7ms
-            {
-                color = tempbmp.GetPixel(x, LEDS_Y - 1);
-                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
             for (int y = LEDS_Y - 1; y >= 0; y--)
             {
                 color = tempbmp.GetPixel(0, y);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
-            for (int x = 0; x < LEDS_X; x++)
+            for (int x = 0; x < LEDS_X; x++) //these for's take 5-7ms
             {
                 color = tempbmp.GetPixel(x, 0);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
@@ -113,6 +112,14 @@ namespace DynamicAmbilight
                 color = tempbmp.GetPixel(LEDS_X - 1, y);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
+            for (int x = LEDS_X - 1; x >= 0; x--)
+            {
+                color = tempbmp.GetPixel(x, LEDS_Y - 1);
+                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+            }
+            
+            
+            
             GC.Collect();
         }
         private void Selection_Check()
@@ -125,10 +132,21 @@ namespace DynamicAmbilight
         List<MetroButton> buttonlist = new List<MetroButton>();
         public delegate void ColorDelegate(Color clr);
         public void GetColor(Color clr) 
-        { 
-            if (clr != Color.Empty) colorarray.Add(clr);
-            if (colorarray.Count > buttonlist.Count) buttonlist.Remove(buttonlist[buttonlist.Count - 1]);
-            else buttonlist[buttonlist.Count - 1].BackColor = colorarray[colorarray.Count - 1];
+        {
+            if (clr != Color.Empty)
+            {
+                colorarray.Add(clr);
+                buttonlist.Add(new MetroButton());
+                buttonlist[buttonlist.Count - 1].Style = MetroFramework.MetroColorStyle.Black;
+                buttonlist[buttonlist.Count - 1].Theme = MetroFramework.MetroThemeStyle.Dark;
+                buttonlist[buttonlist.Count - 1].UseCustomBackColor = true;
+                buttonlist[buttonlist.Count - 1].Size = new Size(40, 40);
+                buttonlist[buttonlist.Count - 1].Location = new Point(5 + (buttonlist.Count - 1) * 45, 250);
+                ModesTab.Controls.Add(buttonlist[buttonlist.Count - 1]);
+                if (buttonlist.Count == 5) SelectColor.Enabled = false;
+                if (colorarray.Count > buttonlist.Count) buttonlist.Remove(buttonlist[buttonlist.Count - 1]);
+                else buttonlist[buttonlist.Count - 1].BackColor = colorarray[colorarray.Count - 1];
+            }
         }
         private void Get_ComPort_Names()
         {
@@ -150,12 +168,14 @@ namespace DynamicAmbilight
         {
             if (StartStop.Checked)
             {
+                ModesTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = false;
                 COMPort(true);
                 CaptureThread = new Thread(Main) { Priority = ThreadPriority.Highest }; //starts up a new thread, which is alive till state will be false
                 CaptureThread.Start();
             }
             else
             {
+                ModesTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = true;
                 CaptureThread.Abort();
                 COMPort(false);
             }
@@ -164,6 +184,7 @@ namespace DynamicAmbilight
         {
             if (LEDSHOW.Checked)
             {
+                HomeTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = false;
                 AmbilightModes.Enabled = false;
                 COMPort(true);
                 switch (AmbilightModes.SelectedIndex)
@@ -200,6 +221,7 @@ namespace DynamicAmbilight
             }
             else
             {
+                HomeTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = true;
                 RGBeffects.Abort();
                 COMPort(false);
                 AmbilightModes.Enabled = true;
@@ -258,14 +280,6 @@ namespace DynamicAmbilight
             {
                 ColorPicker colorpicker = new ColorPicker(new ColorDelegate(GetColor));
                 colorpicker.Show();
-                buttonlist.Add(new MetroButton());
-                buttonlist[buttonlist.Count - 1].Style = MetroFramework.MetroColorStyle.Black;
-                buttonlist[buttonlist.Count - 1].Theme = MetroFramework.MetroThemeStyle.Dark;
-                buttonlist[buttonlist.Count - 1].UseCustomBackColor = true;
-                buttonlist[buttonlist.Count - 1].Size = new Size(40, 40);
-                buttonlist[buttonlist.Count - 1].Location = new Point(5 + (buttonlist.Count - 1) * 45, 250); 
-                ModesTab.Controls.Add(buttonlist[buttonlist.Count - 1]);
-                if (buttonlist.Count == 5) SelectColor.Enabled = false;
             }
         }
         private void FillComboBoxes()
@@ -297,7 +311,7 @@ namespace DynamicAmbilight
         }
         ///////////////////////////////////           LEDS           ///////////////////////////////////////////////////////////////
         List<Color> colorarray = new List<Color>();
-        Color[] ledarray = new Color[104]; //should be NumLeds() length
+        Color[] ledarray = new Color[100]; //should be NumLeds() length
         private int fadetiming = 10;
         private int NumLeds() { return (LEDS_X + LEDS_Y) * 2; }
         private void LedShow() { Color clr; for (int i = 0; i < ledarray.Length; i++) { clr = ledarray[i]; serial.Write(new byte[] { clr.R, clr.G, clr.B }, 0, 3); } }
@@ -325,6 +339,7 @@ namespace DynamicAmbilight
         {
             while (LEDSHOW.Checked && colorarray.Count > 0)
             {
+                WakeUp();
                 for (int k = 0; k < 256; k++) //Fade IN
                 {
                     for (int i = 0; i < ledarray.Length; i++) ledarray[i] = Color.FromArgb(Convert.ToInt32((k / 255d) * colorarray[0].R), Convert.ToInt32((k / 255d) * colorarray[0].G), Convert.ToInt32((k / 255d) * colorarray[0].B));
@@ -343,18 +358,22 @@ namespace DynamicAmbilight
         {
             int i, j;
             while (LEDSHOW.Checked)
+            {
+                WakeUp();
                 for (j = 0; j < 256; j++)
                 {
                     for (i = 0; i < NumLeds(); i++) ledarray[i] = Wheel((i + j) & 255);
                     Thread.Sleep(fadetiming);
                     LedShow();
                 }
+            }
         } 
         public void RainbowCycle()
         {
             int i, j;
             while (LEDSHOW.Checked)
             {
+                WakeUp();
                 for (j = 0; j < 256 * 5; j++)
                 {
                     for (i = 0; i < NumLeds(); i++) ledarray[i] = Wheel((i * 256 / NumLeds() + j) & 255);
@@ -366,6 +385,8 @@ namespace DynamicAmbilight
         public void TheaterChaseRainbow()
         {
             while (LEDSHOW.Checked)
+            {
+                WakeUp();
                 for (int j = 0; j < 256; j++)
                 {     // cycle all 256 colors in the wheel
                     for (int q = 0; q < 3; q++)
@@ -376,21 +397,24 @@ namespace DynamicAmbilight
                         for (int i = 0; i < NumLeds() - 3; i += 3) ledarray[i + q] = Color.Empty;        //turn every third pixel off
                     }
                 }
+            }
 
         }
         public void FullWhite()
         {
             while (LEDSHOW.Checked)
             {
+                WakeUp();
                 for (int i = 0; i < NumLeds(); i++) ledarray[i] = Color.FromArgb(255, 255, 255);
                 LedShow();
                 Thread.Sleep(400);
             }
         }
-
         public void FadeCustom()
         {
             while (LEDSHOW.Checked && colorarray.Count > 0)
+            {
+                WakeUp();
                 for (int j = 0; j < colorarray.Count; j++)
                 {
                     for (int k = 0; k < 256; k++)
@@ -406,10 +430,13 @@ namespace DynamicAmbilight
                         Thread.Sleep(fadetiming);
                     }
                 }
+            }
         }
         public void TestLEDs()
         {
             while (LEDSHOW.Checked && colorarray.Count > 0)
+            {
+                WakeUp();
                 for (int i = 0; i < colorarray.Count; i++)
                     for (int j = 0; j < NumLeds(); j++)
                     {
@@ -419,12 +446,14 @@ namespace DynamicAmbilight
                         LedShow();
                         Thread.Sleep(fadetiming);
                     }
+            }
         }
         public void CylonBounce()
         {
             int EyeSize = 2;
             while (LEDSHOW.Checked && colorarray.Count > 0)
             {
+                WakeUp();
                 for (int i = 0; i < NumLeds() - EyeSize - 1; i++)
                 {
                     for (int k = 0; k < NumLeds(); k++) ledarray[k] = Color.Black;
@@ -452,6 +481,7 @@ namespace DynamicAmbilight
             int Count = 10;
             while (LEDSHOW.Checked && colorarray.Count > 0)
             {
+                WakeUp();
                 var random = new Random();
                 for (int k = 0; k < NumLeds(); k++) ledarray[k] = Color.Black;
                 LedShow();
