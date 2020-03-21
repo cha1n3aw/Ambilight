@@ -142,11 +142,16 @@ namespace DynamicAmbilight
                 buttonlist[buttonlist.Count - 1].UseCustomBackColor = true;
                 buttonlist[buttonlist.Count - 1].Size = new Size(40, 40);
                 buttonlist[buttonlist.Count - 1].Location = new Point(5 + (buttonlist.Count - 1) * 45, 250);
-                ModesTab.Controls.Add(buttonlist[buttonlist.Count - 1]);
                 if (buttonlist.Count == 5) SelectColor.Enabled = false;
                 if (colorarray.Count > buttonlist.Count) buttonlist.Remove(buttonlist[buttonlist.Count - 1]);
                 else buttonlist[buttonlist.Count - 1].BackColor = colorarray[colorarray.Count - 1];
+                buttonlist[buttonlist.Count - 1].Click += new EventHandler(Color_Click);
+                ModesTab.Controls.Add(buttonlist[buttonlist.Count - 1]);
             }
+        }
+        private void Color_Click(object sender, EventArgs e)
+        {
+            RemoveColor.Show(new Point(MousePosition.X, MousePosition.Y));
         }
         private void Get_ComPort_Names()
         {

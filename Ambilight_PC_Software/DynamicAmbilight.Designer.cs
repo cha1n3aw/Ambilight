@@ -83,12 +83,15 @@
             this.metroLabel19 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel20 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel21 = new MetroFramework.Controls.MetroLabel();
+            this.RemoveColor = new MetroFramework.Controls.MetroContextMenu(this.components);
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModesTab.SuspendLayout();
             this.SettingsTab.SuspendLayout();
             this.HomeTab.SuspendLayout();
             this.ControlTabs.SuspendLayout();
             this.AreaTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
+            this.RemoveColor.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tray_Icon
@@ -858,7 +861,7 @@
             this.ControlTabs.Controls.Add(this.SettingsTab);
             this.ControlTabs.Location = new System.Drawing.Point(23, 63);
             this.ControlTabs.Name = "ControlTabs";
-            this.ControlTabs.SelectedIndex = 3;
+            this.ControlTabs.SelectedIndex = 1;
             this.ControlTabs.Size = new System.Drawing.Size(238, 334);
             this.ControlTabs.Style = MetroFramework.MetroColorStyle.Black;
             this.ControlTabs.TabIndex = 17;
@@ -938,6 +941,21 @@
             this.metroLabel21.Text = "Start Up!";
             this.metroLabel21.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
+            // RemoveColor
+            // 
+            this.RemoveColor.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeToolStripMenuItem});
+            this.RemoveColor.Name = "RemoveColor";
+            this.RemoveColor.Size = new System.Drawing.Size(181, 48);
+            this.RemoveColor.Style = MetroFramework.MetroColorStyle.Black;
+            this.RemoveColor.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            // 
             // DynamicAmbilight
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -959,6 +977,7 @@
             this.AreaTab.ResumeLayout(false);
             this.AreaTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
+            this.RemoveColor.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1017,6 +1036,8 @@
         private MetroFramework.Controls.MetroLabel metroLabel21;
         private MetroFramework.Controls.MetroLabel metroLabel20;
         private MetroFramework.Controls.MetroLabel metroLabel19;
+        private MetroFramework.Controls.MetroContextMenu RemoveColor;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
     }
 }
 
