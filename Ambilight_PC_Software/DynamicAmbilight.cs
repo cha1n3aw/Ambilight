@@ -8,27 +8,53 @@ using System.Drawing.Drawing2D;
 using MetroFramework.Forms;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Collections;
 using MetroFramework.Controls;
+using ScreenCapturerNS;
+using System.Configuration;
 
 namespace DynamicAmbilight
 {
     public partial class DynamicAmbilight : MetroForm
     {
-        private int fps = 10, LEDS_X = 32, LEDS_Y = 18, width = 1920, height = 1080, timing;
-        private int[] offsets = new int[4] { 0, 0, 0, 0 };
+        private int width, height, timing;
+        //private bool mode = false; //dx11 or winapi
+        private int[] offsets = new int[2] { 0, 0 }; //only for custom resolution
         private readonly Stopwatch sw = new Stopwatch(); //stopwatch is being used once on startup, it determines how much time does one iteration take
         private readonly SerialPort serial = new SerialPort() { Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 8, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
         private readonly String[] BaudRatesList = new string[8] { "5000000", "2000000", "1000000", "921600", "460800", "230400", "115200", "57600" };
-        private Thread CaptureThread;
-        private Thread RGBeffects;
-        private InterpolationMode intrpmode;
         private readonly IntPtr handle = DLLIMPORTS.GetDesktopWindow();
+        private InterpolationMode intrpmode;
+        private Thread RGBEffects;
 
+        private Thread SettingsThread(string key, string value)
+        {
+            Thread settingsthread = new Thread(() => SetSetting(key, value)) { IsBackground = true };
+            settingsthread.Start();
+            return settingsthread;
+        }
+        private static void SetSetting(string key, string value)
+        {
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+            configuration.AppSettings.Settings[key].Value = value;
+            configuration.Save(ConfigurationSaveMode.Full, true);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+        private void Init()
+        {
+            GetWindowSize();
+            FPSChanger.Value = Convert.ToInt32(ConfigurationManager.AppSettings["FPS"]);
+            LedsX.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSX"]);
+            LedsY.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSY"]);
+            UpperOffset.Text = ConfigurationManager.AppSettings["UpperOffset"];
+            LowerOffset.Text = ConfigurationManager.AppSettings["LowerOffset"];
+            LeftOffset.Text = ConfigurationManager.AppSettings["LeftOffset"];
+            RightOffset.Text = ConfigurationManager.AppSettings["RightOffset"];
+            CustomWidth.Text = ConfigurationManager.AppSettings["CustomWidth"];
+            CustomHeight.Text = ConfigurationManager.AppSettings["CustomHeight"];
+        }
         private void GetWindowSize() //gets screen size also considering offsets
         {
-            for (int i = 0; i < 4; i++) offsets[i] = 0;
+            offsets[0] = offsets[1] = 0;
             DLLIMPORTS.RECT windowRect = new DLLIMPORTS.RECT(); //get the size
             DLLIMPORTS.GetWindowRect(handle, ref windowRect);
             width = windowRect.right - windowRect.left;
@@ -37,12 +63,8 @@ namespace DynamicAmbilight
         private void CustomOffsets()
         {
             GetWindowSize();
-            offsets[0] = Convert.ToInt32(UpperOffset.Text);
-            offsets[1] = Convert.ToInt32(LowerOffset.Text);
-            offsets[2] = Convert.ToInt32(LeftOffset.Text);
-            offsets[3] = Convert.ToInt32(RightOffset.Text);
-            width = width - offsets[2] - offsets[3];
-            height = height - offsets[0] - offsets[1];
+            width = width - Convert.ToInt32(LeftOffset.Text) - Convert.ToInt32(RightOffset.Text);
+            height = height - Convert.ToInt32(UpperOffset.Text) - Convert.ToInt32(LowerOffset.Text);
         }
         private void CustomResolution()
         {
@@ -50,18 +72,18 @@ namespace DynamicAmbilight
             int customheight = Convert.ToInt32(CustomHeight.Text);
             if (customheight > 99 && customwidth > 99)
             {
-                GetWindowSize(); Debug.WriteLine(height.ToString()); Debug.WriteLine(width.ToString());
+                GetWindowSize();
                 offsets[0] = (height - customheight) / 2;
-                offsets[2] = (width - customwidth) / 2; Debug.WriteLine(offsets[0].ToString()); Debug.WriteLine(offsets[2].ToString());
+                offsets[1] = (width - customwidth) / 2; 
                 width = customwidth;
-                height = customheight; Debug.WriteLine(height.ToString()); Debug.WriteLine(width.ToString());
+                height = customheight;
             }
         }
         private void COMPort(bool state)
         {
             if (state)
             {
-                Selection_Check();
+                SelectionCheck();
                 TestButton.Enabled = false;
                 if (serial.IsOpen == false) { serial.Open(); while (serial.IsOpen == false) ; }
             }
@@ -72,15 +94,21 @@ namespace DynamicAmbilight
                 serial.Close();
             }
         }
-        private void Main() 
+        private void MainCall(bool mode) 
         {
-            while (StartStop.Checked) 
-            { 
-                Thread scrcap = new Thread(ScreenCapture) { Priority = ThreadPriority.Highest }; 
+            if (mode == false) while (StartStop.Checked)
+            {
+                CaptureScreen();
+                WakeUp();
+                Thread.Sleep(1000 / FPSChanger.Value - timing);
+            }
+            else while (StartStop.Checked)
+            {
+                Thread scrcap = new Thread(ScreenCapture) { Priority = ThreadPriority.Highest };
                 scrcap.Start();
                 WakeUp();
-                Thread.Sleep(1000 / fps); 
-            } 
+                Thread.Sleep(1000 / FPSChanger.Value);
+            }
         }
         private void WakeUp()
         {
@@ -91,43 +119,74 @@ namespace DynamicAmbilight
         {
             Color color;
             Bitmap bitmap = new Bitmap(width, height);
-            Bitmap tempbmp = new Bitmap(LEDS_X, LEDS_Y);
+            Bitmap tempbmp = new Bitmap(LedsX.Value, LedsY.Value);
             Graphics tempbmpgr = Graphics.FromImage(tempbmp);
             Graphics bitmapgr = Graphics.FromImage(bitmap);
             tempbmpgr.InterpolationMode = intrpmode;
-            bitmapgr.CopyFromScreen(offsets[2], offsets[0], 0, 0, bitmap.Size); //30ms
-            tempbmpgr.DrawImage(bitmap, new Rectangle(0, 0, LEDS_X, LEDS_Y)); //15-17ms
-            for (int y = LEDS_Y - 1; y >= 0; y--)
+            bitmapgr.CopyFromScreen(offsets[1], offsets[0], 0, 0, bitmap.Size); //30ms
+            tempbmpgr.DrawImage(bitmap, new Rectangle(0, 0, LedsX.Value, LedsY.Value)); //15-17ms
+            for (int y = LedsY.Value - 1; y >= 0; y--)
             {
                 color = tempbmp.GetPixel(0, y);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
-            for (int x = 0; x < LEDS_X; x++) //these for's take 5-7ms
+            for (int x = 0; x < LedsX.Value; x++) //these for's take 5-7ms
             {
                 color = tempbmp.GetPixel(x, 0);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
-            for (int y = 0; y < LEDS_Y; y++)
+            for (int y = 0; y < LedsY.Value; y++)
             {
-                color = tempbmp.GetPixel(LEDS_X - 1, y);
+                color = tempbmp.GetPixel(LedsX.Value - 1, y);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
-            for (int x = LEDS_X - 1; x >= 0; x--)
+            for (int x = LedsX.Value - 1; x >= 0; x--)
             {
-                color = tempbmp.GetPixel(x, LEDS_Y - 1);
+                color = tempbmp.GetPixel(x, LedsY.Value - 1);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
-            
-            
-            
             GC.Collect();
         }
-        private void Selection_Check()
+        private void CaptureScreen()
+        {
+            Color color;
+            Bitmap tempbmp = new Bitmap(LedsX.Value, LedsY.Value);
+            Graphics tempbmpgr = Graphics.FromImage(tempbmp);
+            Bitmap bmp = ScreenCapturer.MakeScreenshot();
+            tempbmpgr.InterpolationMode = intrpmode;
+            tempbmpgr.DrawImage(bmp, new Rectangle(0, 0, LedsX.Value, LedsY.Value)); //15-17ms
+            for (int y = LedsY.Value - 1; y >= 0; y--)
+            {
+                color = tempbmp.GetPixel(0, y);
+                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+            }
+            for (int x = 0; x < LedsX.Value; x++) //these for's take 5-7ms
+            {
+                color = tempbmp.GetPixel(x, 0);
+                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+            }
+            for (int y = 0; y < LedsY.Value; y++)
+            {
+                color = tempbmp.GetPixel(LedsX.Value - 1, y);
+                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+            }
+            for (int x = LedsX.Value - 1; x >= 0; x--)
+            {
+                color = tempbmp.GetPixel(x, LedsY.Value - 1);
+                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+            }
+            GC.Collect();
+        }
+        private void SelectionCheck()
         {
             if (ComPort.SelectedIndex == -1) ComPort.SelectedIndex = ComPort.Items.Count - 1; //if none selected, then preselect first COM port in list
             if (BaudRate.SelectedIndex == -1) BaudRate.SelectedIndex = BaudRatesList.Length - 5; //if none selected, then preselect 115200 baud
-            if (InterpMode.SelectedIndex == -1) InterpMode.SelectedIndex = 7;//if none selected, then preselect Default (the fastest)
+            if (InterpMode.SelectedIndex == -1) InterpMode.SelectedIndex = 7; //if none selected, then preselect Default (the fastest)
+            if (CaptureWay.SelectedIndex == -1) CaptureWay.SelectedIndex = 0; //preselect DX11
+            if (CaptureArea.SelectedIndex == -1) CaptureArea.SelectedIndex = 0; //preselect fullscreen
+            if (AmbilightModes.SelectedIndex == -1) AmbilightModes.SelectedIndex = 0; //preselect single color fade
         }
+
         //////////////////////////////////////         GUI         /////////////////////////////////////////////////////
         List<MetroButton> buttonlist = new List<MetroButton>();
         public delegate void ColorDelegate(Color clr);
@@ -173,93 +232,108 @@ namespace DynamicAmbilight
         {
             if (StartStop.Checked)
             {
-                ModesTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = false;
                 COMPort(true);
-                CaptureThread = new Thread(Main) { Priority = ThreadPriority.Highest }; //starts up a new thread, which is alive till state will be false
-                CaptureThread.Start();
+                ModesTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = false;
+                if (CaptureWay.SelectedIndex == 0)
+                {
+                    Thread mainthread = new Thread(() => MainCall(false)) { IsBackground = true };
+                    mainthread.Start();
+                }
+                else if (CaptureWay.SelectedIndex == 1)
+                {
+                    Thread mainthread = new Thread(() => MainCall(true)) { IsBackground = true };
+                    mainthread.Start();
+                }
             }
             else
             {
-                ModesTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = true;
-                CaptureThread.Abort();
                 COMPort(false);
+                ModesTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = true;
             }
         }
         private void LEDSHOW_CheckStateChanged(object sender, EventArgs e)
         {
             if (LEDSHOW.Checked)
             {
+                COMPort(true);
                 HomeTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = false;
                 AmbilightModes.Enabled = false;
-                COMPort(true);
                 switch (AmbilightModes.SelectedIndex)
                 {
                     case 0:
-                        RGBeffects = new Thread(FadeInOut) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FadeInOut) { IsBackground = true, Priority = ThreadPriority.Highest }; 
                         break;
                     case 1:
-                        RGBeffects = new Thread(Rainbow) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(Rainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 2:
-                        RGBeffects = new Thread(RainbowCycle) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(RainbowCycle) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 3:
-                        RGBeffects = new Thread(TheaterChaseRainbow) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 4:
-                        RGBeffects = new Thread(FullWhite) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FullWhite) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 5:
-                        RGBeffects = new Thread(FadeCustom) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FadeCustom) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 6:
-                        RGBeffects = new Thread(CylonBounce) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(CylonBounce) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 7:
-                        RGBeffects = new Thread(Twinkle) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(Twinkle) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 8:
-                        RGBeffects = new Thread(TestLEDs) { Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(TestLEDs) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                 }
-                RGBeffects.Start();
+                RGBEffects.Start();
             }
             else
             {
+                RGBEffects.Abort();
                 HomeTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = true;
-                RGBeffects.Abort();
-                COMPort(false);
                 AmbilightModes.Enabled = true;
+                COMPort(false);
             }
         }
         private void FadeTiming_ValueChanged(object sender, EventArgs e) { fadetiming = FadeTiming.Value; }
         private void TestButton_Click(object sender, EventArgs e)
         {
             COMPort(true);
-            sw.Restart(); //start timer to check capturescreen timing
-            ScreenCapture();
-            sw.Stop();
+            if (CaptureWay.SelectedIndex == 0)
+            {
+                sw.Restart();
+                CaptureScreen();
+                sw.Stop();
+            }
+            else
+            {
+                sw.Restart();
+                ScreenCapture();
+                sw.Stop();
+            }
             COMPort(false);
             timing = Convert.ToInt32(sw.ElapsedMilliseconds);
-            fps = Convert.ToInt32(Math.Floor(1000.0 / timing)); //floors down fps rating, so it will be more likely that there will be only one capturescreen thread running at once
-            Default_Timings.Text = "Default: " + fps + " fps, " + timing + " ms per frame";
-            if (fps > 0) FPSChanger.Value = fps;
+            FPSChanger.Value = Convert.ToInt32(Math.Floor(1000.0 / timing)); //floors down fps rating, so it will be more likely that there will be only one capturescreen thread running at once
+            Default_Timings.Text = "Default: " + FPSChanger.Value + " fps, " + timing + " ms per frame";
         }
         private void RefreshButton_Click(object sender, EventArgs e) { Get_ComPort_Names(); }
         private void ComPort_SelectedIndexChanged_1(object sender, EventArgs e) { if (ComPort.SelectedIndex != -1) serial.PortName = ComPort.Items[ComPort.SelectedIndex].ToString(); }
         private void BaudRate_SelectedIndexChanged_1(object sender, EventArgs e) { if (BaudRate.SelectedIndex != -1) serial.BaudRate = Convert.ToInt32(BaudRate.Items[BaudRate.SelectedIndex]); }
         private void InterpMode_SelectedIndexChanged_1(object sender, EventArgs e) { if (InterpMode.SelectedIndex != -1) intrpmode = (InterpolationMode)InterpMode.Items[InterpMode.SelectedIndex]; }
-        private void FPSChanger_ValueChanged(object sender, EventArgs e) { fps = FPSChanger.Value; Custom_Timings.Text = "Custom: "  + fps + " fps, " + 1000 / fps + " ms per frame"; }
-        private void UpperOffset_TextChanged(object sender, EventArgs e) { if (UpperOffset.Text != "") { offsets[0] = Convert.ToInt32(UpperOffset.Text); CustomOffsets(); } }
-        private void LowerOffset_TextChanged(object sender, EventArgs e) { if (LowerOffset.Text != "") { offsets[1] = Convert.ToInt32(LowerOffset.Text); CustomOffsets(); } }
-        private void LeftOffset_TextChanged(object sender, EventArgs e) { if (LeftOffset.Text != "") { offsets[2] = Convert.ToInt32(LeftOffset.Text); CustomOffsets(); } }
-        private void RightOffset_TextChanged(object sender, EventArgs e) { if (RightOffset.Text != "") { offsets[3] = Convert.ToInt32(RightOffset.Text); CustomOffsets(); } }
-        private void CustomWidth_TextChanged(object sender, EventArgs e) { if (CustomWidth.Text != "") { width = Convert.ToInt32(CustomWidth.Text); CustomResolution(); } }
-        private void CustomHeight_TextChanged(object sender, EventArgs e) { if (CustomHeight.Text != "") { height = Convert.ToInt32(CustomHeight.Text); CustomResolution(); } }
-        private void LedsX_ValueChanged(object sender, EventArgs e) { LEDS_X = LedsX.Value; metroLabel9.Text = LedsX.Value.ToString(); }
-        private void LedsY_ValueChanged(object sender, EventArgs e) { LEDS_Y = LedsY.Value; metroLabel8.Text = LedsY.Value.ToString(); }
+        private void FPSChanger_ValueChanged(object sender, EventArgs e) { Custom_Timings.Text = "Custom: "  + FPSChanger.Value + " fps, " + 1000 / FPSChanger.Value + " ms per frame"; SetSetting("FPS", FPSChanger.Value.ToString()); }
+        private void UpperOffset_TextChanged(object sender, EventArgs e) { if (UpperOffset.Text != "" && CaptureArea.SelectedIndex == 2) { CustomOffsets(); SettingsThread("UpperOffset", UpperOffset.Text); } }
+        private void LowerOffset_TextChanged(object sender, EventArgs e) { if (LowerOffset.Text != "" && CaptureArea.SelectedIndex == 2) { CustomOffsets(); SettingsThread("LowerOffset", LowerOffset.Text); } }
+        private void LeftOffset_TextChanged(object sender, EventArgs e) { if (LeftOffset.Text != "" && CaptureArea.SelectedIndex == 2) { CustomOffsets(); SettingsThread("LeftOffset", LeftOffset.Text); } }
+        private void RightOffset_TextChanged(object sender, EventArgs e) { if (RightOffset.Text != "" && CaptureArea.SelectedIndex == 2) { CustomOffsets(); SettingsThread("RightOffset", RightOffset.Text); } }
+        private void CustomWidth_TextChanged(object sender, EventArgs e) { if (CustomWidth.Text != "" && CaptureArea.SelectedIndex == 1) { CustomResolution(); SettingsThread("CustomWidth", CustomWidth.Text); } }
+        private void CustomHeight_TextChanged(object sender, EventArgs e) { if (CustomHeight.Text != "" && CaptureArea.SelectedIndex == 1) { CustomResolution(); SettingsThread("CustomHeight", CustomHeight.Text); } }
+        private void LedsX_ValueChanged(object sender, EventArgs e) { LedsXLabel.Text = LedsX.Value.ToString(); SettingsThread("LedsX", LedsX.Value.ToString()); }
+        private void LedsY_ValueChanged(object sender, EventArgs e) { LedsYLabel.Text = LedsY.Value.ToString(); SettingsThread("LedsY", LedsY.Value.ToString()); }
         private void PreventSleep_CheckedChanged(object sender, EventArgs e) { if (PreventSleep.Checked == true) PreventAwayMode.Enabled = true; else { PreventAwayMode.Checked = false; PreventAwayMode.Enabled = false; } }
-        private void CaptureMode_SelectedIndexChanged(object sender, EventArgs e)
+        private void CaptureArea_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (CaptureArea.SelectedIndex == 2)
             {
@@ -270,7 +344,6 @@ namespace DynamicAmbilight
             else
             {
                 UpperOffset.Enabled = LowerOffset.Enabled = LeftOffset.Enabled = RightOffset.Enabled = false; 
-                for (int i = 0; i < 4; i++) offsets[i] = 0;
                 if (CaptureArea.SelectedIndex == 1)
                 {
                     CustomWidth.Enabled = CustomHeight.Enabled = true;
@@ -293,13 +366,10 @@ namespace DynamicAmbilight
             Get_ComPort_Names();
             for (int i = 0; i < BaudRatesList.Length; i++) BaudRate.Items.Add(BaudRatesList[i]);
             CaptureArea.Items.Add("Fullscreen");
-            CaptureArea.SelectedIndex = 0;
             CaptureArea.Items.Add("Custom resolution");
             CaptureArea.Items.Add("Custom offsets");
-            FPSChanger.Value = fps;
             ControlTabs.SelectTab(0);
             AmbilightModes.Items.Add("Single Color Fade");
-            AmbilightModes.SelectedIndex = 0;
             AmbilightModes.Items.Add("Rainbow");
             AmbilightModes.Items.Add("Rainbow Cycle");
             AmbilightModes.Items.Add("Theater Chase");
@@ -308,17 +378,22 @@ namespace DynamicAmbilight
             AmbilightModes.Items.Add("Cylon Bounce");
             AmbilightModes.Items.Add("Twinkle");
             AmbilightModes.Items.Add("Test LEDs");
+            CaptureWay.Items.Add("DX11");
+            CaptureWay.Items.Add("WINAPI");
         }
         public DynamicAmbilight()
         {
             InitializeComponent();
+            Init();
             FillComboBoxes();
+            SelectionCheck();
         }
+
         ///////////////////////////////////           LEDS           ///////////////////////////////////////////////////////////////
         List<Color> colorarray = new List<Color>();
         Color[] ledarray = new Color[100]; //should be NumLeds() length
         private int fadetiming = 10;
-        private int NumLeds() { return (LEDS_X + LEDS_Y) * 2; }
+        private int NumLeds() { return (LedsX.Value + LedsY.Value) * 2; }
         private void LedShow() { Color clr; for (int i = 0; i < ledarray.Length; i++) { clr = ledarray[i]; serial.Write(new byte[] { clr.R, clr.G, clr.B }, 0, 3); } }
         Color Wheel(int WheelPos)
         {
@@ -520,319 +595,3 @@ namespace DynamicAmbilight
         }
     }
 }
-
-
-/*
- * public const int SRCCOPY = 0x00CC0020;
-             [DllImport("user32.dll")]
-             public static extern IntPtr GetForegroundWindow();
-             [DllImport("user32.dll")]
-             public static extern IntPtr FindWindow(string className, string windowName);
-             [DllImport("user32.dll")]
-             public static extern IntPtr GetWindowDC(IntPtr hWnd);
-             [DllImport("user32.dll")]
-             public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
-             [DllImport("gdi32.dll")]
-             public static extern bool BitBlt(IntPtr hObject, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hObjectSource, int nXSrc, int nYSrc, int dwRop);
-             [DllImport("gdi32.dll")]
-             public static extern IntPtr CreateCompatibleBitmap(IntPtr hDC, int nWidth, int nHeight);
-             [DllImport("gdi32.dll")]
-             public static extern IntPtr CreateCompatibleDC(IntPtr hDC);
-             [DllImport("gdi32.dll")]
-             public static extern bool DeleteDC(IntPtr hDC);
-             [DllImport("gdi32.dll")]
-             public static extern bool DeleteObject(IntPtr hObject);
-             [DllImport("gdi32.dll")]
-             public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
- * private void Processes_SelectedIndexChanged(object sender, EventArgs e) { CaptureArea.Enabled = true; }
-        private void CaptureArea_Switched(object sender, EventArgs e)
-        {
-            if (!CaptureArea.Checked) handle = DLLIMPORTS.GetDesktopWindow();
-            else handle = DLLIMPORTS.FindWindow(AllProcesslist[Processes.SelectedIndex].MainWindowTitle, AllProcesslist[Processes.SelectedIndex].ProcessName);
-        }
-        foreach (Process Proc in AllProcesslist) if (!String.IsNullOrEmpty(Proc.MainWindowTitle)) Processes.Items.Add(Proc.MainWindowTitle);
- * 
-        IntPtr hdcSrc = DLLIMPORTS.GetWindowDC(handle); //get the hDC of the target window
-        IntPtr hdcDest = DLLIMPORTS.CreateCompatibleDC(hdcSrc);  //create a device context we can copy to
-        IntPtr hBitmap = DLLIMPORTS.CreateCompatibleBitmap(hdcSrc, width, height);  //create a bitmap we can copy it to, // using GetDeviceCaps to get the width/height
-        IntPtr hOld = DLLIMPORTS.SelectObject(hdcDest, hBitmap); //select the bitmap object
-        DLLIMPORTS.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, DLLIMPORTS.SRCCOPY); // bitblt over
-        Bitmap bitmap = Bitmap.FromHbitmap(hBitmap); //get a .NET image object for it
-
-        DLLIMPORTS.DeleteObject(hBitmap); // free up the Bitmap object
-        DLLIMPORTS.DeleteDC(hdcDest); // clean up 
-        DLLIMPORTS.ReleaseDC(handle, hdcSrc);
-        DLLIMPORTS.SelectObject(hdcDest, hOld); // restore selection
-        bitmap.Dispose();
-
-        Texture2DDescription textureDesc = new Texture2DDescription
-        {
-            CpuAccessFlags = CpuAccessFlags.Read,
-            BindFlags = BindFlags.None,
-            Format = Format.B8G8R8A8_UNorm,
-            Width = 1920,
-            Height = 1200,
-            OptionFlags = ResourceOptionFlags.None,
-            MipLevels = 1,
-            ArraySize = 1,
-            SampleDescription = { Count = 1, Quality = 0 },
-            Usage = ResourceUsage.Staging
-        }; // Create Staging texture CPU-accessible
-        private void ScreenCapture()
-        {
-            Bitmap bitmap = new Bitmap(1920, 1200, PixelFormat.Format32bppArgb); //Create Drawing.Bitmap
-            try //Try to get duplicated frame within given time is ms
-            {
-                Factory1 factory = new Factory1();
-                
-                Adapter1 adapter = factory.GetAdapter1(0); //Get first adapter
-                
-                SharpDX.Direct3D11.Device device = new SharpDX.Direct3D11.Device(adapter); //Get device from adapter
-
-                Texture2D screenTexture = new Texture2D(device, textureDesc);
-
-                OutputDuplication duplicatedOutput = adapter.GetOutput(0).QueryInterface<Output1>().DuplicateOutput(device); // Duplicate the output, Get front buffer of the adapter
-
-                duplicatedOutput.AcquireNextFrame(10, out OutputDuplicateFrameInformation duplicateFrameInformation, out SharpDX.DXGI.Resource screenResource);
-                
-                using (var screenTexture2D = screenResource.QueryInterface<Texture2D>()) device.ImmediateContext.CopyResource(screenTexture2D, screenTexture); //copy resource into memory that can be accessed by the CPU
-
-                var mapSource = device.ImmediateContext.MapSubresource(screenTexture, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None); // Get the desktop capture texture
-                
-                var mapDest = bitmap.LockBits(new Rectangle(0, 0, 1920, 1200), ImageLockMode.WriteOnly, bitmap.PixelFormat); //Copy pixels from screen capture Texture to GDI bitmap
-                var sourcePtr = mapSource.DataPointer;
-                var destPtr = mapDest.Scan0;
-                for (int y = 0; y < 1200; y++)
-                {
-                    Utilities.CopyMemory(destPtr, sourcePtr, 1920 * 4); //Copy a single line 
-                    sourcePtr = IntPtr.Add(sourcePtr, mapSource.RowPitch); //Advance pointers
-                    destPtr = IntPtr.Add(destPtr, mapDest.Stride);
-                }
-                bitmap.UnlockBits(mapDest); //Release source and dest locks
-                device.ImmediateContext.UnmapSubresource(screenTexture, 0);
-                screenResource.Dispose();
-                duplicatedOutput.ReleaseFrame();
-                ///////////////////////////////////////////////////////////////////////////////////////////
-                Color color;
-                Graphics srcintrp = Graphics.FromImage(bitmap);
-                srcintrp.InterpolationMode = intrpmode;
-                srcintrp.DrawImage(bitmap, new Rectangle(800, 500, 32, 20)); //15-17ms
-                for (int x = 831; x > 799; x--) //831 - 800, these for's take 5-7ms
-                {
-                    color = bitmap.GetPixel(x, 519);
-                    serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-                }
-                for (int y = 519; y > 499; y--) //800
-                {
-                    color = bitmap.GetPixel(800, y);
-                    serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-                }
-                for (int x = 800; x < 832; x++) //800 - 831
-                {
-                    color = bitmap.GetPixel(x, 500);
-                    serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-                }
-                for (int y = 500; y < 520; y++) //831
-                {
-                    color = bitmap.GetPixel(831, y);
-                    serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-                }
-            }
-            catch (SharpDXException e)
-            {
-                if (e.ResultCode.Code != SharpDX.DXGI.ResultCode.fadetimingTimeout.Result.Code)
-                {
-                    //Trace.TraceError(e.Message);
-                    //Trace.TraceError(e.StackTrace);
-                }
-            }
-            bitmap.Dispose();
-            GC.Collect(); //manual exec of garbage collection, prevents RAM overflow (its god damn fast on 20+ fps)
-        }
- 
-        public static void CaptureScreen()
-        {
-            // # of graphics card adapter
-            const int numAdapter = 0;
-
-            // # of output device (i.e. monitor)
-            const int numOutput = 1;
-
-            // Create DXGI Factory1
-            var factory = new Factory1();
-            var adapter = factory.GetAdapter1(numAdapter);
-
-            // Create device from Adapter
-            var device = new SharpDX.Direct3D11.Device(adapter);
-
-            // Get DXGI.Output
-            var output = adapter.GetOutput(numOutput);
-            var output1 = output.QueryInterface<Output1>();
-
-            // Width/Height of desktop to capture
-            int width =  1920;
-            int height = 1200;
-
-            // Create Staging texture CPU-accessible
-            var textureDesc = new Texture2DDescription
-            {
-                CpuAccessFlags = CpuAccessFlags.Read,
-                BindFlags = BindFlags.None,
-                Format = Format.B8G8R8A8_UNorm,
-                Width = width,
-                Height = height,
-                OptionFlags = ResourceOptionFlags.None,
-                MipLevels = 1,
-                ArraySize = 1,
-                SampleDescription = { Count = 1, Quality = 0 },
-                Usage = ResourceUsage.Staging
-            };
-            var screenTexture = new Texture2D(device, textureDesc);
-
-            // Duplicate the output
-            var duplicatedOutput = output1.DuplicateOutput(device);
-
-            bool captureDone = false;
-            Bitmap bitmap = null;
-
-            for (int i = 0; !captureDone; i++)
-            {
-                try
-                {
-                    SharpDX.DXGI.Resource screenResource;
-                    OutputDuplicateFrameInformation duplicateFrameInformation;
-
-                    // Try to get duplicated frame within given time
-                    duplicatedOutput.AcquireNextFrame(10000, out duplicateFrameInformation, out screenResource);
-
-                    if (i > 0)
-                    {
-                        // copy resource into memory that can be accessed by the CPU
-                        using (var screenTexture2D = screenResource.QueryInterface<Texture2D>())
-                            device.ImmediateContext.CopyResource(screenTexture2D, screenTexture);
-
-                        // Get the desktop capture texture
-                        var mapSource = device.ImmediateContext.MapSubresource(screenTexture, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
-
-                        // Create Drawing.Bitmap
-                        bitmap = new System.Drawing.Bitmap(width, height, PixelFormat.Format32bppArgb);
-                        var boundsRect = new System.Drawing.Rectangle(0, 0, width, height);
-
-                        // Copy pixels from screen capture Texture to GDI bitmap
-                        var mapDest = bitmap.LockBits(boundsRect, ImageLockMode.WriteOnly, bitmap.PixelFormat);
-                        var sourcePtr = mapSource.DataPointer;
-                        var destPtr = mapDest.Scan0;
-                        for (int y = 0; y < height; y++)
-                        {
-                            // Copy a single line 
-                            Utilities.CopyMemory(destPtr, sourcePtr, width * 4);
-
-                            // Advance pointers
-                            sourcePtr = IntPtr.Add(sourcePtr, mapSource.RowPitch);
-                            destPtr = IntPtr.Add(destPtr, mapDest.Stride);
-                        }
-
-                        // Release source and dest locks
-                        bitmap.UnlockBits(mapDest);
-                        device.ImmediateContext.UnmapSubresource(screenTexture, 0);
-
-                        // Capture done
-                        captureDone = true;
-                    }
-
-                    screenResource.Dispose();
-                    duplicatedOutput.ReleaseFrame();
-
-                }
-                catch (SharpDXException e)
-                {
-                    if (e.ResultCode.Code != SharpDX.DXGI.ResultCode.fadetimingTimeout.Result.Code)
-                    {
-                        throw e;
-                    }
-                }
-            }
-
-            duplicatedOutput.Dispose();
-            screenTexture.Dispose();
-            output1.Dispose();
-            output.Dispose();
-            device.Dispose();
-            adapter.Dispose();
-            factory.Dispose();
-            /*
-            Color color;
-            Graphics srcintrp = Graphics.FromImage(bitmap);
-            srcintrp.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            srcintrp.DrawImage(bitmap, new Rectangle(800, 500, 32, 20)); //15-17ms
-            for (int x = 831; x > 799; x--) //831 - 800, these for's take 5-7ms
-            {
-                color = bitmap.GetPixel(x, 519);
-                //serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            for (int y = 519; y > 499; y--) //800
-            {
-                color = bitmap.GetPixel(800, y);
-                //serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            for (int x = 800; x < 832; x++) //800 - 831
-            {
-                color = bitmap.GetPixel(x, 500);
-                //serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            for (int y = 500; y < 520; y++) //831
-            {
-                color = bitmap.GetPixel(831, y);
-                //serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            
-    
-
-
-
-
-
-    private void CaptureScreen() //this thread captures screen and calls for interp method
-        {
-            Color color;
-            Rectangle bounds = Screen.GetBounds(Point.Empty);
-            Bitmap srcbmp = new Bitmap(bounds.Width, bounds.Height); //custom resolutions are going to be implemented soon 
-            Graphics srcintrp = Graphics.FromImage(srcbmp);
-            srcintrp.InterpolationMode = intrpmode;
-            srcintrp.CopyFromScreen(0, 0, 0, 0, srcbmp.Size); //30ms
-
-            if (method)
-            {
-                srcintrp.DrawImage(srcbmp, new Rectangle(800, 500, 32, 20)); //15-17ms
-            }
-            else
-            {
-                srcintrp.DrawImage(srcbmp, new Rectangle(800, 500, 32, 1), 0, 0, 1920, 30, GraphicsUnit.Pixel); //800 - 831
-                srcintrp.DrawImage(srcbmp, new Rectangle(832, 500, 1, 20), 1890, 0, 30, 1200, GraphicsUnit.Pixel); //832
-                srcintrp.DrawImage(srcbmp, new Rectangle(800, 520, 32, 1), 0, 1170, 1920, 30, GraphicsUnit.Pixel); //800 - 831
-                srcintrp.DrawImage(srcbmp, new Rectangle(800, 500, 1, 20), 0, 0, 30, 1200, GraphicsUnit.Pixel); //800
-            }
-            for (int x = 831; x > 799; x--) //831 - 800, these for's take 5-7ms
-            {
-                color = srcbmp.GetPixel(x, 519);
-                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            for (int y = 519; y > 499; y--) //800
-            {
-                color = srcbmp.GetPixel(800, y);
-                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            for (int x = 800; x < 832; x++) //800 - 831
-            {
-                color = srcbmp.GetPixel(x, 500);
-                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            for (int y = 500; y < 520; y++) //831
-            {
-                color = srcbmp.GetPixel(831, y);
-                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            GC.Collect(); //manual exec of garbage collection, prevents RAM overflow (its god damn fast on 20+ fps)
-            Thread.Sleep(0); //to let other threads do their job, in case this thread is alive for too long
-        }
-        */
