@@ -53,12 +53,6 @@
     <ApplicationIcon>favicon %283%29.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CaptureManagerToCSharpProxy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\CaptureManager.1.15.0\lib\CaptureManagerToCSharpProxy.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
     </Reference>
@@ -67,9 +61,6 @@
     </Reference>
     <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
-    </Reference>
-    <Reference Include="Pranas.ScreenshotCapture, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Pranas.ScreenshotCapture.1.0.11\lib\net40\Pranas.ScreenshotCapture.dll</HintPath>
     </Reference>
     <Reference Include="ScreenCapturer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ScreenCapturer.1.0.3\lib\net45\ScreenCapturer.dll</HintPath>
@@ -95,16 +86,22 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TestStack.White, Version=0.13.0.0, Culture=neutral, PublicKeyToken=2672efbf3e161801, processorArchitecture=MSIL">
-      <HintPath>packages\TestStack.White.0.13.3\lib\net40\TestStack.White.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DynamicAmbilight.cs">
+    <Compile Include="AmbilightModes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DynamicAmbilight.Designer.cs">
-      <DependentUpon>DynamicAmbilight.cs</DependentUpon>
+    <Compile Include="DynamicMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DLLImports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DynamicAmbilightGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DynamicAmbilightGUI.Designer.cs">
+      <DependentUpon>DynamicAmbilightGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker.cs">
       <SubType>Form</SubType>
@@ -114,8 +111,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="DynamicAmbilight.resx">
-      <DependentUpon>DynamicAmbilight.cs</DependentUpon>
+    <EmbeddedResource Include="DynamicAmbilightGUI.resx">
+      <DependentUpon>DynamicAmbilightGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>

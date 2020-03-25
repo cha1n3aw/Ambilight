@@ -2,9 +2,6 @@
 {
     partial class ColorPicker
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
@@ -28,6 +25,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ColorPicker));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.PickColor = new MetroFramework.Controls.MetroButton();
             this.FadeGray = new System.Windows.Forms.PictureBox();
@@ -98,7 +96,9 @@
             this.Controls.Add(this.FadeGray);
             this.Controls.Add(this.PickColor);
             this.Controls.Add(this.pictureBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ColorPicker";
+            this.ShowIcon = false;
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Text = "Color Picker";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
