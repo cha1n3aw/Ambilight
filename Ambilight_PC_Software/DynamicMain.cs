@@ -50,6 +50,7 @@ namespace DynamicAmbilight
             new KeyValuePair<string, string>("InterpolationMode", InterpMode.SelectedIndex.ToString()),
             new KeyValuePair<string, string>("FadeTiming", FadeTiming.Value.ToString()),
             new KeyValuePair<string, string>("AmbilightModes", AmbilightModes.SelectedIndex.ToString()),
+            new KeyValuePair<string, string>("CaptureMode", CaptureWay.SelectedIndex.ToString()),
             };
             return settingslist;
         }
@@ -69,6 +70,7 @@ namespace DynamicAmbilight
             InterpMode.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["InterpolationMode"]);
             FadeTiming.Value = Convert.ToInt32(ConfigurationManager.AppSettings["FadeTiming"]);
             AmbilightModes.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["AmbilightModes"]);
+            CaptureWay.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["CaptureMode"]);
         }
         private void GetWindowSize() //gets screen size also considering offsets
         {
@@ -143,24 +145,24 @@ namespace DynamicAmbilight
             tempbmpgr.InterpolationMode = intrpmode;
             bitmapgr.CopyFromScreen(offsets[1], offsets[0], 0, 0, bitmap.Size); //30ms
             tempbmpgr.DrawImage(bitmap, new Rectangle(0, 0, LedsX.Value, LedsY.Value)); //15-17ms
-            for (int y = LedsY.Value - 1; y >= 0; y--)
-            {
-                color = tempbmp.GetPixel(0, y);
-                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
             for (int x = 0; x < LedsX.Value; x++) //these for's take 5-7ms
             {
-                color = tempbmp.GetPixel(x, 0);
+                color = tempbmp.GetPixel(x, LedsY.Value - 1);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
-            for (int y = 0; y < LedsY.Value; y++)
+            for (int y = LedsY.Value - 1; y >= 0; y--)
             {
                 color = tempbmp.GetPixel(LedsX.Value - 1, y);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
             for (int x = LedsX.Value - 1; x >= 0; x--)
             {
-                color = tempbmp.GetPixel(x, LedsY.Value - 1);
+                color = tempbmp.GetPixel(x, 0);
+                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+            }
+            for (int y = 0; y < LedsY.Value; y++)
+            {
+                color = tempbmp.GetPixel(0, y);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
             GC.Collect();
@@ -173,24 +175,24 @@ namespace DynamicAmbilight
             Bitmap bmp = ScreenCapturer.MakeScreenshot();
             tempbmpgr.InterpolationMode = intrpmode;
             tempbmpgr.DrawImage(bmp, new Rectangle(0, 0, LedsX.Value, LedsY.Value));
+            for (int x = 0; x < LedsX.Value; x++) //these for's take 5-7ms
+            {
+                color = tempbmp.GetPixel(x, LedsY.Value - 1);
+                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+            }
             for (int y = LedsY.Value - 1; y >= 0; y--)
-            {
-                color = tempbmp.GetPixel(0, y);
-                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            for (int x = 0; x < LedsX.Value; x++)
-            {
-                color = tempbmp.GetPixel(x, 0);
-                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
-            }
-            for (int y = 0; y < LedsY.Value; y++)
             {
                 color = tempbmp.GetPixel(LedsX.Value - 1, y);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
             for (int x = LedsX.Value - 1; x >= 0; x--)
             {
-                color = tempbmp.GetPixel(x, LedsY.Value - 1);
+                color = tempbmp.GetPixel(x, 0);
+                serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+            }
+            for (int y = 0; y < LedsY.Value; y++)
+            {
+                color = tempbmp.GetPixel(0, y);
                 serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
             }
             GC.Collect();
