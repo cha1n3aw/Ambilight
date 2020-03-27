@@ -12,6 +12,7 @@ namespace DynamicAmbilight
 {
     public partial class DynamicAmbilight : MetroForm
     {
+        private Thread RGBEffects;
         List<MetroButton> buttonlist = new List<MetroButton>();
         public delegate void ColorDelegate(Color clr);
         public void GetColor(Color clr) 
@@ -24,18 +25,15 @@ namespace DynamicAmbilight
                 buttonlist[buttonlist.Count - 1].Theme = MetroFramework.MetroThemeStyle.Dark;
                 buttonlist[buttonlist.Count - 1].UseCustomBackColor = true;
                 buttonlist[buttonlist.Count - 1].Size = new Size(40, 40);
-                buttonlist[buttonlist.Count - 1].Location = new Point(5 + (buttonlist.Count - 1) * 45, 250);
+                buttonlist[buttonlist.Count - 1].Location = new Point((buttonlist.Count - 1) * 45, 215);
                 if (buttonlist.Count == 5) SelectColor.Enabled = false;
                 if (colorarray.Count > buttonlist.Count) buttonlist.Remove(buttonlist[buttonlist.Count - 1]);
                 else buttonlist[buttonlist.Count - 1].BackColor = colorarray[colorarray.Count - 1];
                 buttonlist[buttonlist.Count - 1].Click += new EventHandler(Color_Click);
-                ModesTab.Controls.Add(buttonlist[buttonlist.Count - 1]);
+                HomeTab.Controls.Add(buttonlist[buttonlist.Count - 1]);
             }
         }
-        private void Color_Click(object sender, EventArgs e)
-        {
-            RemoveColor.Show(new Point(MousePosition.X, MousePosition.Y));
-        }
+        private void Color_Click(object sender, EventArgs e) { RemoveColor.Show(new Point(MousePosition.X, MousePosition.Y)); }
         private void Get_ComPort_Names()
         {
             ComPort.Items.Clear();
@@ -63,68 +61,46 @@ namespace DynamicAmbilight
             if (StartStop.Checked)
             {
                 COMPort(true);
-                ModesTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = false;
-                if (CaptureWay.SelectedIndex == 0)
-                {
-                    Thread mainthread = new Thread(() => MainCall(false)) { IsBackground = true };
-                    mainthread.Start();
-                }
-                else if (CaptureWay.SelectedIndex == 1)
-                {
-                    Thread mainthread = new Thread(() => MainCall(true)) { IsBackground = true };
-                    mainthread.Start();
-                }
-            }
-            else
-            {
-                COMPort(false);
-                ModesTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = true;
-            }
-        }
-        private void LedShow_CheckStateChanged(object sender, EventArgs e)
-        {
-            if (LedShowToggle.Checked)
-            {
-                COMPort(true);
-                HomeTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = false;
-                AmbilightModes.Enabled = false;
+                AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = TestButton.Enabled = false;
                 switch (AmbilightModes.SelectedIndex)
                 {
-                    case 0:
-                        RGBEffects = new Thread(FadeInOut) { IsBackground = true, Priority = ThreadPriority.Highest }; 
+                    case 0: if (CaptureWay.SelectedIndex == 0) RGBEffects = new Thread(() => MainCall(false)) { IsBackground = true, Priority = ThreadPriority.Highest };
+                            else if (CaptureWay.SelectedIndex == 1) RGBEffects = new Thread(() => MainCall(true)) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 1:
-                        RGBEffects = new Thread(Rainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FadeInOut) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 2:
-                        RGBEffects = new Thread(RainbowCycle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(Rainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 3:
-                        RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(RainbowCycle) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 4:
-                        RGBEffects = new Thread(FullWhite) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 5:
-                        RGBEffects = new Thread(FadeCustom) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FullWhite) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 6:
-                        RGBEffects = new Thread(CylonBounce) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FadeCustom) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 7:
-                        RGBEffects = new Thread(Twinkle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(CylonBounce) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 8:
+                        RGBEffects = new Thread(Twinkle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case 9:
                         RGBEffects = new Thread(TestLEDs) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                 }
-                RGBEffects.Start();
+                RGBEffects.Start();     
             }
             else
             {
-                RGBEffects.Abort();
-                HomeTab.Enabled = AreaTab.Enabled = SettingsTab.Enabled = true;
-                AmbilightModes.Enabled = true;
+                if (AmbilightModes.SelectedIndex != 0) RGBEffects.Abort();
+                AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = TestButton.Enabled = true;
                 COMPort(false);
             }
         }
@@ -161,7 +137,7 @@ namespace DynamicAmbilight
         private void CustomHeight_TextChanged(object sender, EventArgs e) { if (CustomHeight.Text != "" && CaptureArea.SelectedIndex == 1)  CustomResolution(); } 
         private void LedsX_ValueChanged(object sender, EventArgs e) { LedsXLabel.Text = LedsX.Value.ToString(); }
         private void LedsY_ValueChanged(object sender, EventArgs e) { LedsYLabel.Text = LedsY.Value.ToString(); }
-        private void PreventSleep_CheckedChanged(object sender, EventArgs e) { if (PreventSleep.Checked == true) PreventAwayMode.Enabled = true; else { PreventAwayMode.Checked = false; PreventAwayMode.Enabled = false; } }
+        private void PreventSleep_CheckStateChanged(object sender, EventArgs e) { if (PreventSleep.Checked == true) PreventAwayMode.Enabled = true; else { PreventAwayMode.Checked = false; PreventAwayMode.Enabled = false; } }
         private void CaptureArea_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (CaptureArea.SelectedIndex == 2)
@@ -198,6 +174,7 @@ namespace DynamicAmbilight
             CaptureArea.Items.Add("Custom resolution");
             CaptureArea.Items.Add("Custom offsets");
             ControlTabs.SelectTab(0);
+            AmbilightModes.Items.Add("Dynamic Ambilight");
             AmbilightModes.Items.Add("Single Color Fade");
             AmbilightModes.Items.Add("Rainbow");
             AmbilightModes.Items.Add("Rainbow Cycle");
@@ -216,7 +193,7 @@ namespace DynamicAmbilight
             FillComboBoxes();
             Init();
             SelectionCheck();
-        }        
+        }
     }
 }
 

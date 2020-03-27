@@ -31,14 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DynamicAmbilight));
             this.Tray_Icon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.ModesTab = new MetroFramework.Controls.MetroTabPage();
-            this.metroLabel21 = new MetroFramework.Controls.MetroLabel();
-            this.SelectColor = new MetroFramework.Controls.MetroButton();
-            this.metroLabel20 = new MetroFramework.Controls.MetroLabel();
-            this.metroLabel19 = new MetroFramework.Controls.MetroLabel();
-            this.AmbilightModes = new MetroFramework.Controls.MetroComboBox();
-            this.FadeTiming = new MetroFramework.Controls.MetroTrackBar();
-            this.LedShowToggle = new MetroFramework.Controls.MetroToggle();
             this.metroLabel18 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel17 = new MetroFramework.Controls.MetroLabel();
             this.CustomHeight = new MetroFramework.Controls.MetroTextBox();
@@ -71,13 +63,18 @@
             this.BaudRate = new MetroFramework.Controls.MetroComboBox();
             this.InterpMode = new MetroFramework.Controls.MetroComboBox();
             this.HomeTab = new MetroFramework.Controls.MetroTabPage();
-            this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
-            this.StartStop = new MetroFramework.Controls.MetroToggle();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
             this.PreventSleep = new MetroFramework.Controls.MetroToggle();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
             this.PreventAwayMode = new MetroFramework.Controls.MetroToggle();
-            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
+            this.FPSLabel = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel21 = new MetroFramework.Controls.MetroLabel();
+            this.SelectColor = new MetroFramework.Controls.MetroButton();
+            this.TimingLabel = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel19 = new MetroFramework.Controls.MetroLabel();
+            this.AmbilightModes = new MetroFramework.Controls.MetroComboBox();
+            this.FadeTiming = new MetroFramework.Controls.MetroTrackBar();
+            this.StartStop = new MetroFramework.Controls.MetroToggle();
             this.FPSChanger = new MetroFramework.Controls.MetroTrackBar();
             this.Default_Timings = new MetroFramework.Controls.MetroLabel();
             this.Custom_Timings = new MetroFramework.Controls.MetroLabel();
@@ -87,7 +84,6 @@
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.RemoveColor = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ModesTab.SuspendLayout();
             this.SettingsTab.SuspendLayout();
             this.HomeTab.SuspendLayout();
             this.ControlTabs.SuspendLayout();
@@ -104,121 +100,11 @@
             this.Tray_Icon.BalloonTipClicked += new System.EventHandler(this.Tray_Icon_BalloonTipClicked);
             this.Tray_Icon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Tray_Icon_MouseDoubleClick);
             // 
-            // ModesTab
-            // 
-            this.ModesTab.Controls.Add(this.metroLabel21);
-            this.ModesTab.Controls.Add(this.SelectColor);
-            this.ModesTab.Controls.Add(this.metroLabel20);
-            this.ModesTab.Controls.Add(this.metroLabel19);
-            this.ModesTab.Controls.Add(this.AmbilightModes);
-            this.ModesTab.Controls.Add(this.FadeTiming);
-            this.ModesTab.Controls.Add(this.LedShowToggle);
-            this.ModesTab.HorizontalScrollbarBarColor = true;
-            this.ModesTab.HorizontalScrollbarHighlightOnWheel = false;
-            this.ModesTab.HorizontalScrollbarSize = 10;
-            this.ModesTab.Location = new System.Drawing.Point(4, 38);
-            this.ModesTab.Name = "ModesTab";
-            this.ModesTab.Size = new System.Drawing.Size(216, 296);
-            this.ModesTab.Style = MetroFramework.MetroColorStyle.Black;
-            this.ModesTab.TabIndex = 2;
-            this.ModesTab.Text = "Modes";
-            this.ModesTab.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.ModesTab.VerticalScrollbarBarColor = true;
-            this.ModesTab.VerticalScrollbarHighlightOnWheel = false;
-            this.ModesTab.VerticalScrollbarSize = 10;
-            // 
-            // metroLabel21
-            // 
-            this.metroLabel21.AutoSize = true;
-            this.metroLabel21.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel21.Location = new System.Drawing.Point(0, 145);
-            this.metroLabel21.Name = "metroLabel21";
-            this.metroLabel21.Size = new System.Drawing.Size(64, 19);
-            this.metroLabel21.Style = MetroFramework.MetroColorStyle.Black;
-            this.metroLabel21.TabIndex = 58;
-            this.metroLabel21.Text = "Start Up!";
-            this.metroLabel21.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // SelectColor
-            // 
-            this.SelectColor.Location = new System.Drawing.Point(163, 170);
-            this.SelectColor.Name = "SelectColor";
-            this.SelectColor.Size = new System.Drawing.Size(50, 17);
-            this.SelectColor.TabIndex = 55;
-            this.SelectColor.Text = "Color";
-            this.SelectColor.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.SelectColor.UseSelectable = true;
-            this.SelectColor.Click += new System.EventHandler(this.SelectColor_Click);
-            // 
-            // metroLabel20
-            // 
-            this.metroLabel20.AutoSize = true;
-            this.metroLabel20.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel20.Location = new System.Drawing.Point(0, 98);
-            this.metroLabel20.Name = "metroLabel20";
-            this.metroLabel20.Size = new System.Drawing.Size(50, 19);
-            this.metroLabel20.Style = MetroFramework.MetroColorStyle.Black;
-            this.metroLabel20.TabIndex = 57;
-            this.metroLabel20.Text = "Timing";
-            this.metroLabel20.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // metroLabel19
-            // 
-            this.metroLabel19.AutoSize = true;
-            this.metroLabel19.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel19.Location = new System.Drawing.Point(0, 26);
-            this.metroLabel19.Name = "metroLabel19";
-            this.metroLabel19.Size = new System.Drawing.Size(108, 19);
-            this.metroLabel19.Style = MetroFramework.MetroColorStyle.Black;
-            this.metroLabel19.TabIndex = 56;
-            this.metroLabel19.Text = "Ambilight Mode";
-            this.metroLabel19.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // AmbilightModes
-            // 
-            this.AmbilightModes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AmbilightModes.FormattingEnabled = true;
-            this.AmbilightModes.ItemHeight = 23;
-            this.AmbilightModes.Location = new System.Drawing.Point(3, 48);
-            this.AmbilightModes.Name = "AmbilightModes";
-            this.AmbilightModes.Size = new System.Drawing.Size(210, 29);
-            this.AmbilightModes.Style = MetroFramework.MetroColorStyle.Black;
-            this.AmbilightModes.TabIndex = 54;
-            this.AmbilightModes.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.AmbilightModes.UseSelectable = true;
-            // 
-            // FadeTiming
-            // 
-            this.FadeTiming.BackColor = System.Drawing.Color.Transparent;
-            this.FadeTiming.ForeColor = System.Drawing.Color.Black;
-            this.FadeTiming.Location = new System.Drawing.Point(3, 120);
-            this.FadeTiming.Maximum = 1000;
-            this.FadeTiming.Minimum = 1;
-            this.FadeTiming.Name = "FadeTiming";
-            this.FadeTiming.Size = new System.Drawing.Size(210, 21);
-            this.FadeTiming.TabIndex = 18;
-            this.FadeTiming.Tag = "";
-            this.FadeTiming.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.FadeTiming.Value = 10;
-            // 
-            // LedShowToggle
-            // 
-            this.LedShowToggle.AutoSize = true;
-            this.LedShowToggle.DisplayStatus = false;
-            this.LedShowToggle.Location = new System.Drawing.Point(163, 147);
-            this.LedShowToggle.Name = "LedShowToggle";
-            this.LedShowToggle.Size = new System.Drawing.Size(50, 17);
-            this.LedShowToggle.Style = MetroFramework.MetroColorStyle.Black;
-            this.LedShowToggle.TabIndex = 17;
-            this.LedShowToggle.Text = "Off";
-            this.LedShowToggle.UseSelectable = true;
-            this.LedShowToggle.CheckStateChanged += new System.EventHandler(this.LedShow_CheckStateChanged);
-            // 
             // metroLabel18
             // 
             this.metroLabel18.AutoSize = true;
             this.metroLabel18.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel18.Location = new System.Drawing.Point(0, 65);
+            this.metroLabel18.Location = new System.Drawing.Point(0, 69);
             this.metroLabel18.Name = "metroLabel18";
             this.metroLabel18.Size = new System.Drawing.Size(125, 19);
             this.metroLabel18.TabIndex = 57;
@@ -229,7 +115,7 @@
             // 
             this.metroLabel17.AutoSize = true;
             this.metroLabel17.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel17.Location = new System.Drawing.Point(97, 95);
+            this.metroLabel17.Location = new System.Drawing.Point(107, 95);
             this.metroLabel17.Name = "metroLabel17";
             this.metroLabel17.Size = new System.Drawing.Size(18, 19);
             this.metroLabel17.TabIndex = 56;
@@ -242,7 +128,7 @@
             // 
             // 
             this.CustomHeight.CustomButton.Image = null;
-            this.CustomHeight.CustomButton.Location = new System.Drawing.Point(58, 1);
+            this.CustomHeight.CustomButton.Location = new System.Drawing.Point(51, 1);
             this.CustomHeight.CustomButton.Name = "";
             this.CustomHeight.CustomButton.Size = new System.Drawing.Size(21, 21);
             this.CustomHeight.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
@@ -254,7 +140,7 @@
             this.CustomHeight.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.CustomHeight.Lines = new string[] {
         "0"};
-            this.CustomHeight.Location = new System.Drawing.Point(133, 91);
+            this.CustomHeight.Location = new System.Drawing.Point(143, 91);
             this.CustomHeight.MaxLength = 32767;
             this.CustomHeight.Name = "CustomHeight";
             this.CustomHeight.PasswordChar = '\0';
@@ -263,7 +149,7 @@
             this.CustomHeight.SelectionLength = 0;
             this.CustomHeight.SelectionStart = 0;
             this.CustomHeight.ShortcutsEnabled = true;
-            this.CustomHeight.Size = new System.Drawing.Size(80, 23);
+            this.CustomHeight.Size = new System.Drawing.Size(73, 23);
             this.CustomHeight.Style = MetroFramework.MetroColorStyle.Black;
             this.CustomHeight.TabIndex = 55;
             this.CustomHeight.Text = "0";
@@ -317,9 +203,9 @@
             this.CaptureArea.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CaptureArea.FormattingEnabled = true;
             this.CaptureArea.ItemHeight = 23;
-            this.CaptureArea.Location = new System.Drawing.Point(3, 33);
+            this.CaptureArea.Location = new System.Drawing.Point(3, 22);
             this.CaptureArea.Name = "CaptureArea";
-            this.CaptureArea.Size = new System.Drawing.Size(210, 29);
+            this.CaptureArea.Size = new System.Drawing.Size(213, 29);
             this.CaptureArea.Style = MetroFramework.MetroColorStyle.Black;
             this.CaptureArea.TabIndex = 53;
             this.CaptureArea.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -330,7 +216,7 @@
             // 
             this.metroLabel16.AutoSize = true;
             this.metroLabel16.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel16.Location = new System.Drawing.Point(0, 11);
+            this.metroLabel16.Location = new System.Drawing.Point(0, 0);
             this.metroLabel16.Name = "metroLabel16";
             this.metroLabel16.Size = new System.Drawing.Size(90, 19);
             this.metroLabel16.TabIndex = 52;
@@ -343,7 +229,7 @@
             // 
             // 
             this.RightOffset.CustomButton.Image = null;
-            this.RightOffset.CustomButton.Location = new System.Drawing.Point(58, 1);
+            this.RightOffset.CustomButton.Location = new System.Drawing.Point(51, 1);
             this.RightOffset.CustomButton.Name = "";
             this.RightOffset.CustomButton.Size = new System.Drawing.Size(21, 21);
             this.RightOffset.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
@@ -355,7 +241,7 @@
             this.RightOffset.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.RightOffset.Lines = new string[] {
         "0"};
-            this.RightOffset.Location = new System.Drawing.Point(133, 232);
+            this.RightOffset.Location = new System.Drawing.Point(143, 232);
             this.RightOffset.MaxLength = 32767;
             this.RightOffset.Name = "RightOffset";
             this.RightOffset.PasswordChar = '\0';
@@ -364,7 +250,7 @@
             this.RightOffset.SelectionLength = 0;
             this.RightOffset.SelectionStart = 0;
             this.RightOffset.ShortcutsEnabled = true;
-            this.RightOffset.Size = new System.Drawing.Size(80, 23);
+            this.RightOffset.Size = new System.Drawing.Size(73, 23);
             this.RightOffset.Style = MetroFramework.MetroColorStyle.Black;
             this.RightOffset.TabIndex = 50;
             this.RightOffset.Text = "0";
@@ -381,7 +267,7 @@
             // 
             // 
             this.LeftOffset.CustomButton.Image = null;
-            this.LeftOffset.CustomButton.Location = new System.Drawing.Point(58, 1);
+            this.LeftOffset.CustomButton.Location = new System.Drawing.Point(51, 1);
             this.LeftOffset.CustomButton.Name = "";
             this.LeftOffset.CustomButton.Size = new System.Drawing.Size(21, 21);
             this.LeftOffset.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
@@ -393,7 +279,7 @@
             this.LeftOffset.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.LeftOffset.Lines = new string[] {
         "0"};
-            this.LeftOffset.Location = new System.Drawing.Point(133, 203);
+            this.LeftOffset.Location = new System.Drawing.Point(143, 203);
             this.LeftOffset.MaxLength = 32767;
             this.LeftOffset.Name = "LeftOffset";
             this.LeftOffset.PasswordChar = '\0';
@@ -402,7 +288,7 @@
             this.LeftOffset.SelectionLength = 0;
             this.LeftOffset.SelectionStart = 0;
             this.LeftOffset.ShortcutsEnabled = true;
-            this.LeftOffset.Size = new System.Drawing.Size(80, 23);
+            this.LeftOffset.Size = new System.Drawing.Size(73, 23);
             this.LeftOffset.Style = MetroFramework.MetroColorStyle.Black;
             this.LeftOffset.TabIndex = 49;
             this.LeftOffset.Text = "0";
@@ -419,7 +305,7 @@
             // 
             // 
             this.LowerOffset.CustomButton.Image = null;
-            this.LowerOffset.CustomButton.Location = new System.Drawing.Point(58, 1);
+            this.LowerOffset.CustomButton.Location = new System.Drawing.Point(51, 1);
             this.LowerOffset.CustomButton.Name = "";
             this.LowerOffset.CustomButton.Size = new System.Drawing.Size(21, 21);
             this.LowerOffset.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
@@ -431,7 +317,7 @@
             this.LowerOffset.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.LowerOffset.Lines = new string[] {
         "0"};
-            this.LowerOffset.Location = new System.Drawing.Point(133, 174);
+            this.LowerOffset.Location = new System.Drawing.Point(143, 174);
             this.LowerOffset.MaxLength = 32767;
             this.LowerOffset.Name = "LowerOffset";
             this.LowerOffset.PasswordChar = '\0';
@@ -440,7 +326,7 @@
             this.LowerOffset.SelectionLength = 0;
             this.LowerOffset.SelectionStart = 0;
             this.LowerOffset.ShortcutsEnabled = true;
-            this.LowerOffset.Size = new System.Drawing.Size(80, 23);
+            this.LowerOffset.Size = new System.Drawing.Size(73, 23);
             this.LowerOffset.Style = MetroFramework.MetroColorStyle.Black;
             this.LowerOffset.TabIndex = 48;
             this.LowerOffset.Text = "0";
@@ -457,7 +343,7 @@
             // 
             // 
             this.UpperOffset.CustomButton.Image = null;
-            this.UpperOffset.CustomButton.Location = new System.Drawing.Point(58, 1);
+            this.UpperOffset.CustomButton.Location = new System.Drawing.Point(51, 1);
             this.UpperOffset.CustomButton.Name = "";
             this.UpperOffset.CustomButton.Size = new System.Drawing.Size(21, 21);
             this.UpperOffset.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
@@ -469,7 +355,7 @@
             this.UpperOffset.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.UpperOffset.Lines = new string[] {
         "0"};
-            this.UpperOffset.Location = new System.Drawing.Point(133, 145);
+            this.UpperOffset.Location = new System.Drawing.Point(143, 145);
             this.UpperOffset.MaxLength = 32767;
             this.UpperOffset.Name = "UpperOffset";
             this.UpperOffset.PasswordChar = '\0';
@@ -478,7 +364,7 @@
             this.UpperOffset.SelectionLength = 0;
             this.UpperOffset.SelectionStart = 0;
             this.UpperOffset.ShortcutsEnabled = true;
-            this.UpperOffset.Size = new System.Drawing.Size(80, 23);
+            this.UpperOffset.Size = new System.Drawing.Size(73, 23);
             this.UpperOffset.Style = MetroFramework.MetroColorStyle.Black;
             this.UpperOffset.TabIndex = 47;
             this.UpperOffset.Text = "0";
@@ -570,7 +456,7 @@
             this.SettingsTab.HorizontalScrollbarSize = 10;
             this.SettingsTab.Location = new System.Drawing.Point(4, 38);
             this.SettingsTab.Name = "SettingsTab";
-            this.SettingsTab.Size = new System.Drawing.Size(216, 296);
+            this.SettingsTab.Size = new System.Drawing.Size(219, 296);
             this.SettingsTab.TabIndex = 1;
             this.SettingsTab.Text = "Settings";
             this.SettingsTab.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -598,7 +484,7 @@
             this.CaptureWay.ItemHeight = 23;
             this.CaptureWay.Location = new System.Drawing.Point(0, 183);
             this.CaptureWay.Name = "CaptureWay";
-            this.CaptureWay.Size = new System.Drawing.Size(213, 29);
+            this.CaptureWay.Size = new System.Drawing.Size(216, 29);
             this.CaptureWay.Style = MetroFramework.MetroColorStyle.Black;
             this.CaptureWay.TabIndex = 29;
             this.CaptureWay.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -632,7 +518,7 @@
             // 
             this.LedsXLabel.AutoSize = true;
             this.LedsXLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LedsXLabel.Location = new System.Drawing.Point(190, 237);
+            this.LedsXLabel.Location = new System.Drawing.Point(193, 237);
             this.LedsXLabel.Name = "LedsXLabel";
             this.LedsXLabel.Size = new System.Drawing.Size(23, 19);
             this.LedsXLabel.Style = MetroFramework.MetroColorStyle.Black;
@@ -644,7 +530,7 @@
             // 
             this.LedsYLabel.AutoSize = true;
             this.LedsYLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LedsYLabel.Location = new System.Drawing.Point(192, 281);
+            this.LedsYLabel.Location = new System.Drawing.Point(195, 281);
             this.LedsYLabel.Name = "LedsYLabel";
             this.LedsYLabel.Size = new System.Drawing.Size(21, 19);
             this.LedsYLabel.Style = MetroFramework.MetroColorStyle.Black;
@@ -660,7 +546,7 @@
             this.LedsY.Maximum = 60;
             this.LedsY.Minimum = 1;
             this.LedsY.Name = "LedsY";
-            this.LedsY.Size = new System.Drawing.Size(184, 19);
+            this.LedsY.Size = new System.Drawing.Size(187, 19);
             this.LedsY.TabIndex = 24;
             this.LedsY.Tag = "";
             this.LedsY.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -675,7 +561,7 @@
             this.LedsX.Maximum = 60;
             this.LedsX.Minimum = 1;
             this.LedsX.Name = "LedsX";
-            this.LedsX.Size = new System.Drawing.Size(184, 19);
+            this.LedsX.Size = new System.Drawing.Size(187, 19);
             this.LedsX.TabIndex = 23;
             this.LedsX.Tag = "";
             this.LedsX.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -696,9 +582,9 @@
             // 
             // RefreshButton
             // 
-            this.RefreshButton.Location = new System.Drawing.Point(155, 21);
+            this.RefreshButton.Location = new System.Drawing.Point(167, 21);
             this.RefreshButton.Name = "RefreshButton";
-            this.RefreshButton.Size = new System.Drawing.Size(58, 29);
+            this.RefreshButton.Size = new System.Drawing.Size(49, 29);
             this.RefreshButton.TabIndex = 2;
             this.RefreshButton.Text = "Refresh";
             this.RefreshButton.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -724,7 +610,7 @@
             this.ComPort.ItemHeight = 23;
             this.ComPort.Location = new System.Drawing.Point(0, 21);
             this.ComPort.Name = "ComPort";
-            this.ComPort.Size = new System.Drawing.Size(149, 29);
+            this.ComPort.Size = new System.Drawing.Size(161, 29);
             this.ComPort.Style = MetroFramework.MetroColorStyle.Black;
             this.ComPort.TabIndex = 5;
             this.ComPort.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -750,7 +636,7 @@
             this.BaudRate.ItemHeight = 23;
             this.BaudRate.Location = new System.Drawing.Point(0, 75);
             this.BaudRate.Name = "BaudRate";
-            this.BaudRate.Size = new System.Drawing.Size(213, 29);
+            this.BaudRate.Size = new System.Drawing.Size(216, 29);
             this.BaudRate.Style = MetroFramework.MetroColorStyle.Black;
             this.BaudRate.TabIndex = 6;
             this.BaudRate.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -765,7 +651,7 @@
             this.InterpMode.ItemHeight = 23;
             this.InterpMode.Location = new System.Drawing.Point(0, 129);
             this.InterpMode.Name = "InterpMode";
-            this.InterpMode.Size = new System.Drawing.Size(213, 29);
+            this.InterpMode.Size = new System.Drawing.Size(216, 29);
             this.InterpMode.Style = MetroFramework.MetroColorStyle.Black;
             this.InterpMode.TabIndex = 7;
             this.InterpMode.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -774,13 +660,18 @@
             // 
             // HomeTab
             // 
-            this.HomeTab.Controls.Add(this.metroLabel7);
-            this.HomeTab.Controls.Add(this.StartStop);
             this.HomeTab.Controls.Add(this.metroLabel6);
             this.HomeTab.Controls.Add(this.PreventSleep);
             this.HomeTab.Controls.Add(this.metroLabel5);
             this.HomeTab.Controls.Add(this.PreventAwayMode);
-            this.HomeTab.Controls.Add(this.metroLabel4);
+            this.HomeTab.Controls.Add(this.FPSLabel);
+            this.HomeTab.Controls.Add(this.metroLabel21);
+            this.HomeTab.Controls.Add(this.SelectColor);
+            this.HomeTab.Controls.Add(this.TimingLabel);
+            this.HomeTab.Controls.Add(this.metroLabel19);
+            this.HomeTab.Controls.Add(this.AmbilightModes);
+            this.HomeTab.Controls.Add(this.FadeTiming);
+            this.HomeTab.Controls.Add(this.StartStop);
             this.HomeTab.Controls.Add(this.FPSChanger);
             this.HomeTab.Controls.Add(this.Default_Timings);
             this.HomeTab.Controls.Add(this.Custom_Timings);
@@ -790,7 +681,7 @@
             this.HomeTab.HorizontalScrollbarSize = 10;
             this.HomeTab.Location = new System.Drawing.Point(4, 38);
             this.HomeTab.Name = "HomeTab";
-            this.HomeTab.Size = new System.Drawing.Size(216, 296);
+            this.HomeTab.Size = new System.Drawing.Size(219, 296);
             this.HomeTab.TabIndex = 0;
             this.HomeTab.Text = "Home";
             this.HomeTab.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -798,40 +689,15 @@
             this.HomeTab.VerticalScrollbarHighlightOnWheel = false;
             this.HomeTab.VerticalScrollbarSize = 10;
             // 
-            // metroLabel7
-            // 
-            this.metroLabel7.AutoSize = true;
-            this.metroLabel7.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel7.Location = new System.Drawing.Point(3, 96);
-            this.metroLabel7.Name = "metroLabel7";
-            this.metroLabel7.Size = new System.Drawing.Size(64, 19);
-            this.metroLabel7.Style = MetroFramework.MetroColorStyle.Black;
-            this.metroLabel7.TabIndex = 21;
-            this.metroLabel7.Text = "Start Up!";
-            this.metroLabel7.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // StartStop
-            // 
-            this.StartStop.AutoSize = true;
-            this.StartStop.DisplayStatus = false;
-            this.StartStop.Location = new System.Drawing.Point(163, 98);
-            this.StartStop.Name = "StartStop";
-            this.StartStop.Size = new System.Drawing.Size(50, 17);
-            this.StartStop.Style = MetroFramework.MetroColorStyle.Black;
-            this.StartStop.TabIndex = 20;
-            this.StartStop.Text = "Off";
-            this.StartStop.UseSelectable = true;
-            this.StartStop.CheckStateChanged += new System.EventHandler(this.StartStop_CheckStateChanged);
-            // 
             // metroLabel6
             // 
             this.metroLabel6.AutoSize = true;
             this.metroLabel6.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel6.Location = new System.Drawing.Point(3, 142);
+            this.metroLabel6.Location = new System.Drawing.Point(0, 193);
             this.metroLabel6.Name = "metroLabel6";
             this.metroLabel6.Size = new System.Drawing.Size(126, 19);
             this.metroLabel6.Style = MetroFramework.MetroColorStyle.Black;
-            this.metroLabel6.TabIndex = 19;
+            this.metroLabel6.TabIndex = 70;
             this.metroLabel6.Text = "Prevent awaymode";
             this.metroLabel6.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
@@ -839,24 +705,24 @@
             // 
             this.PreventSleep.AutoSize = true;
             this.PreventSleep.DisplayStatus = false;
-            this.PreventSleep.Location = new System.Drawing.Point(163, 121);
+            this.PreventSleep.Location = new System.Drawing.Point(166, 172);
             this.PreventSleep.Name = "PreventSleep";
             this.PreventSleep.Size = new System.Drawing.Size(50, 17);
             this.PreventSleep.Style = MetroFramework.MetroColorStyle.Black;
-            this.PreventSleep.TabIndex = 16;
+            this.PreventSleep.TabIndex = 67;
             this.PreventSleep.Text = "Off";
             this.PreventSleep.UseSelectable = true;
-            this.PreventSleep.CheckedChanged += new System.EventHandler(this.PreventSleep_CheckedChanged);
+            this.PreventSleep.CheckStateChanged += new System.EventHandler(this.PreventSleep_CheckStateChanged);
             // 
             // metroLabel5
             // 
             this.metroLabel5.AutoSize = true;
             this.metroLabel5.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel5.Location = new System.Drawing.Point(3, 119);
+            this.metroLabel5.Location = new System.Drawing.Point(0, 170);
             this.metroLabel5.Name = "metroLabel5";
             this.metroLabel5.Size = new System.Drawing.Size(91, 19);
             this.metroLabel5.Style = MetroFramework.MetroColorStyle.Black;
-            this.metroLabel5.TabIndex = 17;
+            this.metroLabel5.TabIndex = 68;
             this.metroLabel5.Text = "Prevent sleep";
             this.metroLabel5.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
@@ -865,34 +731,123 @@
             this.PreventAwayMode.AutoSize = true;
             this.PreventAwayMode.DisplayStatus = false;
             this.PreventAwayMode.Enabled = false;
-            this.PreventAwayMode.Location = new System.Drawing.Point(163, 144);
+            this.PreventAwayMode.Location = new System.Drawing.Point(166, 195);
             this.PreventAwayMode.Name = "PreventAwayMode";
             this.PreventAwayMode.Size = new System.Drawing.Size(50, 17);
             this.PreventAwayMode.Style = MetroFramework.MetroColorStyle.Black;
-            this.PreventAwayMode.TabIndex = 18;
+            this.PreventAwayMode.TabIndex = 69;
             this.PreventAwayMode.Text = "Off";
             this.PreventAwayMode.UseSelectable = true;
             // 
-            // metroLabel4
+            // FPSLabel
             // 
-            this.metroLabel4.AutoSize = true;
-            this.metroLabel4.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel4.Location = new System.Drawing.Point(0, 18);
-            this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(33, 19);
-            this.metroLabel4.TabIndex = 16;
-            this.metroLabel4.Text = "FPS";
-            this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.FPSLabel.AutoSize = true;
+            this.FPSLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.FPSLabel.Location = new System.Drawing.Point(0, 54);
+            this.FPSLabel.Name = "FPSLabel";
+            this.FPSLabel.Size = new System.Drawing.Size(31, 19);
+            this.FPSLabel.Style = MetroFramework.MetroColorStyle.Black;
+            this.FPSLabel.TabIndex = 66;
+            this.FPSLabel.Text = "FPS";
+            this.FPSLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // metroLabel21
+            // 
+            this.metroLabel21.AutoSize = true;
+            this.metroLabel21.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.metroLabel21.Location = new System.Drawing.Point(0, 147);
+            this.metroLabel21.Name = "metroLabel21";
+            this.metroLabel21.Size = new System.Drawing.Size(64, 19);
+            this.metroLabel21.Style = MetroFramework.MetroColorStyle.Black;
+            this.metroLabel21.TabIndex = 65;
+            this.metroLabel21.Text = "Start Up!";
+            this.metroLabel21.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // SelectColor
+            // 
+            this.SelectColor.Location = new System.Drawing.Point(166, 122);
+            this.SelectColor.Name = "SelectColor";
+            this.SelectColor.Size = new System.Drawing.Size(50, 21);
+            this.SelectColor.Style = MetroFramework.MetroColorStyle.Black;
+            this.SelectColor.TabIndex = 62;
+            this.SelectColor.Text = "Color";
+            this.SelectColor.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.SelectColor.UseSelectable = true;
+            this.SelectColor.Click += new System.EventHandler(this.SelectColor_Click);
+            // 
+            // TimingLabel
+            // 
+            this.TimingLabel.AutoSize = true;
+            this.TimingLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.TimingLabel.Location = new System.Drawing.Point(0, 100);
+            this.TimingLabel.Name = "TimingLabel";
+            this.TimingLabel.Size = new System.Drawing.Size(50, 19);
+            this.TimingLabel.Style = MetroFramework.MetroColorStyle.Black;
+            this.TimingLabel.TabIndex = 64;
+            this.TimingLabel.Text = "Timing";
+            this.TimingLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // metroLabel19
+            // 
+            this.metroLabel19.AutoSize = true;
+            this.metroLabel19.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.metroLabel19.Location = new System.Drawing.Point(0, 0);
+            this.metroLabel19.Name = "metroLabel19";
+            this.metroLabel19.Size = new System.Drawing.Size(108, 19);
+            this.metroLabel19.Style = MetroFramework.MetroColorStyle.Black;
+            this.metroLabel19.TabIndex = 63;
+            this.metroLabel19.Text = "Ambilight Mode";
+            this.metroLabel19.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // AmbilightModes
+            // 
+            this.AmbilightModes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AmbilightModes.FormattingEnabled = true;
+            this.AmbilightModes.ItemHeight = 23;
+            this.AmbilightModes.Location = new System.Drawing.Point(3, 22);
+            this.AmbilightModes.Name = "AmbilightModes";
+            this.AmbilightModes.Size = new System.Drawing.Size(213, 29);
+            this.AmbilightModes.Style = MetroFramework.MetroColorStyle.Black;
+            this.AmbilightModes.TabIndex = 61;
+            this.AmbilightModes.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.AmbilightModes.UseSelectable = true;
+            // 
+            // FadeTiming
+            // 
+            this.FadeTiming.BackColor = System.Drawing.Color.Transparent;
+            this.FadeTiming.ForeColor = System.Drawing.Color.Black;
+            this.FadeTiming.Location = new System.Drawing.Point(3, 122);
+            this.FadeTiming.Maximum = 1000;
+            this.FadeTiming.Minimum = 1;
+            this.FadeTiming.Name = "FadeTiming";
+            this.FadeTiming.Size = new System.Drawing.Size(157, 21);
+            this.FadeTiming.TabIndex = 60;
+            this.FadeTiming.Tag = "";
+            this.FadeTiming.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.FadeTiming.Value = 10;
+            // 
+            // StartStop
+            // 
+            this.StartStop.AutoSize = true;
+            this.StartStop.DisplayStatus = false;
+            this.StartStop.Location = new System.Drawing.Point(166, 149);
+            this.StartStop.Name = "StartStop";
+            this.StartStop.Size = new System.Drawing.Size(50, 17);
+            this.StartStop.Style = MetroFramework.MetroColorStyle.Black;
+            this.StartStop.TabIndex = 59;
+            this.StartStop.Text = "Off";
+            this.StartStop.UseSelectable = true;
+            this.StartStop.CheckStateChanged += new System.EventHandler(this.StartStop_CheckStateChanged);
             // 
             // FPSChanger
             // 
             this.FPSChanger.BackColor = System.Drawing.Color.Transparent;
             this.FPSChanger.ForeColor = System.Drawing.Color.Black;
-            this.FPSChanger.Location = new System.Drawing.Point(3, 40);
+            this.FPSChanger.Location = new System.Drawing.Point(3, 76);
             this.FPSChanger.Maximum = 60;
             this.FPSChanger.Minimum = 1;
             this.FPSChanger.Name = "FPSChanger";
-            this.FPSChanger.Size = new System.Drawing.Size(154, 21);
+            this.FPSChanger.Size = new System.Drawing.Size(157, 21);
             this.FPSChanger.TabIndex = 15;
             this.FPSChanger.Tag = "";
             this.FPSChanger.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -921,9 +876,10 @@
             // 
             // TestButton
             // 
-            this.TestButton.Location = new System.Drawing.Point(163, 40);
+            this.TestButton.Location = new System.Drawing.Point(166, 76);
             this.TestButton.Name = "TestButton";
             this.TestButton.Size = new System.Drawing.Size(50, 21);
+            this.TestButton.Style = MetroFramework.MetroColorStyle.Black;
             this.TestButton.TabIndex = 0;
             this.TestButton.Text = "Test";
             this.TestButton.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -933,13 +889,12 @@
             // ControlTabs
             // 
             this.ControlTabs.Controls.Add(this.HomeTab);
-            this.ControlTabs.Controls.Add(this.ModesTab);
             this.ControlTabs.Controls.Add(this.AreaTab);
             this.ControlTabs.Controls.Add(this.SettingsTab);
             this.ControlTabs.Location = new System.Drawing.Point(23, 63);
             this.ControlTabs.Name = "ControlTabs";
-            this.ControlTabs.SelectedIndex = 3;
-            this.ControlTabs.Size = new System.Drawing.Size(224, 338);
+            this.ControlTabs.SelectedIndex = 0;
+            this.ControlTabs.Size = new System.Drawing.Size(227, 338);
             this.ControlTabs.Style = MetroFramework.MetroColorStyle.Black;
             this.ControlTabs.TabIndex = 17;
             this.ControlTabs.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -967,7 +922,7 @@
             this.AreaTab.HorizontalScrollbarSize = 10;
             this.AreaTab.Location = new System.Drawing.Point(4, 38);
             this.AreaTab.Name = "AreaTab";
-            this.AreaTab.Size = new System.Drawing.Size(216, 296);
+            this.AreaTab.Size = new System.Drawing.Size(219, 296);
             this.AreaTab.Style = MetroFramework.MetroColorStyle.Black;
             this.AreaTab.TabIndex = 3;
             this.AreaTab.Text = "Area";
@@ -1001,15 +956,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 424);
+            this.ClientSize = new System.Drawing.Size(273, 424);
             this.Controls.Add(this.ControlTabs);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DynamicAmbilight";
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Text = "Dynamic Ambilight";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.ModesTab.ResumeLayout(false);
-            this.ModesTab.PerformLayout();
             this.SettingsTab.ResumeLayout(false);
             this.SettingsTab.PerformLayout();
             this.HomeTab.ResumeLayout(false);
@@ -1025,7 +978,6 @@
 
         #endregion
         private System.Windows.Forms.NotifyIcon Tray_Icon;
-        private MetroFramework.Controls.MetroTabPage ModesTab;
         private MetroFramework.Controls.MetroTabPage SettingsTab;
         private MetroFramework.Controls.MetroLabel metroLabel11;
         private MetroFramework.Controls.MetroLabel metroLabel10;
@@ -1041,11 +993,6 @@
         private MetroFramework.Controls.MetroComboBox BaudRate;
         private MetroFramework.Controls.MetroComboBox InterpMode;
         private MetroFramework.Controls.MetroTabPage HomeTab;
-        private MetroFramework.Controls.MetroLabel metroLabel6;
-        private MetroFramework.Controls.MetroToggle PreventSleep;
-        private MetroFramework.Controls.MetroLabel metroLabel5;
-        private MetroFramework.Controls.MetroToggle PreventAwayMode;
-        private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroTrackBar FPSChanger;
         private MetroFramework.Controls.MetroLabel Default_Timings;
         private MetroFramework.Controls.MetroLabel Custom_Timings;
@@ -1067,20 +1014,23 @@
         private MetroFramework.Controls.MetroComboBox CaptureArea;
         private MetroFramework.Controls.MetroLabel metroLabel16;
         private MetroFramework.Controls.MetroTabPage AreaTab;
-        private MetroFramework.Controls.MetroToggle LedShowToggle;
-        private MetroFramework.Controls.MetroTrackBar FadeTiming;
-        private MetroFramework.Controls.MetroToggle StartStop;
-        private MetroFramework.Controls.MetroLabel metroLabel7;
-        private MetroFramework.Controls.MetroComboBox AmbilightModes;
-        private MetroFramework.Controls.MetroButton SelectColor;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
-        private MetroFramework.Controls.MetroLabel metroLabel21;
-        private MetroFramework.Controls.MetroLabel metroLabel20;
-        private MetroFramework.Controls.MetroLabel metroLabel19;
         private MetroFramework.Controls.MetroContextMenu RemoveColor;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
         private MetroFramework.Controls.MetroComboBox CaptureWay;
         private MetroFramework.Controls.MetroLabel metroLabel8;
+        private MetroFramework.Controls.MetroLabel metroLabel21;
+        private MetroFramework.Controls.MetroButton SelectColor;
+        private MetroFramework.Controls.MetroLabel TimingLabel;
+        private MetroFramework.Controls.MetroLabel metroLabel19;
+        private MetroFramework.Controls.MetroComboBox AmbilightModes;
+        private MetroFramework.Controls.MetroTrackBar FadeTiming;
+        private MetroFramework.Controls.MetroLabel metroLabel6;
+        private MetroFramework.Controls.MetroToggle PreventSleep;
+        private MetroFramework.Controls.MetroLabel metroLabel5;
+        private MetroFramework.Controls.MetroToggle PreventAwayMode;
+        private MetroFramework.Controls.MetroLabel FPSLabel;
+        private MetroFramework.Controls.MetroToggle StartStop;
     }
 }
 

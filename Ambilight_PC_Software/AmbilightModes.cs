@@ -7,7 +7,6 @@ namespace DynamicAmbilight
 {
     public partial class DynamicAmbilight
     {
-        private Thread RGBEffects;
         List<Color> colorarray = new List<Color>();
         Color[] ledarray = new Color[100]; //should be NumLeds() length
         private int NumLeds() { return (LedsX.Value + LedsY.Value) * 2; }
@@ -34,7 +33,7 @@ namespace DynamicAmbilight
         }
         public void FadeInOut()
         {
-            while (LedShowToggle.Checked && colorarray.Count > 0)
+            while (StartStop.Checked && colorarray.Count > 0)
             {
                 WakeUp();
                 for (int k = 0; k < 256; k++) //Fade IN
@@ -54,7 +53,7 @@ namespace DynamicAmbilight
         public void Rainbow()
         {
             int i, j;
-            while (LedShowToggle.Checked)
+            while (StartStop.Checked)
             {
                 WakeUp();
                 for (j = 0; j < 256; j++)
@@ -68,7 +67,7 @@ namespace DynamicAmbilight
         public void RainbowCycle()
         {
             int i, j;
-            while (LedShowToggle.Checked)
+            while (StartStop.Checked)
             {
                 WakeUp();
                 for (j = 0; j < 256 * 5; j++)
@@ -81,7 +80,7 @@ namespace DynamicAmbilight
         }
         public void TheaterChaseRainbow()
         {
-            while (LedShowToggle.Checked)
+            while (StartStop.Checked)
             {
                 WakeUp();
                 for (int j = 0; j < 256; j++)
@@ -99,7 +98,7 @@ namespace DynamicAmbilight
         }
         public void FullWhite()
         {
-            while (LedShowToggle.Checked)
+            while (StartStop.Checked)
             {
                 WakeUp();
                 for (int i = 0; i < NumLeds(); i++) ledarray[i] = Color.FromArgb(255, 255, 255);
@@ -109,7 +108,7 @@ namespace DynamicAmbilight
         }
         public void FadeCustom()
         {
-            while (LedShowToggle.Checked && colorarray.Count > 0)
+            while (StartStop.Checked && colorarray.Count > 0)
             {
                 WakeUp();
                 for (int j = 0; j < colorarray.Count; j++)
@@ -131,7 +130,7 @@ namespace DynamicAmbilight
         }
         public void TestLEDs()
         {
-            while (LedShowToggle.Checked && colorarray.Count > 0)
+            while (StartStop.Checked && colorarray.Count > 0)
             {
                 WakeUp();
                 for (int i = 0; i < colorarray.Count; i++)
@@ -148,7 +147,7 @@ namespace DynamicAmbilight
         public void CylonBounce()
         {
             int EyeSize = 2;
-            while (LedShowToggle.Checked && colorarray.Count > 0)
+            while (StartStop.Checked && colorarray.Count > 0)
             {
                 WakeUp();
                 for (int i = 0; i < NumLeds() - EyeSize - 1; i++)
@@ -176,7 +175,7 @@ namespace DynamicAmbilight
         public void Twinkle()
         {
             int Count = 10;
-            while (LedShowToggle.Checked && colorarray.Count > 0)
+            while (StartStop.Checked && colorarray.Count > 0)
             {
                 WakeUp();
                 var random = new Random();
