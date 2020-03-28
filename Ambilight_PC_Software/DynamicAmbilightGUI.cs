@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 using MetroFramework.Forms;
 using System.Collections.Generic;
 using MetroFramework.Controls;
+using NAudio.CoreAudioApi;
 
 namespace DynamicAmbilight
 {
@@ -24,8 +25,8 @@ namespace DynamicAmbilight
                 buttonlist[buttonlist.Count - 1].Style = MetroFramework.MetroColorStyle.Black;
                 buttonlist[buttonlist.Count - 1].Theme = MetroFramework.MetroThemeStyle.Dark;
                 buttonlist[buttonlist.Count - 1].UseCustomBackColor = true;
-                buttonlist[buttonlist.Count - 1].Size = new Size(40, 40);
-                buttonlist[buttonlist.Count - 1].Location = new Point((buttonlist.Count - 1) * 45, 215);
+                buttonlist[buttonlist.Count - 1].Size = new Size(20, 20);
+                buttonlist[buttonlist.Count - 1].Location = new Point(5 + (buttonlist.Count - 1) * 25, 280);
                 if (buttonlist.Count == 5) SelectColor.Enabled = false;
                 if (colorarray.Count > buttonlist.Count) buttonlist.Remove(buttonlist[buttonlist.Count - 1]);
                 else buttonlist[buttonlist.Count - 1].BackColor = colorarray[colorarray.Count - 1];
@@ -74,7 +75,7 @@ namespace DynamicAmbilight
                         RGBEffects = new Thread(Rainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 3:
-                        RGBEffects = new Thread(RainbowCycle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(Sparkle) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 4:
                         RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
@@ -93,6 +94,18 @@ namespace DynamicAmbilight
                         break;
                     case 9:
                         RGBEffects = new Thread(TestLEDs) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case 10:
+                        RGBEffects = new Thread(AudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case 11:
+                        RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case 12:
+                        RGBEffects = new Thread(ColorWipe) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case 13:
+                        RGBEffects = new Thread(BouncingBall) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                 }
                 RGBEffects.Start();     
@@ -165,25 +178,35 @@ namespace DynamicAmbilight
                 colorpicker.Show();
             }
         }
+        private void UseDefaultAudio_CheckedStateChanged(object sender, EventArgs e)
+        {
+            if (UseDefaultAudio.Checked) AudioInputs.Enabled = false;
+            else AudioInputs.Enabled = true;
+        }
         private void FillComboBoxes()
         {
-            foreach (InterpolationMode interpmode in Enum.GetValues(typeof(InterpolationMode))) if (interpmode != InterpolationMode.Invalid) InterpMode.Items.Add(interpmode); //fetch all possible interpolation modes
+            ControlTabs.SelectTab(0);
             Get_ComPort_Names();
+            foreach (InterpolationMode interpmode in Enum.GetValues(typeof(InterpolationMode))) if (interpmode != InterpolationMode.Invalid) InterpMode.Items.Add(interpmode); //fetch all possible interpolation modes
+            foreach (MMDevice dev in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.All, DeviceState.Active)) AudioInputs.Items.Add(dev);
             for (int i = 0; i < BaudRatesList.Length; i++) BaudRate.Items.Add(BaudRatesList[i]);
             CaptureArea.Items.Add("Fullscreen");
             CaptureArea.Items.Add("Custom resolution");
             CaptureArea.Items.Add("Custom offsets");
-            ControlTabs.SelectTab(0);
             AmbilightModes.Items.Add("Dynamic Ambilight");
             AmbilightModes.Items.Add("Single Color Fade");
             AmbilightModes.Items.Add("Rainbow");
-            AmbilightModes.Items.Add("Rainbow Cycle");
+            AmbilightModes.Items.Add("Sparkle");
             AmbilightModes.Items.Add("Theater Chase");
             AmbilightModes.Items.Add("Full White");
             AmbilightModes.Items.Add("Multicolor Fade");
             AmbilightModes.Items.Add("Cylon Bounce");
             AmbilightModes.Items.Add("Twinkle");
             AmbilightModes.Items.Add("Test LEDs");
+            AmbilightModes.Items.Add("Single Color VU Meter");
+            AmbilightModes.Items.Add("Multicolor VU Meter");
+            AmbilightModes.Items.Add("Multicolor Wipe");
+            AmbilightModes.Items.Add("Bouncing Ball");
             CaptureWay.Items.Add("DX11");
             CaptureWay.Items.Add("WINAPI");
         }

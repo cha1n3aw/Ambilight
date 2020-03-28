@@ -51,6 +51,7 @@ namespace DynamicAmbilight
             new KeyValuePair<string, string>("FadeTiming", FadeTiming.Value.ToString()),
             new KeyValuePair<string, string>("AmbilightModes", AmbilightModes.SelectedIndex.ToString()),
             new KeyValuePair<string, string>("CaptureMode", CaptureWay.SelectedIndex.ToString()),
+            new KeyValuePair<string, string>("AudioDevice", AudioInputs.SelectedIndex.ToString()),
             };
             return settingslist;
         }
@@ -71,6 +72,7 @@ namespace DynamicAmbilight
             FadeTiming.Value = Convert.ToInt32(ConfigurationManager.AppSettings["FadeTiming"]);
             AmbilightModes.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["AmbilightModes"]);
             CaptureWay.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["CaptureMode"]);
+            AudioInputs.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["AudioDevice"]);
         }
         private void GetWindowSize() //gets screen size also considering offsets
         {
@@ -205,6 +207,7 @@ namespace DynamicAmbilight
             if (CaptureWay.SelectedIndex == -1) CaptureWay.SelectedIndex = 0; //preselect DX11
             if (CaptureArea.SelectedIndex == -1) CaptureArea.SelectedIndex = 0; //preselect fullscreen
             if (AmbilightModes.SelectedIndex == -1) AmbilightModes.SelectedIndex = 0; //preselect single color fade
+            if (AudioInputs.SelectedIndex == -1) AudioInputs.SelectedIndex = 1; //preselect second audio input
         }
     }
 }

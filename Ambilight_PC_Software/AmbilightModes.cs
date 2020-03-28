@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.CoreAudioApi;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
@@ -31,7 +32,15 @@ namespace DynamicAmbilight
                 }
             }
         }
-        public void FadeInOut()
+        private Color GetBlendedColor(int number)
+        {
+            if (number >= LedsX.Value / 2 && number < LedsX.Value + LedsY.Value / 2) return Color.FromArgb(Convert.ToInt32(10.2 * (number - 16)), 255, 0); //Convert.ToInt32(255 - 5.1 * (15 - number))
+            else if (number >= LedsX.Value + LedsY.Value / 2 && number < LedsX.Value + LedsY.Value + LedsX.Value / 2) return Color.FromArgb(255, Convert.ToInt32(255 - 10.2 * (number - 41)), 0);
+            else if (LedsX.Value + LedsY.Value + LedsX.Value / 2 <= number && number < LedsX.Value * 2 + LedsY.Value + LedsY.Value / 2) return Color.FromArgb(255, Convert.ToInt32(255 - 10.2 * (NumLeds() - LedsY.Value / 2 - number)), 0);
+            else if (number < LedsX.Value / 2) return Color.FromArgb(Convert.ToInt32(10.2 * (15 - number)), 255, 0); //Convert.ToInt32(255 - 5.1 * (15 - number))
+            else return Color.FromArgb(Convert.ToInt32(10.2 * (NumLeds() - 1 + (NumLeds() / 4 - LedsY.Value / 2) - number)), 255, 0);
+        }
+        private void FadeInOut()
         {
             while (StartStop.Checked && colorarray.Count > 0)
             {
@@ -50,7 +59,7 @@ namespace DynamicAmbilight
                 }
             }
         }
-        public void Rainbow()
+        private void Rainbow()
         {
             int i, j;
             while (StartStop.Checked)
@@ -64,21 +73,22 @@ namespace DynamicAmbilight
                 }
             }
         }
-        public void RainbowCycle()
+        private void Sparkle()
         {
-            int i, j;
-            while (StartStop.Checked)
+            int i;
+            for (i = 0; i < NumLeds(); i++) ledarray[i] = Color.Black;
+            while (StartStop.Checked && colorarray.Count > 0)
             {
                 WakeUp();
-                for (j = 0; j < 256 * 5; j++)
-                {
-                    for (i = 0; i < NumLeds(); i++) ledarray[i] = Wheel((i * 256 / NumLeds() + j) & 255);
-                    Thread.Sleep(FadeTiming.Value);
-                    LedShow();
-                }
+                Random rnd = new Random();
+                int pixel = rnd.Next(0, NumLeds() - 1);
+                ledarray[pixel] = colorarray[0];
+                LedShow();
+                Thread.Sleep(FadeTiming.Value);
+                ledarray[pixel] = Color.Black;
             }
         }
-        public void TheaterChaseRainbow()
+        private void TheaterChaseRainbow()
         {
             while (StartStop.Checked)
             {
@@ -96,7 +106,7 @@ namespace DynamicAmbilight
             }
 
         }
-        public void FullWhite()
+        private void FullWhite()
         {
             while (StartStop.Checked)
             {
@@ -106,7 +116,7 @@ namespace DynamicAmbilight
                 Thread.Sleep(400);
             }
         }
-        public void FadeCustom()
+        private void FadeCustom()
         {
             while (StartStop.Checked && colorarray.Count > 0)
             {
@@ -128,7 +138,7 @@ namespace DynamicAmbilight
                 }
             }
         }
-        public void TestLEDs()
+        private void TestLEDs()
         {
             while (StartStop.Checked && colorarray.Count > 0)
             {
@@ -144,7 +154,7 @@ namespace DynamicAmbilight
                     }
             }
         }
-        public void CylonBounce()
+        private void CylonBounce()
         {
             int EyeSize = 2;
             while (StartStop.Checked && colorarray.Count > 0)
@@ -172,13 +182,13 @@ namespace DynamicAmbilight
                 Thread.Sleep(FadeTiming.Value * 2);
             }
         }
-        public void Twinkle()
+        private void Twinkle()
         {
             int Count = 10;
             while (StartStop.Checked && colorarray.Count > 0)
             {
                 WakeUp();
-                var random = new Random();
+                Random random = new Random();
                 for (int k = 0; k < NumLeds(); k++) ledarray[k] = Color.Black;
                 LedShow();
                 for (int i = 0; i < Count; i++)
@@ -188,6 +198,89 @@ namespace DynamicAmbilight
                     Thread.Sleep(FadeTiming.Value);
                 }
                 Thread.Sleep(FadeTiming.Value * 10);
+            }
+        }
+        private void AudioPeakMeter()
+        {
+            int num = 0;
+            MMDevice device;
+            MMDeviceEnumerator devEnum = new MMDeviceEnumerator();
+            AudioInputs.Invoke(new Action(() => num = AudioInputs.SelectedIndex));
+            if (UseDefaultAudio.Checked) device = devEnum.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            else device = devEnum.EnumerateAudioEndPoints(DataFlow.All, DeviceState.Active)[num];
+            while (StartStop.Checked && colorarray.Count > 0)
+            {
+                WakeUp();
+                int leftVolume = Convert.ToInt32(device.AudioMeterInformation.PeakValues[0] * NumLeds() / 2);
+                int rightVolume = Convert.ToInt32(device.AudioMeterInformation.PeakValues[1] * NumLeds() / 2);
+                for (int i = LedsX.Value / 2 - 1; i >= 0; i--) if (LedsX.Value / 2 - 1 - i < leftVolume) ledarray[i] = colorarray[0]; else ledarray[i] = Color.Black;
+                for (int i = NumLeds() - 1; i > NumLeds() - LedsY.Value - (LedsX.Value / 2) - 1; i--) if (NumLeds() - 1 - i < leftVolume - (LedsX.Value / 2)) ledarray[i] = colorarray[0]; else ledarray[i] = Color.Black;
+                for (int i = LedsX.Value / 2; i < NumLeds() - LedsY.Value - (LedsX.Value / 2); i++) if (i - LedsX.Value / 2 < rightVolume) ledarray[i] = colorarray[0]; else ledarray[i] = Color.Black;
+                LedShow();
+                Thread.Sleep(FadeTiming.Value);
+            }
+        }
+        private void MultiColorAudioPeakMeter()
+        {
+            MMDevice device;
+            MMDeviceEnumerator devEnum = new MMDeviceEnumerator();
+            if (UseDefaultAudio.Checked) device = devEnum.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            else device = (MMDevice)AudioInputs.SelectedItem;
+            while (StartStop.Checked)
+            {
+                WakeUp();
+                int leftVolume = Convert.ToInt32(device.AudioMeterInformation.PeakValues[0] * NumLeds() / 2);
+                int rightVolume = Convert.ToInt32(device.AudioMeterInformation.PeakValues[1] * NumLeds() / 2);
+                for (int i = LedsX.Value / 2 - 1; i >= 0; i--) if (LedsX.Value / 2 - 1 - i < leftVolume) ledarray[i] = GetBlendedColor(i); else ledarray[i] = Color.Black;
+                for (int i = NumLeds() - 1; i > NumLeds() - LedsY.Value - (LedsX.Value / 2) - 1; i--) if (NumLeds() - 1 - i < leftVolume - (LedsX.Value / 2)) ledarray[i] = GetBlendedColor(i); else ledarray[i] = Color.Black;
+                for (int i = LedsX.Value / 2; i < NumLeds() - LedsY.Value - (LedsX.Value / 2); i++) if (i - LedsX.Value / 2 < rightVolume) ledarray[i] = GetBlendedColor(i); else ledarray[i] = Color.Black;
+                LedShow();
+                Thread.Sleep(FadeTiming.Value);
+            }
+        }
+        private void ColorWipe()
+        {
+            for (int i = 0; i < ledarray.Length; i++) ledarray[i] = Color.Black;
+            while (StartStop.Checked && colorarray.Count > 0)
+            for (int i = 0; i < colorarray.Count; i++)
+            {
+                for (int j = 0; j < NumLeds(); j++) { ledarray[j] = colorarray[i]; LedShow(); Thread.Sleep(FadeTiming.Value); }
+                Thread.Sleep(FadeTiming.Value);
+            }
+        }
+        private void BouncingBall()
+        {
+            while (StartStop.Checked && colorarray.Count > 0)
+            {
+                for (int c = 0; c < colorarray.Count; c++)
+                {
+                    double[] damp = new double[2] { Convert.ToDouble(new Random().Next(80, 98)) / 100d, Convert.ToDouble(new Random().Next(81, 98)) / 100d };
+                    //double[] damp = new double[2] { 0.85, 0.95 };
+                    double gravity = -9.81;
+                    double impactonstart = Math.Sqrt(-2 * gravity);
+                    sw.Restart();
+                    double[] height = new double[2];
+                    double[] lastbounce = new double[2];
+                    double[] impact = new double[2] { impactonstart, impactonstart};
+                    long[] ClockTimeSinceLastBounce = new long[2] { sw.ElapsedMilliseconds, sw.ElapsedMilliseconds };
+                    while (impact[0] > 0.1 || impact[1] > 0.1)
+                    {
+                        for (int i = 0; i < ledarray.Length; i++) ledarray[i] = Color.Black;
+                        for (int i = 0; i < 2; i++) lastbounce[i] = sw.ElapsedMilliseconds - ClockTimeSinceLastBounce[i];
+                        for (int i = 0; i < 2; i++) height[i] = 0.5 * gravity * Math.Pow(lastbounce[i] / 1000, 2.0) + impact[i] * lastbounce[i] / 1000;
+                        for (int i = 0; i < 2; i++)
+                            if (height[i] < 0)
+                            {
+                                height[i] = 0;
+                                impact[i] = damp[i] * impact[i];
+                                ClockTimeSinceLastBounce[i] = sw.ElapsedMilliseconds;
+                            }
+                        ledarray[(int)(height[0] * LedsY.Value) + 32] = colorarray[c];
+                        ledarray[NumLeds() - 1 - (int)(height[1] * LedsY.Value)] = colorarray[c];
+                        LedShow();
+                    }
+                    sw.Stop();
+                }
             }
         }
     }

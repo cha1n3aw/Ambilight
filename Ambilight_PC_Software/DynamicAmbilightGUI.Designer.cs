@@ -63,6 +63,9 @@
             this.BaudRate = new MetroFramework.Controls.MetroComboBox();
             this.InterpMode = new MetroFramework.Controls.MetroComboBox();
             this.HomeTab = new MetroFramework.Controls.MetroTabPage();
+            this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
+            this.UseDefaultAudio = new MetroFramework.Controls.MetroToggle();
+            this.AudioInputs = new MetroFramework.Controls.MetroComboBox();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
             this.PreventSleep = new MetroFramework.Controls.MetroToggle();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
@@ -456,7 +459,7 @@
             this.SettingsTab.HorizontalScrollbarSize = 10;
             this.SettingsTab.Location = new System.Drawing.Point(4, 38);
             this.SettingsTab.Name = "SettingsTab";
-            this.SettingsTab.Size = new System.Drawing.Size(219, 296);
+            this.SettingsTab.Size = new System.Drawing.Size(219, 359);
             this.SettingsTab.TabIndex = 1;
             this.SettingsTab.Text = "Settings";
             this.SettingsTab.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -494,7 +497,7 @@
             // 
             this.metroLabel11.AutoSize = true;
             this.metroLabel11.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel11.Location = new System.Drawing.Point(0, 259);
+            this.metroLabel11.Location = new System.Drawing.Point(0, 313);
             this.metroLabel11.Name = "metroLabel11";
             this.metroLabel11.Size = new System.Drawing.Size(115, 19);
             this.metroLabel11.Style = MetroFramework.MetroColorStyle.Black;
@@ -506,7 +509,7 @@
             // 
             this.metroLabel10.AutoSize = true;
             this.metroLabel10.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.metroLabel10.Location = new System.Drawing.Point(0, 215);
+            this.metroLabel10.Location = new System.Drawing.Point(0, 269);
             this.metroLabel10.Name = "metroLabel10";
             this.metroLabel10.Size = new System.Drawing.Size(134, 19);
             this.metroLabel10.Style = MetroFramework.MetroColorStyle.Black;
@@ -518,7 +521,7 @@
             // 
             this.LedsXLabel.AutoSize = true;
             this.LedsXLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LedsXLabel.Location = new System.Drawing.Point(193, 237);
+            this.LedsXLabel.Location = new System.Drawing.Point(193, 291);
             this.LedsXLabel.Name = "LedsXLabel";
             this.LedsXLabel.Size = new System.Drawing.Size(23, 19);
             this.LedsXLabel.Style = MetroFramework.MetroColorStyle.Black;
@@ -530,7 +533,7 @@
             // 
             this.LedsYLabel.AutoSize = true;
             this.LedsYLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LedsYLabel.Location = new System.Drawing.Point(195, 281);
+            this.LedsYLabel.Location = new System.Drawing.Point(195, 335);
             this.LedsYLabel.Name = "LedsYLabel";
             this.LedsYLabel.Size = new System.Drawing.Size(21, 19);
             this.LedsYLabel.Style = MetroFramework.MetroColorStyle.Black;
@@ -542,7 +545,7 @@
             // 
             this.LedsY.BackColor = System.Drawing.Color.Transparent;
             this.LedsY.ForeColor = System.Drawing.Color.Black;
-            this.LedsY.Location = new System.Drawing.Point(0, 281);
+            this.LedsY.Location = new System.Drawing.Point(0, 335);
             this.LedsY.Maximum = 60;
             this.LedsY.Minimum = 1;
             this.LedsY.Name = "LedsY";
@@ -557,7 +560,7 @@
             // 
             this.LedsX.BackColor = System.Drawing.Color.Transparent;
             this.LedsX.ForeColor = System.Drawing.Color.Black;
-            this.LedsX.Location = new System.Drawing.Point(0, 237);
+            this.LedsX.Location = new System.Drawing.Point(0, 291);
             this.LedsX.Maximum = 60;
             this.LedsX.Minimum = 1;
             this.LedsX.Name = "LedsX";
@@ -660,6 +663,9 @@
             // 
             // HomeTab
             // 
+            this.HomeTab.Controls.Add(this.metroLabel7);
+            this.HomeTab.Controls.Add(this.UseDefaultAudio);
+            this.HomeTab.Controls.Add(this.AudioInputs);
             this.HomeTab.Controls.Add(this.metroLabel6);
             this.HomeTab.Controls.Add(this.PreventSleep);
             this.HomeTab.Controls.Add(this.metroLabel5);
@@ -681,13 +687,54 @@
             this.HomeTab.HorizontalScrollbarSize = 10;
             this.HomeTab.Location = new System.Drawing.Point(4, 38);
             this.HomeTab.Name = "HomeTab";
-            this.HomeTab.Size = new System.Drawing.Size(219, 296);
+            this.HomeTab.Size = new System.Drawing.Size(219, 364);
             this.HomeTab.TabIndex = 0;
             this.HomeTab.Text = "Home";
             this.HomeTab.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.HomeTab.VerticalScrollbarBarColor = true;
             this.HomeTab.VerticalScrollbarHighlightOnWheel = false;
             this.HomeTab.VerticalScrollbarSize = 10;
+            // 
+            // metroLabel7
+            // 
+            this.metroLabel7.AutoSize = true;
+            this.metroLabel7.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.metroLabel7.Location = new System.Drawing.Point(0, 216);
+            this.metroLabel7.Name = "metroLabel7";
+            this.metroLabel7.Size = new System.Drawing.Size(130, 19);
+            this.metroLabel7.Style = MetroFramework.MetroColorStyle.Black;
+            this.metroLabel7.TabIndex = 79;
+            this.metroLabel7.Text = "Default Audio Input";
+            this.metroLabel7.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // UseDefaultAudio
+            // 
+            this.UseDefaultAudio.AutoSize = true;
+            this.UseDefaultAudio.Checked = true;
+            this.UseDefaultAudio.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.UseDefaultAudio.DisplayStatus = false;
+            this.UseDefaultAudio.Location = new System.Drawing.Point(166, 218);
+            this.UseDefaultAudio.Name = "UseDefaultAudio";
+            this.UseDefaultAudio.Size = new System.Drawing.Size(50, 17);
+            this.UseDefaultAudio.Style = MetroFramework.MetroColorStyle.Black;
+            this.UseDefaultAudio.TabIndex = 78;
+            this.UseDefaultAudio.Text = "On";
+            this.UseDefaultAudio.UseSelectable = true;
+            this.UseDefaultAudio.CheckStateChanged += new System.EventHandler(this.UseDefaultAudio_CheckedStateChanged);
+            // 
+            // AudioInputs
+            // 
+            this.AudioInputs.Enabled = false;
+            this.AudioInputs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioInputs.FormattingEnabled = true;
+            this.AudioInputs.ItemHeight = 23;
+            this.AudioInputs.Location = new System.Drawing.Point(3, 241);
+            this.AudioInputs.Name = "AudioInputs";
+            this.AudioInputs.Size = new System.Drawing.Size(213, 29);
+            this.AudioInputs.Style = MetroFramework.MetroColorStyle.Black;
+            this.AudioInputs.TabIndex = 76;
+            this.AudioInputs.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.AudioInputs.UseSelectable = true;
             // 
             // metroLabel6
             // 
@@ -818,7 +865,6 @@
             this.FadeTiming.ForeColor = System.Drawing.Color.Black;
             this.FadeTiming.Location = new System.Drawing.Point(3, 122);
             this.FadeTiming.Maximum = 1000;
-            this.FadeTiming.Minimum = 1;
             this.FadeTiming.Name = "FadeTiming";
             this.FadeTiming.Size = new System.Drawing.Size(157, 21);
             this.FadeTiming.TabIndex = 60;
@@ -857,7 +903,7 @@
             // Default_Timings
             // 
             this.Default_Timings.AutoSize = true;
-            this.Default_Timings.Location = new System.Drawing.Point(-4, 254);
+            this.Default_Timings.Location = new System.Drawing.Point(3, 324);
             this.Default_Timings.Name = "Default_Timings";
             this.Default_Timings.Size = new System.Drawing.Size(53, 19);
             this.Default_Timings.TabIndex = 10;
@@ -867,7 +913,7 @@
             // Custom_Timings
             // 
             this.Custom_Timings.AutoSize = true;
-            this.Custom_Timings.Location = new System.Drawing.Point(-4, 273);
+            this.Custom_Timings.Location = new System.Drawing.Point(3, 343);
             this.Custom_Timings.Name = "Custom_Timings";
             this.Custom_Timings.Size = new System.Drawing.Size(57, 19);
             this.Custom_Timings.TabIndex = 9;
@@ -894,7 +940,7 @@
             this.ControlTabs.Location = new System.Drawing.Point(23, 63);
             this.ControlTabs.Name = "ControlTabs";
             this.ControlTabs.SelectedIndex = 0;
-            this.ControlTabs.Size = new System.Drawing.Size(227, 338);
+            this.ControlTabs.Size = new System.Drawing.Size(227, 406);
             this.ControlTabs.Style = MetroFramework.MetroColorStyle.Black;
             this.ControlTabs.TabIndex = 17;
             this.ControlTabs.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -922,7 +968,7 @@
             this.AreaTab.HorizontalScrollbarSize = 10;
             this.AreaTab.Location = new System.Drawing.Point(4, 38);
             this.AreaTab.Name = "AreaTab";
-            this.AreaTab.Size = new System.Drawing.Size(219, 296);
+            this.AreaTab.Size = new System.Drawing.Size(219, 359);
             this.AreaTab.Style = MetroFramework.MetroColorStyle.Black;
             this.AreaTab.TabIndex = 3;
             this.AreaTab.Text = "Area";
@@ -956,7 +1002,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(273, 424);
+            this.ClientSize = new System.Drawing.Size(271, 529);
             this.Controls.Add(this.ControlTabs);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DynamicAmbilight";
@@ -1031,6 +1077,9 @@
         private MetroFramework.Controls.MetroToggle PreventAwayMode;
         private MetroFramework.Controls.MetroLabel FPSLabel;
         private MetroFramework.Controls.MetroToggle StartStop;
+        private MetroFramework.Controls.MetroLabel metroLabel7;
+        private MetroFramework.Controls.MetroToggle UseDefaultAudio;
+        private MetroFramework.Controls.MetroComboBox AudioInputs;
     }
 }
 
