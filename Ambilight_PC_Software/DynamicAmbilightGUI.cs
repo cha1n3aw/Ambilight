@@ -26,7 +26,7 @@ namespace DynamicAmbilight
                 buttonlist[buttonlist.Count - 1].Theme = MetroFramework.MetroThemeStyle.Dark;
                 buttonlist[buttonlist.Count - 1].UseCustomBackColor = true;
                 buttonlist[buttonlist.Count - 1].Size = new Size(20, 20);
-                buttonlist[buttonlist.Count - 1].Location = new Point(5 + (buttonlist.Count - 1) * 25, 280);
+                buttonlist[buttonlist.Count - 1].Location = new Point((buttonlist.Count - 1) * 25, 280);
                 if (buttonlist.Count == 5) SelectColor.Enabled = false;
                 if (colorarray.Count > buttonlist.Count) buttonlist.Remove(buttonlist[buttonlist.Count - 1]);
                 else buttonlist[buttonlist.Count - 1].BackColor = colorarray[colorarray.Count - 1];
@@ -102,11 +102,14 @@ namespace DynamicAmbilight
                         RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 12:
-                        RGBEffects = new Thread(ColorWipe) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FadeAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 13:
-                        RGBEffects = new Thread(BouncingBall) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(ColorWipe) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
+                    case 14:
+                        RGBEffects = new Thread(BouncingBall) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;  
                 }
                 RGBEffects.Start();     
             }
@@ -183,6 +186,11 @@ namespace DynamicAmbilight
             if (UseDefaultAudio.Checked) AudioInputs.Enabled = false;
             else AudioInputs.Enabled = true;
         }
+        private void AmbilightModes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (AmbilightModes.SelectedIndex != 10 && AmbilightModes.SelectedIndex != 11 && AmbilightModes.SelectedIndex != 12) UseDefaultAudio.Enabled = AudioInputs.Enabled = false;
+            else UseDefaultAudio.Enabled = AudioInputs.Enabled = true;
+        }
         private void FillComboBoxes()
         {
             ControlTabs.SelectTab(0);
@@ -205,6 +213,7 @@ namespace DynamicAmbilight
             AmbilightModes.Items.Add("Test LEDs");
             AmbilightModes.Items.Add("Single Color VU Meter");
             AmbilightModes.Items.Add("Multicolor VU Meter");
+            AmbilightModes.Items.Add("Fade VU Meter");
             AmbilightModes.Items.Add("Multicolor Wipe");
             AmbilightModes.Items.Add("Bouncing Ball");
             CaptureWay.Items.Add("DX11");
@@ -216,7 +225,7 @@ namespace DynamicAmbilight
             FillComboBoxes();
             Init();
             SelectionCheck();
-        }
+        }  
     }
 }
 

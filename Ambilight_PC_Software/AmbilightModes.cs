@@ -238,6 +238,26 @@ namespace DynamicAmbilight
                 Thread.Sleep(FadeTiming.Value);
             }
         }
+        private void FadeAudioPeakMeter()
+        {
+            int num = 0;
+            MMDevice device;
+            MMDeviceEnumerator devEnum = new MMDeviceEnumerator();
+            AudioInputs.Invoke(new Action(() => num = AudioInputs.SelectedIndex));
+            if (UseDefaultAudio.Checked) device = devEnum.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            else device = devEnum.EnumerateAudioEndPoints(DataFlow.All, DeviceState.Active)[num];
+            while (StartStop.Checked)
+            {
+                WakeUp();
+                int leftVolume = Convert.ToInt32(device.AudioMeterInformation.PeakValues[0] * NumLeds() / 2);
+                int rightVolume = Convert.ToInt32(device.AudioMeterInformation.PeakValues[1] * NumLeds() / 2);
+                for (int i = LedsX.Value / 2 - 1; i >= 0; i--) ledarray[i] = GetBlendedColor(leftVolume);
+                for (int i = NumLeds() - 1; i > NumLeds() - LedsY.Value - (LedsX.Value / 2) - 1; i--) ledarray[i] = GetBlendedColor(leftVolume);
+                for (int i = LedsX.Value / 2; i < NumLeds() - LedsY.Value - (LedsX.Value / 2); i++) ledarray[i] = GetBlendedColor(rightVolume);
+                LedShow();
+                Thread.Sleep(FadeTiming.Value);
+            }
+        }
         private void ColorWipe()
         {
             for (int i = 0; i < ledarray.Length; i++) ledarray[i] = Color.Black;

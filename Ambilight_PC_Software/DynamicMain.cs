@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 using System.IO.Ports;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using ScreenCapturerNS;
 
 namespace DynamicAmbilight
@@ -57,6 +58,7 @@ namespace DynamicAmbilight
         }
         private void Init()
         {
+            SystemEvents.PowerModeChanged += OnPowerChange;
             GetWindowSize();
             FPSChanger.Value = Convert.ToInt32(ConfigurationManager.AppSettings["FPS"]);
             LedsX.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSX"]);
@@ -73,6 +75,11 @@ namespace DynamicAmbilight
             AmbilightModes.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["AmbilightModes"]);
             CaptureWay.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["CaptureMode"]);
             AudioInputs.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["AudioDevice"]);
+        }
+        private void OnPowerChange(object s, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == PowerModes.Suspend) { StartStop.Checked = false; }
+            else if (e.Mode == PowerModes.Resume) { StartStop.Checked = true; }
         }
         private void GetWindowSize() //gets screen size also considering offsets
         {
