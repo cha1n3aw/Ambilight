@@ -53,6 +53,9 @@ namespace DynamicAmbilight
             new KeyValuePair<string, string>("AmbilightModes", AmbilightModes.SelectedIndex.ToString()),
             new KeyValuePair<string, string>("CaptureMode", CaptureWay.SelectedIndex.ToString()),
             new KeyValuePair<string, string>("AudioDevice", AudioInputs.SelectedIndex.ToString()),
+            new KeyValuePair<string, string>("CaptureArea", CaptureArea.SelectedIndex.ToString()),
+            new KeyValuePair<string, string>("PreventSleep", PreventSleep.Checked.ToString()),
+            new KeyValuePair<string, string>("PreventAwayMode", PreventAwayMode.Checked.ToString()),
             };
             return settingslist;
         }
@@ -75,6 +78,9 @@ namespace DynamicAmbilight
             AmbilightModes.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["AmbilightModes"]);
             CaptureWay.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["CaptureMode"]);
             AudioInputs.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["AudioDevice"]);
+            CaptureArea.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["CaptureArea"]);
+            PreventSleep.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["PreventSleep"]);
+            PreventAwayMode.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["PreventAwayMode"]);
         }
         private void OnPowerChange(object s, PowerModeChangedEventArgs e)
         {
