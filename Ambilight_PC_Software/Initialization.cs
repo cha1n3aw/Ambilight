@@ -3,14 +3,14 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace WinForms_Dynamic_Ambilight
+namespace DynamicAmbilight
 {
-    static class Program
+    static class Initialization
     {
         [STAThread]
         static void Main()
         {
-            GuidAttribute attribute = (GuidAttribute)typeof(Program).Assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
+            GuidAttribute attribute = (GuidAttribute)typeof(Initialization).Assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
             using (Mutex mutex = new Mutex(false, @"Global\" + attribute.Value))
             {
                 if (!mutex.WaitOne(0, false))
@@ -21,7 +21,8 @@ namespace WinForms_Dynamic_Ambilight
                 GC.Collect();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new DynamicAmbilight.DynamicAmbilight());
+                DynamicAmbilight AmbilightInstance = new DynamicAmbilight();
+                Application.Run(AmbilightInstance);
             } 
         }
     }

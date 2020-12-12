@@ -62,95 +62,75 @@ namespace DynamicAmbilight
             if (StartStop.Checked)
             {
                 COMPort(true);
-                AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = TestButton.Enabled = false;
+                AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = false;
                 switch (AmbilightModes.SelectedIndex)
                 {
-                    case 0: if (CaptureWay.SelectedIndex == 0) RGBEffects = new Thread(() => MainCall(false)) { IsBackground = true, Priority = ThreadPriority.Highest };
-                            else if (CaptureWay.SelectedIndex == 1) RGBEffects = new Thread(() => MainCall(true)) { IsBackground = true, Priority = ThreadPriority.Highest };
+                    case 0: 
+                        RGBEffects = new Thread(DXCapture) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 1:
-                        RGBEffects = new Thread(FadeInOut) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
-                    case 2:
                         RGBEffects = new Thread(Rainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
+                    case 2:
+                        RGBEffects = new Thread(SingleColor) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
                     case 3:
-                        RGBEffects = new Thread(Sparkle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FadeInOut) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 4:
-                        RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(Sparkle) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 5:
-                        RGBEffects = new Thread(FullWhite) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 6:
-                        RGBEffects = new Thread(FadeCustom) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FullWhite) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 7:
-                        RGBEffects = new Thread(CylonBounce) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FadeCustom) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 8:
-                        RGBEffects = new Thread(Twinkle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(CylonBounce) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 9:
-                        RGBEffects = new Thread(TestLEDs) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(Twinkle) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 10:
-                        RGBEffects = new Thread(AudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(TestLEDs) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 11:
-                        RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(AudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 12:
-                        RGBEffects = new Thread(FadeAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 13:
-                        RGBEffects = new Thread(ColorWipe) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        RGBEffects = new Thread(FadeAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 14:
+                        RGBEffects = new Thread(ColorWipe) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case 15:
                         RGBEffects = new Thread(BouncingBall) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;  
+                        break;
                 }
                 RGBEffects.Start();     
             }
             else
             {
-                if (AmbilightModes.SelectedIndex != 0) RGBEffects.Abort();
-                AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = TestButton.Enabled = true;
-                COMPort(false);
+                if (AmbilightModes.SelectedIndex != 0)
+                {
+                    RGBEffects.Abort();
+                    while (!(RGBEffects.ThreadState == ThreadState.Aborted)); 
+                    COMPort(false);
+                }
+                AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
             }
-        }
-        private void TestButton_Click(object sender, EventArgs e)
-        {
-            COMPort(true);
-            if (CaptureWay.SelectedIndex == 0)
-            {
-                sw.Restart();
-                DXCapture();
-                sw.Stop();
-            }
-            else
-            {
-                sw.Restart();
-                WINAPICapture();
-                sw.Stop();
-            }
-            COMPort(false);
-            timing = Convert.ToInt32(sw.ElapsedMilliseconds);
-            FPSChanger.Value = Convert.ToInt32(Math.Floor(1000.0 / timing)); //floors down fps rating, so it will be more likely that there will be only one capturescreen thread running at once
-            Default_Timings.Text = "Default: " + FPSChanger.Value + " fps, " + timing + " ms per frame";
         }
         private void RefreshButton_Click(object sender, EventArgs e) { Get_ComPort_Names(); }
         private void ComPort_SelectedIndexChanged(object sender, EventArgs e) { if (ComPort.SelectedIndex != -1) serial.PortName = ComPort.Items[ComPort.SelectedIndex].ToString(); }
         private void BaudRate_SelectedIndexChanged(object sender, EventArgs e) { if (BaudRate.SelectedIndex != -1) serial.BaudRate = Convert.ToInt32(BaudRate.Items[BaudRate.SelectedIndex]); }
         private void InterpMode_SelectedIndexChanged(object sender, EventArgs e) { if (InterpMode.SelectedIndex != -1) intrpmode = (InterpolationMode)InterpMode.Items[InterpMode.SelectedIndex]; }
-        private void FPSChanger_ValueChanged(object sender, EventArgs e) { Custom_Timings.Text = "Custom: "  + FPSChanger.Value + " fps, " + 1000 / FPSChanger.Value + " ms per frame"; }
-        private void UpperOffset_TextChanged(object sender, EventArgs e) { if (UpperOffset.Text != "" && CaptureArea.SelectedIndex == 2) CustomOffsets(); }
-        private void LowerOffset_TextChanged(object sender, EventArgs e) { if (LowerOffset.Text != "" && CaptureArea.SelectedIndex == 2) CustomOffsets(); }
-        private void LeftOffset_TextChanged(object sender, EventArgs e) { if (LeftOffset.Text != "" && CaptureArea.SelectedIndex == 2)  CustomOffsets(); } 
-        private void RightOffset_TextChanged(object sender, EventArgs e) { if (RightOffset.Text != "" && CaptureArea.SelectedIndex == 2)  CustomOffsets(); } 
-        private void CustomWidth_TextChanged(object sender, EventArgs e) { if (CustomWidth.Text != "" && CaptureArea.SelectedIndex == 1)  CustomResolution(); } 
-        private void CustomHeight_TextChanged(object sender, EventArgs e) { if (CustomHeight.Text != "" && CaptureArea.SelectedIndex == 1)  CustomResolution(); } 
         private void LedsX_ValueChanged(object sender, EventArgs e) { LedsXLabel.Text = LedsX.Value.ToString(); }
         private void LedsY_ValueChanged(object sender, EventArgs e) { LedsYLabel.Text = LedsY.Value.ToString(); }
         private void PreventSleep_CheckStateChanged(object sender, EventArgs e) { if (PreventSleep.Checked == true) PreventAwayMode.Enabled = true; else { PreventAwayMode.Checked = false; PreventAwayMode.Enabled = false; } }
@@ -160,7 +140,6 @@ namespace DynamicAmbilight
             {
                 CustomWidth.Enabled = CustomHeight.Enabled = false;
                 UpperOffset.Enabled = LowerOffset.Enabled = LeftOffset.Enabled = RightOffset.Enabled = true;
-                CustomOffsets();
             }
             else
             {
@@ -168,9 +147,8 @@ namespace DynamicAmbilight
                 if (CaptureArea.SelectedIndex == 1)
                 {
                     CustomWidth.Enabled = CustomHeight.Enabled = true;
-                    CustomResolution();
                 }
-                else { CustomWidth.Enabled = CustomHeight.Enabled = false; GetWindowSize(); }
+                else { CustomWidth.Enabled = CustomHeight.Enabled = false; }
             }
         }
         private void SelectColor_Click(object sender, EventArgs e)
@@ -202,8 +180,9 @@ namespace DynamicAmbilight
             CaptureArea.Items.Add("Custom resolution");
             CaptureArea.Items.Add("Custom offsets");
             AmbilightModes.Items.Add("Dynamic Ambilight");
-            AmbilightModes.Items.Add("Single Color Fade");
             AmbilightModes.Items.Add("Rainbow");
+            AmbilightModes.Items.Add("Single Color");
+            AmbilightModes.Items.Add("Single Color Fade");
             AmbilightModes.Items.Add("Sparkle");
             AmbilightModes.Items.Add("Theater Chase");
             AmbilightModes.Items.Add("Full White");
@@ -216,15 +195,6 @@ namespace DynamicAmbilight
             AmbilightModes.Items.Add("Fade VU Meter");
             AmbilightModes.Items.Add("Multicolor Wipe");
             AmbilightModes.Items.Add("Bouncing Ball");
-            CaptureWay.Items.Add("DX11");
-            CaptureWay.Items.Add("WINAPI");
         }
-        public DynamicAmbilight()
-        {
-            InitializeComponent();
-            FillComboBoxes();
-            Init();
-            SelectionCheck();
-        }  
     }
 }

@@ -40,6 +40,15 @@ namespace DynamicAmbilight
             else if (number < LedsX.Value / 2) return Color.FromArgb(Convert.ToInt32(10.2 * (15 - number)), 255, 0); //Convert.ToInt32(255 - 5.1 * (15 - number))
             else return Color.FromArgb(Convert.ToInt32(10.2 * (NumLeds() - 1 + (NumLeds() / 4 - LedsY.Value / 2) - number)), 255, 0);
         }
+        private void SingleColor()
+        {
+            while (StartStop.Checked && colorarray.Count > 0)
+            {
+                for (int i = 0; i < ledarray.Length; i++) ledarray[i] = Color.FromArgb(Convert.ToInt32(colorarray[0].R), Convert.ToInt32(colorarray[0].G), Convert.ToInt32(colorarray[0].B));
+                LedShow();
+                Thread.Sleep(1000);
+            }
+        }
         private void FadeInOut()
         {
             while (StartStop.Checked && colorarray.Count > 0)
