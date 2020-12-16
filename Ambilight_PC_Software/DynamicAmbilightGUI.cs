@@ -8,11 +8,13 @@ using MetroFramework.Forms;
 using System.Collections.Generic;
 using MetroFramework.Controls;
 using NAudio.CoreAudioApi;
+using System.Diagnostics;
 
 namespace DynamicAmbilight
 {
     public partial class DynamicAmbilight : MetroForm
     {
+        private bool deletion = false;
         private Thread RGBEffects;
         List<MetroButton> buttonlist = new List<MetroButton>();
         public delegate void ColorDelegate(Color clr);
@@ -20,18 +22,8 @@ namespace DynamicAmbilight
         {
             if (clr != Color.Empty)
             {
-                colorarray.Add(clr);
-                buttonlist.Add(new MetroButton());
-                buttonlist[buttonlist.Count - 1].Style = MetroFramework.MetroColorStyle.Black;
-                buttonlist[buttonlist.Count - 1].Theme = MetroFramework.MetroThemeStyle.Dark;
-                buttonlist[buttonlist.Count - 1].UseCustomBackColor = true;
-                buttonlist[buttonlist.Count - 1].Size = new Size(20, 20);
-                buttonlist[buttonlist.Count - 1].Location = new Point((buttonlist.Count - 1) * 25, 280);
-                if (buttonlist.Count == 5) SelectColor.Enabled = false;
-                if (colorarray.Count > buttonlist.Count) buttonlist.Remove(buttonlist[buttonlist.Count - 1]);
-                else buttonlist[buttonlist.Count - 1].BackColor = colorarray[colorarray.Count - 1];
-                buttonlist[buttonlist.Count - 1].Click += new EventHandler(Color_Click);
-                HomeTab.Controls.Add(buttonlist[buttonlist.Count - 1]);
+                ColorSelection.Items.Add(clr);
+                ColorSelection.SelectedIndex = ColorSelection.Items.Count - 1;
             }
         }
         private void Color_Click(object sender, EventArgs e) { RemoveColor.Show(new Point(MousePosition.X, MousePosition.Y)); }
@@ -62,7 +54,7 @@ namespace DynamicAmbilight
             if (StartStop.Checked)
             {
                 COMPort(true);
-                AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = false;
+                SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = false;
                 switch (AmbilightModes.SelectedIndex)
                 {
                     case 0: 
@@ -121,10 +113,10 @@ namespace DynamicAmbilight
                 if (AmbilightModes.SelectedIndex != 0)
                 {
                     RGBEffects.Abort();
-                    while (!(RGBEffects.ThreadState == ThreadState.Aborted)); 
+                    while (!(RGBEffects.ThreadState == System.Threading.ThreadState.Aborted)); 
                     COMPort(false);
                 }
-                AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
+                SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
             }
         }
         private void RefreshButton_Click(object sender, EventArgs e) { Get_ComPort_Names(); }
@@ -144,11 +136,8 @@ namespace DynamicAmbilight
             else
             {
                 UpperOffset.Enabled = LowerOffset.Enabled = LeftOffset.Enabled = RightOffset.Enabled = false; 
-                if (CaptureArea.SelectedIndex == 1)
-                {
-                    CustomWidth.Enabled = CustomHeight.Enabled = true;
-                }
-                else { CustomWidth.Enabled = CustomHeight.Enabled = false; }
+                if (CaptureArea.SelectedIndex == 1) CustomWidth.Enabled = CustomHeight.Enabled = true;
+                else CustomWidth.Enabled = CustomHeight.Enabled = false;
             }
         }
         private void SelectColor_Click(object sender, EventArgs e)
@@ -171,6 +160,7 @@ namespace DynamicAmbilight
         }
         private void FillComboBoxes()
         {
+            ColorSelection.UseCustomBackColor = false;
             ControlTabs.SelectTab(0);
             Get_ComPort_Names();
             foreach (InterpolationMode interpmode in Enum.GetValues(typeof(InterpolationMode))) if (interpmode != InterpolationMode.Invalid) InterpMode.Items.Add(interpmode); //fetch all possible interpolation modes
@@ -196,5 +186,24 @@ namespace DynamicAmbilight
             AmbilightModes.Items.Add("Multicolor Wipe");
             AmbilightModes.Items.Add("Bouncing Ball");
         }
+        private void ColorSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!deletion)
+            {
+                ColorSelection.BackColor = (Color)ColorSelection.SelectedItem;
+                ColorSelection.UseCustomBackColor = true;
+            }
+            else
+            {
+                int i = ColorSelection.SelectedIndex;
+                Debug.WriteLine(i);
+                ColorSelection.Items.RemoveAt(ColorSelection.SelectedIndex);
+                if (ColorSelection.Items.Count < 1) ColorSelection.UseCustomBackColor = false;
+                else if (ColorSelection.Items.Count <= i) ColorSelection.BackColor = (Color)ColorSelection.Items[i - 1];
+                else ColorSelection.BackColor = (Color)ColorSelection.Items[i]; 
+            }
+        }
+        private void ColorSelection_KeyDown(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && !deletion) deletion = true; }
+        private void ColorSelection_KeyUp(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && deletion) deletion = false; }
     }
 }
