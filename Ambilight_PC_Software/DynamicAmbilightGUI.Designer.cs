@@ -71,7 +71,6 @@
             this.PreventAwayMode = new MetroFramework.Controls.MetroToggle();
             this.StartUpLabel = new MetroFramework.Controls.MetroLabel();
             this.SelectColor = new MetroFramework.Controls.MetroButton();
-            this.TimingLabel = new MetroFramework.Controls.MetroLabel();
             this.metroLabel19 = new MetroFramework.Controls.MetroLabel();
             this.AmbilightModes = new MetroFramework.Controls.MetroComboBox();
             this.FadeTiming = new MetroFramework.Controls.MetroTrackBar();
@@ -79,16 +78,15 @@
             this.Default_Timings = new MetroFramework.Controls.MetroLabel();
             this.ControlTabs = new MetroFramework.Controls.MetroTabControl();
             this.AreaTab = new MetroFramework.Controls.MetroTabPage();
-            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.TrayIconMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FadeTimingTip = new MetroFramework.Components.MetroToolTip();
             this.SettingsTab.SuspendLayout();
             this.HomeTab.SuspendLayout();
             this.ControlTabs.SuspendLayout();
             this.AreaTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.TrayIconMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -636,7 +634,6 @@
             this.HomeTab.Controls.Add(this.PreventAwayMode);
             this.HomeTab.Controls.Add(this.StartUpLabel);
             this.HomeTab.Controls.Add(this.SelectColor);
-            this.HomeTab.Controls.Add(this.TimingLabel);
             this.HomeTab.Controls.Add(this.metroLabel19);
             this.HomeTab.Controls.Add(this.AmbilightModes);
             this.HomeTab.Controls.Add(this.FadeTiming);
@@ -789,18 +786,6 @@
             this.SelectColor.UseSelectable = true;
             this.SelectColor.Click += new System.EventHandler(this.SelectColor_Click);
             // 
-            // TimingLabel
-            // 
-            this.TimingLabel.AutoSize = true;
-            this.TimingLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.TimingLabel.Location = new System.Drawing.Point(0, 57);
-            this.TimingLabel.Name = "TimingLabel";
-            this.TimingLabel.Size = new System.Drawing.Size(50, 19);
-            this.TimingLabel.Style = MetroFramework.MetroColorStyle.Black;
-            this.TimingLabel.TabIndex = 64;
-            this.TimingLabel.Text = "Timing";
-            this.TimingLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
             // metroLabel19
             // 
             this.metroLabel19.AutoSize = true;
@@ -832,14 +817,16 @@
             // 
             this.FadeTiming.BackColor = System.Drawing.Color.Transparent;
             this.FadeTiming.ForeColor = System.Drawing.Color.Black;
-            this.FadeTiming.Location = new System.Drawing.Point(56, 57);
+            this.FadeTiming.Location = new System.Drawing.Point(0, 57);
             this.FadeTiming.Maximum = 1000;
+            this.FadeTiming.MouseWheelBarPartitions = 1;
             this.FadeTiming.Name = "FadeTiming";
-            this.FadeTiming.Size = new System.Drawing.Size(163, 21);
+            this.FadeTiming.Size = new System.Drawing.Size(219, 21);
             this.FadeTiming.TabIndex = 60;
             this.FadeTiming.Tag = "";
             this.FadeTiming.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.FadeTiming.Value = 10;
+            this.FadeTiming.Value = 100;
+            this.FadeTiming.ValueChanged += new System.EventHandler(this.FadeTimingValueChanged);
             // 
             // StartStop
             // 
@@ -910,12 +897,6 @@
             this.AreaTab.VerticalScrollbarHighlightOnWheel = false;
             this.AreaTab.VerticalScrollbarSize = 10;
             // 
-            // metroStyleManager1
-            // 
-            this.metroStyleManager1.Owner = null;
-            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Black;
-            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
             // TrayIconMenu
             // 
             this.TrayIconMenu.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -936,7 +917,7 @@
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.StartStopFromTrayClicked);
             // 
@@ -944,16 +925,22 @@
             // 
             this.openToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.openToolStripMenuItem.Text = "Hide";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenFromTrayClicked);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitFromTrayClicked);
+            // 
+            // FadeTimingTip
+            // 
+            this.FadeTimingTip.Style = MetroFramework.MetroColorStyle.Black;
+            this.FadeTimingTip.StyleManager = null;
+            this.FadeTimingTip.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // DynamicAmbilight
             // 
@@ -976,7 +963,6 @@
             this.ControlTabs.ResumeLayout(false);
             this.AreaTab.ResumeLayout(false);
             this.AreaTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.TrayIconMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1017,10 +1003,8 @@
         private MetroFramework.Controls.MetroComboBox CaptureArea;
         private MetroFramework.Controls.MetroLabel metroLabel16;
         private MetroFramework.Controls.MetroTabPage AreaTab;
-        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
         private MetroFramework.Controls.MetroLabel StartUpLabel;
         private MetroFramework.Controls.MetroButton SelectColor;
-        private MetroFramework.Controls.MetroLabel TimingLabel;
         private MetroFramework.Controls.MetroLabel metroLabel19;
         private MetroFramework.Controls.MetroComboBox AmbilightModes;
         private MetroFramework.Controls.MetroTrackBar FadeTiming;
@@ -1037,6 +1021,7 @@
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private MetroFramework.Components.MetroToolTip FadeTimingTip;
     }
 }
 

@@ -44,9 +44,10 @@ namespace DynamicAmbilight
         {
             while (StartStop.Checked && GetSelectedObject() != null)
             {
+                WakeUp();
                 for (int i = 0; i < LedArray.Length; i++) LedArray[i] = Color.FromArgb(Convert.ToInt32(((Color)GetSelectedObject()).R), Convert.ToInt32(((Color)GetSelectedObject()).G), Convert.ToInt32(((Color)GetSelectedObject()).B));
                 LedShow();
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
             }
         }
         private int GetSelectedColorsCount()
@@ -76,13 +77,13 @@ namespace DynamicAmbilight
                 {
                     for (int i = 0; i < LedArray.Length; i++) LedArray[i] = Color.FromArgb(Convert.ToInt32((k / 255d) * ((Color)GetSelectedObject()).R), Convert.ToInt32((k / 255d) * ((Color)GetSelectedObject()).G), Convert.ToInt32((k / 255d) * ((Color)GetSelectedObject()).B));
                     LedShow();
-                    Thread.Sleep(FadeTiming.Value);
+                    Thread.Sleep((int)Timing);
                 }
                 for (int k = 255; k > -1; k--) //Fade OUT
                 {
                     for (int i = 0; i < LedArray.Length; i++) LedArray[i] = Color.FromArgb(Convert.ToInt32((k / 255d) * ((Color)GetSelectedObject()).R), Convert.ToInt32((k / 255d) * ((Color)GetSelectedObject()).G), Convert.ToInt32((k / 255d) * ((Color)GetSelectedObject()).B));
                     LedShow();
-                    Thread.Sleep(FadeTiming.Value);
+                    Thread.Sleep((int)Timing);
                 }
             }
         }
@@ -95,7 +96,7 @@ namespace DynamicAmbilight
                 for (j = 0; j < 256; j++)
                 {
                     for (i = 0; i < NumLeds(); i++) LedArray[i] = Wheel((i + j) & 255);
-                    Thread.Sleep(FadeTiming.Value);
+                    Thread.Sleep((int)Timing);
                     LedShow();
                 }
             }
@@ -111,7 +112,7 @@ namespace DynamicAmbilight
                 int pixel = rnd.Next(0, NumLeds() - 1);
                 LedArray[pixel] = (Color)GetSelectedObject();
                 LedShow();
-                Thread.Sleep(FadeTiming.Value);
+                Thread.Sleep((int)Timing);
                 LedArray[pixel] = Color.Black;
             }
         }
@@ -126,7 +127,7 @@ namespace DynamicAmbilight
                     {
                         for (int i = 0; i < NumLeds() - 3; i += 3) LedArray[i + q] = Wheel((i + j) % 255);    //turn every third pixel on
                         LedShow();
-                        Thread.Sleep(FadeTiming.Value);
+                        Thread.Sleep((int)Timing);
                         for (int i = 0; i < NumLeds() - 3; i += 3) LedArray[i + q] = Color.Empty;        //turn every third pixel off
                     }
                 }
@@ -154,13 +155,13 @@ namespace DynamicAmbilight
                     {
                         for (int i = 0; i < LedArray.Length; i++) LedArray[i] = Color.FromArgb(Convert.ToInt32((k / 255d) * ((Color)GetObjects()[j]).R), Convert.ToInt32((k / 255d) * ((Color)GetObjects()[j]).G), Convert.ToInt32((k / 255d) * ((Color)GetObjects()[j]).B));
                         LedShow();
-                        Thread.Sleep(FadeTiming.Value);
+                        Thread.Sleep((int)Timing);
                     }
                     for (int k = 255; k >= 0; k = k - 2)
                     {
                         for (int i = 0; i < LedArray.Length; i++) LedArray[i] = Color.FromArgb(Convert.ToInt32((k / 255d) * ((Color)GetObjects()[j]).R), Convert.ToInt32((k / 255d) * ((Color)GetObjects()[j]).G), Convert.ToInt32((k / 255d) * ((Color)GetObjects()[j]).B));
                         LedShow();
-                        Thread.Sleep(FadeTiming.Value);
+                        Thread.Sleep((int)Timing);
                     }
                 }
             }
@@ -177,7 +178,7 @@ namespace DynamicAmbilight
                             if (k != j) LedArray[k] = Color.Black;
                             else LedArray[k] = (Color)GetObjects()[i];
                         LedShow();
-                        Thread.Sleep(FadeTiming.Value);
+                        Thread.Sleep((int)Timing);
                     }
             }
         }
@@ -194,9 +195,9 @@ namespace DynamicAmbilight
                     for (int j = 1; j <= EyeSize; j++) LedArray[i + j] = (Color)GetSelectedObject();
                     LedArray[i + EyeSize + 1] = Color.FromArgb(((Color)GetSelectedObject()).R / 10, ((Color)GetSelectedObject()).G / 10, ((Color)GetSelectedObject()).B / 10);
                     LedShow();
-                    Thread.Sleep(FadeTiming.Value);
+                    Thread.Sleep((int)Timing);
                 }
-                Thread.Sleep(FadeTiming.Value * 2);
+                Thread.Sleep((int)Timing * 2);
                 for (int i = NumLeds() - EyeSize - 2; i > -1; i--)
                 {
                     for (int k = 0; k < NumLeds(); k++) LedArray[k] = Color.Black;
@@ -204,9 +205,9 @@ namespace DynamicAmbilight
                     for (int j = 1; j <= EyeSize; j++) LedArray[i + j] = (Color)GetSelectedObject();
                     LedArray[i + EyeSize + 1] = Color.FromArgb(((Color)GetSelectedObject()).R / 10, ((Color)GetSelectedObject()).G / 10, ((Color)GetSelectedObject()).B / 10);
                     LedShow();
-                    Thread.Sleep(FadeTiming.Value);
+                    Thread.Sleep((int)Timing);
                 }
-                Thread.Sleep(FadeTiming.Value * 2);
+                Thread.Sleep((int)Timing * 2);
             }
         }
         private void Twinkle()
@@ -222,9 +223,9 @@ namespace DynamicAmbilight
                 {
                     LedArray[random.Next(NumLeds() - 1)] = (Color)GetObjects()[random.Next(GetSelectedColorsCount() - 1)];
                     LedShow();
-                    Thread.Sleep(FadeTiming.Value);
+                    Thread.Sleep((int)Timing);
                 }
-                Thread.Sleep(FadeTiming.Value * 10);
+                Thread.Sleep((int)Timing * 10);
             }
         }
         private void AudioPeakMeter()
@@ -244,7 +245,7 @@ namespace DynamicAmbilight
                 for (int i = NumLeds() - 1; i > NumLeds() - LedsY.Value - (LedsX.Value / 2) - 1; i--) if (NumLeds() - 1 - i < leftVolume - (LedsX.Value / 2)) LedArray[i] = (Color)GetSelectedObject(); else LedArray[i] = Color.Black;
                 for (int i = LedsX.Value / 2; i < NumLeds() - LedsY.Value - (LedsX.Value / 2); i++) if (i - LedsX.Value / 2 < rightVolume) LedArray[i] = (Color)GetSelectedObject(); else LedArray[i] = Color.Black;
                 LedShow();
-                Thread.Sleep(FadeTiming.Value);
+                Thread.Sleep((int)Timing);
             }
         }
         private void MultiColorAudioPeakMeter()
@@ -262,7 +263,7 @@ namespace DynamicAmbilight
                 for (int i = NumLeds() - 1; i > NumLeds() - LedsY.Value - (LedsX.Value / 2) - 1; i--) if (NumLeds() - 1 - i < leftVolume - (LedsX.Value / 2)) LedArray[i] = GetBlendedColor(i); else LedArray[i] = Color.Black;
                 for (int i = LedsX.Value / 2; i < NumLeds() - LedsY.Value - (LedsX.Value / 2); i++) if (i - LedsX.Value / 2 < rightVolume) LedArray[i] = GetBlendedColor(i); else LedArray[i] = Color.Black;
                 LedShow();
-                Thread.Sleep(FadeTiming.Value);
+                Thread.Sleep((int)Timing);
             }
         }
         private void FadeAudioPeakMeter()
@@ -282,24 +283,29 @@ namespace DynamicAmbilight
                 for (int i = NumLeds() - 1; i > NumLeds() - LedsY.Value - (LedsX.Value / 2) - 1; i--) LedArray[i] = GetBlendedColor(leftVolume);
                 for (int i = LedsX.Value / 2; i < NumLeds() - LedsY.Value - (LedsX.Value / 2); i++) LedArray[i] = GetBlendedColor(rightVolume);
                 LedShow();
-                Thread.Sleep(FadeTiming.Value);
+                Thread.Sleep((int)Timing);
             }
         }
         private void ColorWipe()
         {
+            WakeUp();
             for (int i = 0; i < LedArray.Length; i++) LedArray[i] = Color.Black;
             while (StartStop.Checked && GetSelectedObject() != null)
-            for (int i = 0; i < GetSelectedColorsCount(); i++)
             {
-                for (int j = 0; j < NumLeds(); j++) { LedArray[j] = (Color)GetObjects()[i]; LedShow(); Thread.Sleep(FadeTiming.Value); }
-                Thread.Sleep(FadeTiming.Value);
-            }
+                WakeUp();
+                for (int i = 0; i < GetSelectedColorsCount(); i++)
+                {
+                    for (int j = 0; j < NumLeds(); j++) { LedArray[j] = (Color)GetObjects()[i]; LedShow(); Thread.Sleep((int)Timing); }
+                    Thread.Sleep((int)Timing);
+                }
+            } 
         }
         private void BouncingBall()
         {
             Stopwatch sww = new Stopwatch();
             while (StartStop.Checked && GetSelectedObject() != null)
             {
+                WakeUp();
                 for (int c = 0; c < GetSelectedColorsCount(); c++)
                 {
                     double[] damp = new double[2] { Convert.ToDouble(new Random().Next(80, 98)) / 100d, Convert.ToDouble(new Random().Next(81, 98)) / 100d };

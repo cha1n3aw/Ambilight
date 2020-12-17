@@ -13,6 +13,7 @@ namespace DynamicAmbilight
     public partial class DynamicAmbilight : MetroForm
     {
         private Thread RGBEffects;
+        private double Timing = 0;
         private bool ColorDeletion = false;
         public delegate void ColorDelegate(Color clr);
         public void GetColor(Color color) 
@@ -113,6 +114,7 @@ namespace DynamicAmbilight
                     while (!(RGBEffects.ThreadState == System.Threading.ThreadState.Aborted)); 
                     COMPort(false);
                 }
+                else Default_Timings.Text = "Press Start Up!";
                 FadeTiming.Enabled = SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
             }
         }
@@ -214,5 +216,11 @@ namespace DynamicAmbilight
             else if (WindowState == FormWindowState.Normal) { WindowState = FormWindowState.Minimized; }
         }
         private void ExitFromTrayClicked(object sender, EventArgs e) { Close(); }
+        private void FadeTimingValueChanged(object sender, EventArgs e)
+        {
+            Timing = FadeTiming.Value * FadeTiming.Value / 1000.0;
+            if (Timing < 10) FadeTimingTip.SetToolTip(FadeTiming, (Math.Round(Timing, 1)).ToString());
+            else FadeTimingTip.SetToolTip(FadeTiming, ((int)Timing).ToString());
+        }
     }
 }
