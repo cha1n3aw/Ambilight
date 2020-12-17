@@ -20,10 +20,8 @@ namespace DynamicAmbilight
 {
     public partial class DynamicAmbilight
     {
-        public EventHandler<byte[]> ScreenRefreshed;
+        private event EventHandler<EventArgs> ScreenRefreshed;
         private long cnt = 0, prevms = 0;
-        //private int width = 0, height = 0;
-        //private int[] offsets = new int[2] { 0, 0 }; //only for custom resolution
         private readonly Stopwatch sw = new Stopwatch();
         private SerialPort serial = new SerialPort() { Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 8, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
         private readonly string[] BaudRatesList = new string[8] { "5000000", "2000000", "1000000", "921600", "460800", "230400", "115200", "57600" };
@@ -68,7 +66,6 @@ namespace DynamicAmbilight
         private void Init()
         {
             SystemEvents.PowerModeChanged += OnPowerChange;
-            //GetWindowSize();
             LedsX.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSX"]);
             LedsY.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSY"]);
             UpperOffset.Text = ConfigurationManager.AppSettings["UpperOffset"];
@@ -91,35 +88,6 @@ namespace DynamicAmbilight
             if (e.Mode == PowerModes.Suspend) { StartStop.Checked = false; }
             else if (e.Mode == PowerModes.Resume) { StartStop.Checked = true; }
         }
-        /*
-        private void GetWindowSize() //gets screen size also considering offsets
-        {
-            offsets[0] = offsets[1] = 0;
-            DLLIMPORTS.RECT windowRect = new DLLIMPORTS.RECT(); //get the size
-            DLLIMPORTS.GetWindowRect(handle, ref windowRect);
-            width = windowRect.right - windowRect.left;
-            height = windowRect.bottom - windowRect.top;
-        }
-        private void CustomOffsets()
-        {
-            GetWindowSize();
-            width = width - Convert.ToInt32(LeftOffset.Text) - Convert.ToInt32(RightOffset.Text);
-            height = height - Convert.ToInt32(UpperOffset.Text) - Convert.ToInt32(LowerOffset.Text);
-        }
-        private void CustomResolution()
-        {
-            int customwidth = Convert.ToInt32(CustomWidth.Text);
-            int customheight = Convert.ToInt32(CustomHeight.Text);
-            if (customheight > 99 && customwidth > 99)
-            {
-                GetWindowSize();
-                offsets[0] = (height - customheight) / 2;
-                offsets[1] = (width - customwidth) / 2;
-                width = customwidth;
-                height = customheight;
-            }
-        }
-        */
         private void COMPort(bool state)
         {
             if (state && !serial.IsOpen) { serial.Open(); while (serial.IsOpen == false) ; Debug.WriteLine("SERIAL OPENED"); }
@@ -132,18 +100,12 @@ namespace DynamicAmbilight
         }
         private void DXCapture()
         {
-           
             const int numAdapter = 0; // # of graphics card adapter
             const int numOutput = 0; // # of output device (i.e. monitor)
             var factory = new Factory1(); // Create DXGI Factory1
-            var adapter = factory.GetAdapter1(numAdapter);
-            ///////
-            //Console.WriteLine(factory.GetAdapterCount());
-            //foreach (Adapter adapters in factory.Adapters) Console.WriteLine(adapters.Description.Description);
-            //foreach (Output outputs in adapter.Outputs) Console.WriteLine(outputs.Description.DeviceName);
-            ///////
-            var device = new Device(adapter); // Create device from Adapter
-            var output = adapter.GetOutput(numOutput); // Get DXGI.Output
+            var adapter = factory.GetAdapter1(numAdapter); //Console.WriteLine(factory.GetAdapterCount());
+            var device = new Device(adapter); // Create device from Adapter //foreach (Adapter adapters in factory.Adapters) Console.WriteLine(adapters.Description.Description);
+            var output = adapter.GetOutput(numOutput); // Get DXGI.Output  //foreach (Output outputs in adapter.Outputs) Console.WriteLine(outputs.Description.DeviceName);
             var output1 = output.QueryInterface<Output1>();
             int width = output.Description.DesktopBounds.Right; // Width/Height of desktop to capture
             int height = output.Description.DesktopBounds.Bottom;
@@ -190,10 +152,9 @@ namespace DynamicAmbilight
                     WakeUp();
                     try
                     {
-                        duplicatedOutput.AcquireNextFrame(10000, out OutputDuplicateFrameInformation duplicateFrameInformation, out SharpDX.DXGI.Resource screenResource); // Try to get duplicated frame within given time
+                        duplicatedOutput.AcquireNextFrame(100, out OutputDuplicateFrameInformation duplicateFrameInformation, out SharpDX.DXGI.Resource screenResource); // Try to get duplicated frame within given time
                         if (init)
                         {
-                            
                             using (var screenTexture2D = screenResource.QueryInterface<Texture2D>()) device.ImmediateContext.CopyResource(screenTexture2D, screenTexture); // copy resource into memory that can be accessed by the CPU
                             var mapSource = device.ImmediateContext.MapSubresource(screenTexture, 0, MapMode.Read, MapFlags.None); // Get the desktop capture texture
                             var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb); // Create Drawing.Bitmap
@@ -211,11 +172,10 @@ namespace DynamicAmbilight
                             device.ImmediateContext.UnmapSubresource(screenTexture, 0);
                             using (var tempbmp = new Bitmap(ledsx, ledsy, PixelFormat.Format32bppRgb))
                             {
-                                Color color;
                                 Graphics tempbmpgr = Graphics.FromImage(tempbmp);
                                 tempbmpgr.InterpolationMode = intrpmode; //nearest nighbour, low, default, bicubic, bilinear, 
-                                //tempbmpgr.DrawImage(bitmap, 0, 0, new Rectangle(0, 0, width, height), GraphicsUnit.Pixel); //15-17ms
                                 tempbmpgr.DrawImage(bitmap, new Rectangle(0, 0, ledsx, ledsy), leftoffset, upperoffset, customwidth, customheight, GraphicsUnit.Pixel);
+                                Color color;
                                 for (int x = 0; x < ledsx; x++) //these for's take 5-7ms
                                 {
                                     color = tempbmp.GetPixel(x, ledsy - 1);
@@ -236,7 +196,7 @@ namespace DynamicAmbilight
                                     color = tempbmp.GetPixel(0, y);
                                     serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
                                 }
-                                ScreenRefreshed?.Invoke(this, new byte[] { });
+                                ScreenRefreshed?.Invoke(this, EventArgs.Empty);
                                 GC.Collect();
                             }
                         }

@@ -80,14 +80,16 @@
             this.ControlTabs = new MetroFramework.Controls.MetroTabControl();
             this.AreaTab = new MetroFramework.Controls.MetroTabPage();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
-            this.RemoveColor = new MetroFramework.Controls.MetroContextMenu(this.components);
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TrayIconMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsTab.SuspendLayout();
             this.HomeTab.SuspendLayout();
             this.ControlTabs.SuspendLayout();
             this.AreaTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
-            this.RemoveColor.SuspendLayout();
+            this.TrayIconMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tray_Icon
@@ -668,8 +670,8 @@
             this.ColorSelection.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.ColorSelection.UseSelectable = true;
             this.ColorSelection.SelectedIndexChanged += new System.EventHandler(this.ColorSelection_SelectedIndexChanged);
-            this.ColorSelection.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ColorSelection_KeyDown);
-            this.ColorSelection.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ColorSelection_KeyUp);
+            this.ColorSelection.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ColorDeletionPressed);
+            this.ColorSelection.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ColorDeletionReleased);
             // 
             // DefAudioInput
             // 
@@ -914,20 +916,39 @@
             this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Black;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // RemoveColor
+            // TrayIconMenu
             // 
-            this.RemoveColor.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeToolStripMenuItem});
-            this.RemoveColor.Name = "RemoveColor";
-            this.RemoveColor.Size = new System.Drawing.Size(118, 26);
-            this.RemoveColor.Style = MetroFramework.MetroColorStyle.Black;
-            this.RemoveColor.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.TrayIconMenu.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.TrayIconMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startToolStripMenuItem,
+            this.openToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.TrayIconMenu.Name = "TrayIconMenu";
+            this.TrayIconMenu.Size = new System.Drawing.Size(181, 92);
+            this.TrayIconMenu.Style = MetroFramework.MetroColorStyle.Black;
+            this.TrayIconMenu.Text = "Ambilight";
+            this.TrayIconMenu.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // removeToolStripMenuItem
+            // startToolStripMenuItem
             // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            this.removeToolStripMenuItem.Text = "Remove";
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.StartStopFromTrayClicked);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "Hide";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenFromTrayClicked);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitFromTrayClicked);
             // 
             // DynamicAmbilight
             // 
@@ -951,7 +972,7 @@
             this.AreaTab.ResumeLayout(false);
             this.AreaTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
-            this.RemoveColor.ResumeLayout(false);
+            this.TrayIconMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -992,8 +1013,6 @@
         private MetroFramework.Controls.MetroLabel metroLabel16;
         private MetroFramework.Controls.MetroTabPage AreaTab;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
-        private MetroFramework.Controls.MetroContextMenu RemoveColor;
-        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
         private MetroFramework.Controls.MetroLabel StartUpLabel;
         private MetroFramework.Controls.MetroButton SelectColor;
         private MetroFramework.Controls.MetroLabel TimingLabel;
@@ -1009,6 +1028,10 @@
         private MetroFramework.Controls.MetroToggle UseDefaultAudio;
         private MetroFramework.Controls.MetroComboBox AudioInputs;
         private MetroFramework.Controls.MetroComboBox ColorSelection;
+        private MetroFramework.Controls.MetroContextMenu TrayIconMenu;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -15,7 +16,7 @@ namespace DynamicAmbilight
             {
                 if (!mutex.WaitOne(0, false))
                 {
-                    MessageBox.Show("An instance of Dynamic Ambilight is already running");
+                    MetroFramework.MetroMessageBox.Show(new MetroFramework.Forms.MetroForm { Location = new Point((Screen.PrimaryScreen.WorkingArea.Width - 400) / 2, (Screen.PrimaryScreen.WorkingArea.Height - 100) / 2) }, "\n\nAn instance of Dynamic Ambilight is already running", "Unable to start", MessageBoxButtons.OK, MessageBoxIcon.None);
                     return;
                 }
                 GC.Collect();

@@ -26,7 +26,6 @@ namespace DynamicAmbilight
                 ColorSelection.SelectedIndex = ColorSelection.Items.Count - 1;
             }
         }
-        private void Color_Click(object sender, EventArgs e) { RemoveColor.Show(new Point(MousePosition.X, MousePosition.Y)); }
         private void Get_ComPort_Names()
         {
             ComPort.Items.Clear();
@@ -35,7 +34,8 @@ namespace DynamicAmbilight
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
-            if (WindowState == FormWindowState.Minimized) { Hide(); Tray_Icon.BalloonTipTitle = "Hey, I'm here!"; Tray_Icon.BalloonTipText = "Click here to restore"; Tray_Icon.ShowBalloonTip(1000); }
+            if (WindowState == FormWindowState.Minimized) { Hide(); openToolStripMenuItem.Text = "Show"; Tray_Icon.BalloonTipTitle = "Hey, I'm here!"; Tray_Icon.BalloonTipText = "Click here to restore"; Tray_Icon.ShowBalloonTip(1000); }
+            else openToolStripMenuItem.Text = "Hide";
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -203,7 +203,26 @@ namespace DynamicAmbilight
                 else ColorSelection.BackColor = (Color)ColorSelection.Items[i]; 
             }
         }
-        private void ColorSelection_KeyDown(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && !deletion) deletion = true; }
-        private void ColorSelection_KeyUp(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && deletion) deletion = false; }
+        private void ColorDeletionPressed(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && !deletion) deletion = true; }
+        private void ColorDeletionReleased(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && deletion) deletion = false; }
+        private void StartStopFromTrayClicked(object sender, EventArgs e)
+        {
+            if(!StartStop.Checked)
+            {
+                StartStop.Checked = true;
+                startToolStripMenuItem.Text = "Stop";
+            }
+            else
+            {
+                StartStop.Checked = false;
+                startToolStripMenuItem.Text = "Start";
+            }
+        }
+        private void OpenFromTrayClicked(object sender, EventArgs e) 
+        {
+            if (WindowState == FormWindowState.Minimized) { Show(); WindowState = FormWindowState.Normal; }
+            else if (WindowState == FormWindowState.Normal) { WindowState = FormWindowState.Minimized; }
+        }
+        private void ExitFromTrayClicked(object sender, EventArgs e) { base.Close(); }
     }
 }
