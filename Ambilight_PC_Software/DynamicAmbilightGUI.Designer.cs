@@ -918,16 +918,20 @@
             // 
             // TrayIconMenu
             // 
+            this.TrayIconMenu.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TrayIconMenu.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.TrayIconMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startToolStripMenuItem,
             this.openToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.TrayIconMenu.Name = "TrayIconMenu";
-            this.TrayIconMenu.Size = new System.Drawing.Size(181, 92);
+            this.TrayIconMenu.ShowImageMargin = false;
+            this.TrayIconMenu.Size = new System.Drawing.Size(156, 92);
             this.TrayIconMenu.Style = MetroFramework.MetroColorStyle.Black;
+            this.TrayIconMenu.TabStop = true;
             this.TrayIconMenu.Text = "Ambilight";
             this.TrayIconMenu.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.TrayIconMenu.UseSelectable = true;
             // 
             // startToolStripMenuItem
             // 
@@ -938,6 +942,7 @@
             // 
             // openToolStripMenuItem
             // 
+            this.openToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Hide";

@@ -44,22 +44,22 @@ namespace DynamicAmbilight
         {
             var settingslist = new List<KeyValuePair<string, string>>()
             {
-            new KeyValuePair<string, string>("UpperOffset", UpperOffset.Text),
-            new KeyValuePair<string, string>("LowerOffset", LowerOffset.Text),
-            new KeyValuePair<string, string>("LeftOffset", LeftOffset.Text),
-            new KeyValuePair<string, string>("RightOffset", RightOffset.Text),
-            new KeyValuePair<string, string>("CustomWidth", CustomWidth.Text),
-            new KeyValuePair<string, string>("CustomHeight", CustomHeight.Text),
-            new KeyValuePair<string, string>("LedsX", LedsX.Value.ToString()),
-            new KeyValuePair<string, string>("LedsY", LedsY.Value.ToString()),
-            new KeyValuePair<string, string>("BaudRate", BaudRate.SelectedIndex.ToString()),
-            new KeyValuePair<string, string>("InterpolationMode", InterpMode.SelectedIndex.ToString()),
-            new KeyValuePair<string, string>("FadeTiming", FadeTiming.Value.ToString()),
-            new KeyValuePair<string, string>("AmbilightModes", AmbilightModes.SelectedIndex.ToString()),
-            new KeyValuePair<string, string>("AudioDevice", AudioInputs.SelectedIndex.ToString()),
-            new KeyValuePair<string, string>("CaptureArea", CaptureArea.SelectedIndex.ToString()),
-            new KeyValuePair<string, string>("PreventSleep", PreventSleep.Checked.ToString()),
-            new KeyValuePair<string, string>("PreventAwayMode", PreventAwayMode.Checked.ToString()),
+                new KeyValuePair<string, string>("UpperOffset", UpperOffset.Text),
+                new KeyValuePair<string, string>("LowerOffset", LowerOffset.Text),
+                new KeyValuePair<string, string>("LeftOffset", LeftOffset.Text),
+                new KeyValuePair<string, string>("RightOffset", RightOffset.Text),
+                new KeyValuePair<string, string>("CustomWidth", CustomWidth.Text),
+                new KeyValuePair<string, string>("CustomHeight", CustomHeight.Text),
+                new KeyValuePair<string, string>("LedsX", LedsX.Value.ToString()),
+                new KeyValuePair<string, string>("LedsY", LedsY.Value.ToString()),
+                new KeyValuePair<string, string>("BaudRate", BaudRate.SelectedIndex.ToString()),
+                new KeyValuePair<string, string>("InterpolationMode", InterpMode.SelectedIndex.ToString()),
+                new KeyValuePair<string, string>("FadeTiming", FadeTiming.Value.ToString()),
+                new KeyValuePair<string, string>("AmbilightModes", AmbilightModes.SelectedIndex.ToString()),
+                new KeyValuePair<string, string>("AudioDevice", AudioInputs.SelectedIndex.ToString()),
+                new KeyValuePair<string, string>("CaptureArea", CaptureArea.SelectedIndex.ToString()),
+                new KeyValuePair<string, string>("PreventSleep", PreventSleep.Checked.ToString()),
+                new KeyValuePair<string, string>("PreventAwayMode", PreventAwayMode.Checked.ToString()),
             };
             return settingslist;
         }

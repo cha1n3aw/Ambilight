@@ -5,8 +5,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using MetroFramework.Forms;
-using System.Collections.Generic;
-using MetroFramework.Controls;
 using NAudio.CoreAudioApi;
 using System.Diagnostics;
 
@@ -14,19 +12,18 @@ namespace DynamicAmbilight
 {
     public partial class DynamicAmbilight : MetroForm
     {
-        private bool deletion = false;
         private Thread RGBEffects;
-        List<MetroButton> buttonlist = new List<MetroButton>();
+        private bool ColorDeletion = false;
         public delegate void ColorDelegate(Color clr);
-        public void GetColor(Color clr) 
+        public void GetColor(Color color) 
         {
-            if (clr != Color.Empty)
+            if (color != Color.Empty)
             {
-                ColorSelection.Items.Add(clr);
+                ColorSelection.Items.Add(color);
                 ColorSelection.SelectedIndex = ColorSelection.Items.Count - 1;
             }
         }
-        private void Get_ComPort_Names()
+        private void RefreshComPorts()
         {
             ComPort.Items.Clear();
             foreach (string comportname in SerialPort.GetPortNames()) ComPort.Items.Add(comportname); //fetch comports that present in system
@@ -57,14 +54,14 @@ namespace DynamicAmbilight
                 SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = false;
                 switch (AmbilightModes.SelectedIndex)
                 {
-                    case 0: 
-                        RGBEffects = new Thread(DXCapture) { IsBackground = true, Priority = ThreadPriority.Highest };
+                    case 0:
+                        { RGBEffects = new Thread(DXCapture) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
                         break;
                     case 1:
                         RGBEffects = new Thread(Rainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 2:
-                        RGBEffects = new Thread(SingleColor) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        { RGBEffects = new Thread(SingleColor) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
                         break;
                     case 3:
                         RGBEffects = new Thread(FadeInOut) { IsBackground = true, Priority = ThreadPriority.Highest };
@@ -76,8 +73,8 @@ namespace DynamicAmbilight
                         RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 6:
-                        RGBEffects = new Thread(FullWhite) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
+                        { RGBEffects = new Thread(FullWhite) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
+                    break;
                     case 7:
                         RGBEffects = new Thread(FadeCustom) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
@@ -91,20 +88,20 @@ namespace DynamicAmbilight
                         RGBEffects = new Thread(TestLEDs) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 11:
-                        RGBEffects = new Thread(AudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
+                        { RGBEffects = new Thread(AudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
+                    break;
                     case 12:
-                        RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        { RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
                         break;
                     case 13:
-                        RGBEffects = new Thread(FadeAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        { RGBEffects = new Thread(FadeAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
                         break;
                     case 14:
                         RGBEffects = new Thread(ColorWipe) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
                     case 15:
-                        RGBEffects = new Thread(BouncingBall) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
+                        { RGBEffects = new Thread(BouncingBall) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
+                    break;
                 }
                 RGBEffects.Start();     
             }
@@ -116,10 +113,10 @@ namespace DynamicAmbilight
                     while (!(RGBEffects.ThreadState == System.Threading.ThreadState.Aborted)); 
                     COMPort(false);
                 }
-                SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
+                FadeTiming.Enabled = SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
             }
         }
-        private void RefreshButton_Click(object sender, EventArgs e) { Get_ComPort_Names(); }
+        private void RefreshButton_Click(object sender, EventArgs e) { RefreshComPorts(); }
         private void ComPort_SelectedIndexChanged(object sender, EventArgs e) { if (ComPort.SelectedIndex != -1) serial.PortName = ComPort.Items[ComPort.SelectedIndex].ToString(); }
         private void BaudRate_SelectedIndexChanged(object sender, EventArgs e) { if (BaudRate.SelectedIndex != -1) serial.BaudRate = Convert.ToInt32(BaudRate.Items[BaudRate.SelectedIndex]); }
         private void InterpMode_SelectedIndexChanged(object sender, EventArgs e) { if (InterpMode.SelectedIndex != -1) intrpmode = (InterpolationMode)InterpMode.Items[InterpMode.SelectedIndex]; }
@@ -140,14 +137,7 @@ namespace DynamicAmbilight
                 else CustomWidth.Enabled = CustomHeight.Enabled = false;
             }
         }
-        private void SelectColor_Click(object sender, EventArgs e)
-        {
-            if (buttonlist.Count < 6)
-            {
-                ColorPicker colorpicker = new ColorPicker(new ColorDelegate(GetColor));
-                colorpicker.Show();
-            }
-        }
+        private void SelectColor_Click(object sender, EventArgs e) { new ColorPicker(new ColorDelegate(GetColor)).Show(); }
         private void UseDefaultAudio_CheckedStateChanged(object sender, EventArgs e)
         {
             if (UseDefaultAudio.Checked) AudioInputs.Enabled = false;
@@ -162,7 +152,7 @@ namespace DynamicAmbilight
         {
             ColorSelection.UseCustomBackColor = false;
             ControlTabs.SelectTab(0);
-            Get_ComPort_Names();
+            RefreshComPorts();
             foreach (InterpolationMode interpmode in Enum.GetValues(typeof(InterpolationMode))) if (interpmode != InterpolationMode.Invalid) InterpMode.Items.Add(interpmode); //fetch all possible interpolation modes
             foreach (MMDevice dev in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.All, DeviceState.Active)) AudioInputs.Items.Add(dev);
             for (int i = 0; i < BaudRatesList.Length; i++) BaudRate.Items.Add(BaudRatesList[i]);
@@ -188,7 +178,7 @@ namespace DynamicAmbilight
         }
         private void ColorSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!deletion)
+            if (!ColorDeletion)
             {
                 ColorSelection.BackColor = (Color)ColorSelection.SelectedItem;
                 ColorSelection.UseCustomBackColor = true;
@@ -203,8 +193,8 @@ namespace DynamicAmbilight
                 else ColorSelection.BackColor = (Color)ColorSelection.Items[i]; 
             }
         }
-        private void ColorDeletionPressed(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && !deletion) deletion = true; }
-        private void ColorDeletionReleased(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && deletion) deletion = false; }
+        private void ColorDeletionPressed(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && !ColorDeletion) ColorDeletion = true; }
+        private void ColorDeletionReleased(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && ColorDeletion) ColorDeletion = false; }
         private void StartStopFromTrayClicked(object sender, EventArgs e)
         {
             if(!StartStop.Checked)
@@ -223,6 +213,6 @@ namespace DynamicAmbilight
             if (WindowState == FormWindowState.Minimized) { Show(); WindowState = FormWindowState.Normal; }
             else if (WindowState == FormWindowState.Normal) { WindowState = FormWindowState.Minimized; }
         }
-        private void ExitFromTrayClicked(object sender, EventArgs e) { base.Close(); }
+        private void ExitFromTrayClicked(object sender, EventArgs e) { Close(); }
     }
 }
