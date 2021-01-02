@@ -40,16 +40,6 @@ namespace DynamicAmbilight
             else if (number < LedsX.Value / 2) return Color.FromArgb(Convert.ToInt32(10.2 * (15 - number)), 255, 0); //Convert.ToInt32(255 - 5.1 * (15 - number))
             else return Color.FromArgb(Convert.ToInt32(10.2 * (NumLeds() - 1 + (NumLeds() / 4 - LedsY.Value / 2) - number)), 255, 0);
         }
-        private void SingleColor()
-        {
-            while (StartStop.Checked && GetSelectedObject() != null)
-            {
-                WakeUp();
-                for (int i = 0; i < LedArray.Length; i++) LedArray[i] = Color.FromArgb(Convert.ToInt32(((Color)GetSelectedObject()).R), Convert.ToInt32(((Color)GetSelectedObject()).G), Convert.ToInt32(((Color)GetSelectedObject()).B));
-                LedShow();
-                Thread.Sleep(500);
-            }
-        }
         private int GetSelectedColorsCount()
         {
             int count = 0;
@@ -67,6 +57,35 @@ namespace DynamicAmbilight
             ComboBox.ObjectCollection obj = null;
             ColorSelection.Invoke((MethodInvoker)delegate { obj = ColorSelection.Items; });
             return obj;
+        }
+        private void HappyNewYear()
+        {
+            while (StartStop.Checked)
+            {
+                for (int itt = 0; itt < 4; itt++)
+                {
+                    WakeUp();
+                    for (int i = 0; i < LedArray.Length; i++)
+                    {
+                        if (i % 16 < 4 && itt == 0) LedArray[i] = Color.Green;
+                        else if (i % 16 < 8 && itt == 1) LedArray[i] = Color.Red;
+                        else if (i % 16 < 12 && itt == 2) LedArray[i] = Color.Yellow;
+                        else if (i % 16 < 16 && itt == 3) LedArray[i] = Color.Blue;
+                    }
+                    LedShow();
+                    Thread.Sleep(1000);
+                } 
+            }
+        }
+        private void SingleColor()
+        {
+            while (StartStop.Checked && GetSelectedObject() != null)
+            {
+                WakeUp();
+                for (int i = 0; i < LedArray.Length; i++) LedArray[i] = Color.FromArgb(Convert.ToInt32(((Color)GetSelectedObject()).R * Timing / 1000), Convert.ToInt32(((Color)GetSelectedObject()).G * Timing / 1000), Convert.ToInt32(((Color)GetSelectedObject()).B * Timing / 1000));
+                LedShow();
+                Thread.Sleep(500);
+            }
         }
         private void FadeInOut()
         {
@@ -144,7 +163,7 @@ namespace DynamicAmbilight
                 Thread.Sleep(400);
             }
         }
-        private void FadeCustom()
+        private void MultiColorFade()
         {
             while (StartStop.Checked && GetSelectedObject() != null)
             {

@@ -152,14 +152,14 @@
   <data name="CustomWidth.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 23</value>
   </data>
+  <data name="&gt;&gt;TrayIconMenu.Name" xml:space="preserve">
+    <value>TrayIconMenu</value>
+  </data>
   <data name="resource.TextAlign1" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
   <data name="DefAudioInput.Text" xml:space="preserve">
     <value>Default Audio Input</value>
-  </data>
-  <data name="&gt;&gt;AmbilightModes.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroComboBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="resource.Anchor2" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left</value>
@@ -167,8 +167,8 @@
   <data name="resource.Image2" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="LedsXLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>196, 183</value>
+  <data name="TrayIconMenu.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Semibold, 9.75pt, style=Bold</value>
   </data>
   <data name="&gt;&gt;StartStop.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
@@ -176,8 +176,8 @@
   <data name="resource.ImageAlign1" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
-  <data name="PrevAwayMode.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;UpperOffset.Parent" xml:space="preserve">
+    <value>AreaTab</value>
   </data>
   <data name="&gt;&gt;metroLabel1.Parent" xml:space="preserve">
     <value>SettingsTab</value>
@@ -197,6 +197,9 @@
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="resource.RightToLeft1" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>Inherit</value>
+  </data>
   <data name="&gt;&gt;ColorSelection.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroComboBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
@@ -206,9 +209,6 @@
   <data name="RightOffset.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 23</value>
   </data>
-  <data name="metroLabel12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 168</value>
-  </data>
   <data name="resource.AccessibleName2" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -216,20 +216,14 @@
   <data name="ComPort.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="resource.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>Overlay</value>
+  <data name="&gt;&gt;SelectColor.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
   <data name="&gt;&gt;UseDefaultAudio.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="DefAudioInput.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 19</value>
-  </data>
-  <data name="PreventSleep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 17</value>
-  </data>
-  <data name="metroLabel2.Text" xml:space="preserve">
-    <value>Baudrate</value>
   </data>
   <data name="metroLabel17.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -252,9 +246,6 @@
   <data name="LeftOffset.Location" type="System.Drawing.Point, System.Drawing">
     <value>143, 197</value>
   </data>
-  <data name="&gt;&gt;metroLabel14.Name" xml:space="preserve">
-    <value>metroLabel14</value>
-  </data>
   <data name="&gt;&gt;metroLabel2.Parent" xml:space="preserve">
     <value>SettingsTab</value>
   </data>
@@ -266,6 +257,9 @@
   </data>
   <data name="AmbilightModes.ItemHeight" type="System.Int32, mscorlib">
     <value>23</value>
+  </data>
+  <data name="&gt;&gt;RefreshButton.ZOrder" xml:space="preserve">
+    <value>9</value>
   </data>
   <data name="CustomHeight.Location" type="System.Drawing.Point, System.Drawing">
     <value>143, 76</value>
@@ -288,14 +282,20 @@
   <data name="metroLabel15.TabIndex" type="System.Int32, mscorlib">
     <value>46</value>
   </data>
+  <data name="FadeTiming.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 21</value>
+  </data>
+  <data name="metroLabel13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 19</value>
+  </data>
   <data name="HomeTab.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="metroLabel3.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="resource.TabIndex2" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="&gt;&gt;LedsYLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="&gt;&gt;metroLabel18.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -306,8 +306,8 @@
   <data name="&gt;&gt;DefAudioInput.Parent" xml:space="preserve">
     <value>HomeTab</value>
   </data>
-  <data name="&gt;&gt;metroLabel15.Parent" xml:space="preserve">
-    <value>AreaTab</value>
+  <data name="&gt;&gt;StartUpLabel.Parent" xml:space="preserve">
+    <value>HomeTab</value>
   </data>
   <data name="&gt;&gt;metroLabel3.Parent" xml:space="preserve">
     <value>SettingsTab</value>
@@ -321,11 +321,14 @@
   <data name="resource.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowOnly</value>
   </data>
+  <data name="&gt;&gt;metroLabel16.Parent" xml:space="preserve">
+    <value>AreaTab</value>
+  </data>
   <data name="&gt;&gt;UpperOffsetLabel.Parent" xml:space="preserve">
     <value>AreaTab</value>
   </data>
-  <data name="&gt;&gt;InterpMode.Name" xml:space="preserve">
-    <value>InterpMode</value>
+  <data name="&gt;&gt;Tray_Icon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="metroLabel18.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 19</value>
@@ -333,8 +336,11 @@
   <data name="resource.Dock5" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
-  <data name="&gt;&gt;UpperOffsetLabel.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="resource.Dock2" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="UseDefaultAudio.Location" type="System.Drawing.Point, System.Drawing">
+    <value>169, 188</value>
   </data>
   <data name="PrevSleep.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 139</value>
@@ -344,6 +350,9 @@
   </data>
   <data name="&gt;&gt;AreaTab.Name" xml:space="preserve">
     <value>AreaTab</value>
+  </data>
+  <data name="BaudRate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 75</value>
   </data>
   <data name="metroLabel10.Size" type="System.Drawing.Size, System.Drawing">
     <value>134, 19</value>
@@ -360,20 +369,17 @@
   <data name="AmbilightModes.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 22</value>
   </data>
-  <data name="&gt;&gt;PrevSleep.Parent" xml:space="preserve">
-    <value>HomeTab</value>
+  <data name="ControlTabs.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="TrayIconMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 70</value>
   </data>
-  <data name="resource.AccessibleDescription3" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="metroLabel19.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="LowerOffset.TabIndex" type="System.Int32, mscorlib">
-    <value>48</value>
-  </data>
-  <data name="&gt;&gt;PreventAwayMode.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="&gt;&gt;AudioInputs.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="&gt;&gt;ColorSelection.Name" xml:space="preserve">
     <value>ColorSelection</value>
@@ -381,20 +387,20 @@
   <data name="UpperOffsetLabel.Text" xml:space="preserve">
     <value>Upper Offset</value>
   </data>
+  <data name="&gt;&gt;PrevSleep.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
   <data name="LeftOffset.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
   </data>
-  <data name="TrayIconMenu.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Semibold, 9.75pt, style=Bold</value>
+  <data name="resource.TextAlign5" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Dynamic Ambilight</value>
   </data>
   <data name="PreventSleep.Location" type="System.Drawing.Point, System.Drawing">
     <value>169, 142</value>
-  </data>
-  <data name="metroLabel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 19</value>
   </data>
   <data name="RefreshButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -426,11 +432,14 @@
   <data name="&gt;&gt;metroLabel19.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="RightOffset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 226</value>
+  <data name="LowerOffset.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="&gt;&gt;BaudRate.Name" xml:space="preserve">
-    <value>BaudRate</value>
+  <data name="&gt;&gt;UpperOffsetLabel.Name" xml:space="preserve">
+    <value>UpperOffsetLabel</value>
+  </data>
+  <data name="&gt;&gt;LedsYLabel.Name" xml:space="preserve">
+    <value>LedsYLabel</value>
   </data>
   <data name="&gt;&gt;RightOffset.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroTextBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
@@ -444,9 +453,6 @@
   <data name="resource.BackgroundImageLayout3" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Tile</value>
   </data>
-  <data name="&gt;&gt;metroLabel11.Parent" xml:space="preserve">
-    <value>SettingsTab</value>
-  </data>
   <data name="metroLabel18.TabIndex" type="System.Int32, mscorlib">
     <value>57</value>
   </data>
@@ -458,6 +464,9 @@
   </data>
   <data name="StartUpLabel.Text" xml:space="preserve">
     <value>Start Up!</value>
+  </data>
+  <data name="resource.AccessibleName1" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="&gt;&gt;metroLabel12.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -474,11 +483,11 @@
   <data name="AmbilightModes.TabIndex" type="System.Int32, mscorlib">
     <value>61</value>
   </data>
-  <data name="&gt;&gt;InterpMode.ZOrder" xml:space="preserve">
-    <value>14</value>
+  <data name="resource.FlatStyle4" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Standard</value>
   </data>
-  <data name="&gt;&gt;AmbilightModes.Parent" xml:space="preserve">
-    <value>HomeTab</value>
+  <data name="startToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 22</value>
   </data>
   <data name="CustomHeight.TabIndex" type="System.Int32, mscorlib">
     <value>55</value>
@@ -498,11 +507,14 @@
   <data name="UseDefaultAudio.Text" xml:space="preserve">
     <value>On</value>
   </data>
+  <data name="&gt;&gt;UseDefaultAudio.Name" xml:space="preserve">
+    <value>UseDefaultAudio</value>
+  </data>
   <data name="AudioInputs.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
-  <data name="RightOffset.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="BaudRate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 29</value>
   </data>
   <data name="LowerOffset.Text" xml:space="preserve">
     <value>0</value>
@@ -513,20 +525,17 @@
   <data name="&gt;&gt;CustomWidth.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroTextBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="AreaTab.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="resource.AutoSize2" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="HomeTab.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 38</value>
   </data>
   <data name="resource.ImeMode1" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>Inherit</value>
   </data>
-  <data name="HomeTab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 38</value>
-  </data>
-  <data name="AudioInputs.TabIndex" type="System.Int32, mscorlib">
-    <value>76</value>
-  </data>
-  <data name="resource.Location2" type="System.Drawing.Point, System.Drawing">
-    <value>54, 1</value>
+  <data name="resource.ImeMode3" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>Inherit</value>
   </data>
   <data name="&gt;&gt;metroLabel10.Name" xml:space="preserve">
     <value>metroLabel10</value>
@@ -546,20 +555,11 @@
   <data name="ControlTabs.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="&gt;&gt;openToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
   <data name="CustomWidth.Text" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;metroLabel12.Name" xml:space="preserve">
-    <value>metroLabel12</value>
-  </data>
-  <data name="metroLabel17.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="&gt;&gt;AudioInputs.Name" xml:space="preserve">
     <value>AudioInputs</value>
@@ -573,17 +573,11 @@
   <data name="ColorSelection.ItemHeight" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="SelectColor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 29</value>
-  </data>
-  <data name="&gt;&gt;StartUpLabel.Parent" xml:space="preserve">
-    <value>HomeTab</value>
-  </data>
   <data name="metroLabel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="metroLabel19.TabIndex" type="System.Int32, mscorlib">
-    <value>63</value>
+  <data name="&gt;&gt;RightOffset.Name" xml:space="preserve">
+    <value>RightOffset</value>
   </data>
   <data name="metroLabel13.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -594,11 +588,8 @@
   <data name="resource.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left</value>
   </data>
-  <data name="LedsYLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;metroLabel14.Parent" xml:space="preserve">
-    <value>AreaTab</value>
+  <data name="PreventAwayMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 17</value>
   </data>
   <data name="resource.FlatStyle3" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Standard</value>
@@ -606,8 +597,8 @@
   <data name="DefAudioInput.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 185</value>
   </data>
-  <data name="resource.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
+  <data name="LeftOffset.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="resource.AccessibleName" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -618,20 +609,29 @@
   <data name="RightOffset.Text" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="resource.ImageAlign4" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
   <data name="&gt;&gt;StartUpLabel.Name" xml:space="preserve">
     <value>StartUpLabel</value>
+  </data>
+  <data name="metroLabel17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>101, 80</value>
   </data>
   <data name="ComPort.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="SettingsTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 264</value>
+  <data name="Tray_Icon.Visible" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="BaudRate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 29</value>
+  <data name="metroLabel16.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>MetroFramework.Forms.MetroForm, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="InterpMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 129</value>
   </data>
   <data name="&gt;&gt;AmbilightModes.Name" xml:space="preserve">
     <value>AmbilightModes</value>
@@ -648,11 +648,14 @@
   <data name="BaudRate.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="AmbilightModes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 29</value>
+  </data>
   <data name="HomeTab.Size" type="System.Drawing.Size, System.Drawing">
     <value>219, 264</value>
   </data>
-  <data name="PrevSleep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 19</value>
+  <data name="resource.AutoSize5" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="resource.Size2" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
@@ -666,20 +669,17 @@
   <data name="UseDefaultAudio.TabIndex" type="System.Int32, mscorlib">
     <value>78</value>
   </data>
-  <data name="&gt;&gt;LowerOffset.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="AudioInputs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 211</value>
   </data>
   <data name="resource.Image" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="CaptureArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 22</value>
-  </data>
   <data name="metroLabel18.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 54</value>
   </data>
-  <data name="metroLabel12.Text" xml:space="preserve">
-    <value>Lower Offset</value>
+  <data name="metroLabel16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
   <data name="metroLabel13.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
@@ -696,17 +696,17 @@
   <data name="resource.BackgroundImageLayout4" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Tile</value>
   </data>
+  <data name="openToolStripMenuItem.Text" xml:space="preserve">
+    <value>Hide</value>
+  </data>
   <data name="resource.BackgroundImage4" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="metroLabel12.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="resource.TabIndex5" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;metroLabel15.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="metroLabel19.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="resource.FlatStyle5" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Standard</value>
   </data>
   <data name="&gt;&gt;UpperOffset.ZOrder" xml:space="preserve">
     <value>12</value>
@@ -720,11 +720,8 @@
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 22</value>
   </data>
-  <data name="&gt;&gt;UpperOffsetLabel.Name" xml:space="preserve">
-    <value>UpperOffsetLabel</value>
-  </data>
-  <data name="PrevAwayMode.Text" xml:space="preserve">
-    <value>Prevent awaymode</value>
+  <data name="resource.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>Overlay</value>
   </data>
   <data name="&gt;&gt;DefAudioInput.Name" xml:space="preserve">
     <value>DefAudioInput</value>
@@ -732,8 +729,8 @@
   <data name="resource.BackgroundImageLayout5" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Tile</value>
   </data>
-  <data name="&gt;&gt;LedsYLabel.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="ColorSelection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 84</value>
   </data>
   <data name="LedsX.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -744,14 +741,14 @@
   <data name="&gt;&gt;metroLabel13.Parent" xml:space="preserve">
     <value>AreaTab</value>
   </data>
+  <data name="AreaTab.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
   <data name="resource.AutoSize4" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="&gt;&gt;metroLabel19.ZOrder" xml:space="preserve">
     <value>12</value>
-  </data>
-  <data name="&gt;&gt;PrevAwayMode.Name" xml:space="preserve">
-    <value>PrevAwayMode</value>
   </data>
   <data name="resource.AccessibleDescription" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -762,14 +759,8 @@
   <data name="PreventAwayMode.TabIndex" type="System.Int32, mscorlib">
     <value>69</value>
   </data>
-  <data name="AreaTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 264</value>
-  </data>
   <data name="&gt;&gt;metroLabel13.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
-  <data name="PreventAwayMode.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="resource.Size5" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
@@ -798,6 +789,9 @@
   <data name="DefAudioInput.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="resource.Location1" type="System.Drawing.Point, System.Drawing">
+    <value>59, 1</value>
+  </data>
   <data name="PreventSleep.Text" xml:space="preserve">
     <value>Off</value>
   </data>
@@ -810,8 +804,8 @@
   <data name="resource.ImageKey2" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;metroLabel15.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="resource.AccessibleDescription4" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="metroLabel19.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -824,6 +818,9 @@
   </data>
   <data name="&gt;&gt;LowerOffset.Parent" xml:space="preserve">
     <value>AreaTab</value>
+  </data>
+  <data name="PrevSleep.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="UpperOffset.ToolTip" xml:space="preserve">
     <value />
@@ -840,9 +837,6 @@
   <data name="&gt;&gt;UpperOffset.Name" xml:space="preserve">
     <value>UpperOffset</value>
   </data>
-  <data name="metroLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 19</value>
-  </data>
   <data name="resource.TabIndex3" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -855,8 +849,8 @@
   <data name="metroLabel12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;AreaTab.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroTabPage, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="&gt;&gt;CaptureArea.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroComboBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="&gt;&gt;metroLabel11.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -864,11 +858,8 @@
   <data name="resource.Location5" type="System.Drawing.Point, System.Drawing">
     <value>54, 1</value>
   </data>
-  <data name="UpperOffsetLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 19</value>
-  </data>
-  <data name="&gt;&gt;CaptureArea.Parent" xml:space="preserve">
-    <value>AreaTab</value>
+  <data name="metroLabel16.Text" xml:space="preserve">
+    <value>Capture Area</value>
   </data>
   <data name="metroLabel11.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -876,8 +867,14 @@
   <data name="StartUpLabel.TabIndex" type="System.Int32, mscorlib">
     <value>65</value>
   </data>
+  <data name="metroLabel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 107</value>
+  </data>
   <data name="resource.AccessibleDescription2" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
+  </data>
+  <data name="ControlTabs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 63</value>
   </data>
   <data name="LedsYLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>21, 19</value>
@@ -885,11 +882,17 @@
   <data name="resource.TextAlign3" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
-  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="resource.ImageIndex4" type="System.Int32, mscorlib">
+    <value>-1</value>
+  </data>
+  <data name="ColorSelection.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="TrayIconMenu.Text" xml:space="preserve">
     <value>Ambilight</value>
+  </data>
+  <data name="metroLabel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value />
@@ -903,9 +906,6 @@
   <data name="metroLabel10.Text" xml:space="preserve">
     <value>Horizontal side LEDs</value>
   </data>
-  <data name="FadeTiming.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="&gt;&gt;LeftOffset.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroTextBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
@@ -915,8 +915,14 @@
   <data name="&gt;&gt;ComPort.Name" xml:space="preserve">
     <value>ComPort</value>
   </data>
-  <data name="resource.ImeMode3" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>Inherit</value>
+  <data name="metroLabel19.TabIndex" type="System.Int32, mscorlib">
+    <value>63</value>
+  </data>
+  <data name="resource.Dock3" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="&gt;&gt;FadeTiming.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTrackBar, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="&gt;&gt;PrevAwayMode.Parent" xml:space="preserve">
     <value>HomeTab</value>
@@ -930,8 +936,8 @@
   <data name="resource.Visible4" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;UpperOffset.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroTextBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="resource.RightToLeft3" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>Inherit</value>
   </data>
   <data name="&gt;&gt;LowerOffset.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroTextBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
@@ -999,11 +1005,8 @@
   <data name="SelectColor.Text" xml:space="preserve">
     <value>Pick</value>
   </data>
-  <data name="LedsYLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
-  <data name="&gt;&gt;metroLabel1.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="LedsYLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="metroLabel17.Size" type="System.Drawing.Size, System.Drawing">
     <value>18, 19</value>
@@ -1020,11 +1023,8 @@
   <data name="LedsYLabel.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="ComPort.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="&gt;&gt;metroLabel3.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="&gt;&gt;AreaTab.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="InterpMode.ItemHeight" type="System.Int32, mscorlib">
     <value>23</value>
@@ -1038,32 +1038,23 @@
   <data name="metroLabel14.Text" xml:space="preserve">
     <value>Right Offset</value>
   </data>
-  <data name="UseDefaultAudio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 17</value>
-  </data>
   <data name="metroLabel13.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 197</value>
-  </data>
-  <data name="startToolStripMenuItem.Text" xml:space="preserve">
-    <value>Start</value>
   </data>
   <data name="&gt;&gt;LedsX.Parent" xml:space="preserve">
     <value>SettingsTab</value>
   </data>
-  <data name="metroLabel1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="&gt;&gt;CaptureArea.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;SettingsTab.Parent" xml:space="preserve">
-    <value>ControlTabs</value>
+  <data name="&gt;&gt;metroLabel11.Parent" xml:space="preserve">
+    <value>SettingsTab</value>
   </data>
   <data name="&gt;&gt;SettingsTab.Name" xml:space="preserve">
     <value>SettingsTab</value>
   </data>
-  <data name="LeftOffset.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;AmbilightModes.Parent" xml:space="preserve">
+    <value>HomeTab</value>
   </data>
   <data name="metroLabel14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2962,9 +2953,6 @@
   <data name="resource.AutoSize3" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="metroLabel18.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="resource.Anchor4" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left</value>
   </data>
@@ -2977,14 +2965,17 @@
   <data name="resource.FlatStyle1" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Standard</value>
   </data>
-  <data name="LedsX.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 19</value>
-  </data>
   <data name="AudioInputs.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="resource.TextAlign5" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
+  <data name="resource.ImeMode2" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>Inherit</value>
+  </data>
+  <data name="resource.AutoSizeMode3" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowOnly</value>
+  </data>
+  <data name="&gt;&gt;UseDefaultAudio.Parent" xml:space="preserve">
+    <value>HomeTab</value>
   </data>
   <data name="&gt;&gt;metroLabel16.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -2995,8 +2986,8 @@
   <data name="BaudRate.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
-  <data name="AudioInputs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 29</value>
+  <data name="&gt;&gt;InterpMode.Name" xml:space="preserve">
+    <value>InterpMode</value>
   </data>
   <data name="HomeTab.ToolTip" xml:space="preserve">
     <value />
@@ -3013,23 +3004,23 @@
   <data name="resource.AccessibleDescription1" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="metroLabel10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="resource.RightToLeft5" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>Inherit</value>
+  </data>
   <data name="resource.Font1" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="InterpMode.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;LedsX.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroTrackBar, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
   <data name="resource.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>Inherit</value>
   </data>
-  <data name="&gt;&gt;RightOffset.Name" xml:space="preserve">
-    <value>RightOffset</value>
-  </data>
-  <data name="PrevSleep.TabIndex" type="System.Int32, mscorlib">
-    <value>68</value>
+  <data name="SettingsTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 264</value>
   </data>
   <data name="metroLabel16.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 19</value>
@@ -3040,8 +3031,8 @@
   <data name="DefAudioInput.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;FadeTiming.Parent" xml:space="preserve">
-    <value>HomeTab</value>
+  <data name="&gt;&gt;SettingsTab.Parent" xml:space="preserve">
+    <value>ControlTabs</value>
   </data>
   <data name="&gt;&gt;metroLabel17.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
@@ -3052,17 +3043,11 @@
   <data name="resource.BackgroundImageLayout1" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Tile</value>
   </data>
-  <data name="CustomWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 76</value>
-  </data>
-  <data name="resource.Image1" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="RightOffset.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="resource.ImageIndex4" type="System.Int32, mscorlib">
-    <value>-1</value>
-  </data>
-  <data name="&gt;&gt;AudioInputs.Parent" xml:space="preserve">
-    <value>HomeTab</value>
+  <data name="&gt;&gt;LedsX.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTrackBar, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="resource.ImageAlign5" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -3079,8 +3064,14 @@
   <data name="resource.AccessibleName5" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="metroLabel18.Text" xml:space="preserve">
-    <value>Custom Resolution</value>
+  <data name="&gt;&gt;metroLabel14.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;PrevAwayMode.Name" xml:space="preserve">
+    <value>PrevAwayMode</value>
+  </data>
+  <data name="resource.RightToLeft4" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>Inherit</value>
   </data>
   <data name="metroLabel19.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 19</value>
@@ -3088,8 +3079,8 @@
   <data name="ColorSelection.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
-  <data name="AmbilightModes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 29</value>
+  <data name="&gt;&gt;PreventAwayMode.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="PreventAwayMode.Text" xml:space="preserve">
     <value>Off</value>
@@ -3099,12 +3090,6 @@
   </data>
   <data name="resource.Size1" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
-  </data>
-  <data name="RefreshButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 29</value>
-  </data>
-  <data name="InterpMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 29</value>
   </data>
   <data name="&gt;&gt;DefAudioInput.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -3118,14 +3103,11 @@
   <data name="Default_Timings.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="&gt;&gt;AreaTab.Parent" xml:space="preserve">
-    <value>ControlTabs</value>
+  <data name="AreaTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 38</value>
   </data>
-  <data name="&gt;&gt;UpperOffset.Parent" xml:space="preserve">
-    <value>AreaTab</value>
-  </data>
-  <data name="resource.ImageAlign4" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
+  <data name="&gt;&gt;FadeTiming.Parent" xml:space="preserve">
+    <value>HomeTab</value>
   </data>
   <data name="&gt;&gt;AudioInputs.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroComboBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
@@ -3133,8 +3115,8 @@
   <data name="openToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI Semibold, 9.75pt, style=Bold</value>
   </data>
-  <data name="&gt;&gt;Default_Timings.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="&gt;&gt;PrevSleep.Parent" xml:space="preserve">
+    <value>HomeTab</value>
   </data>
   <data name="&gt;&gt;FadeTimingTip.Name" xml:space="preserve">
     <value>FadeTimingTip</value>
@@ -3145,8 +3127,8 @@
   <data name="&gt;&gt;HomeTab.Name" xml:space="preserve">
     <value>HomeTab</value>
   </data>
-  <data name="resource.Font2" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="&gt;&gt;metroLabel15.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="metroLabel1.Text" xml:space="preserve">
     <value>COM Port</value>
@@ -3157,14 +3139,11 @@
   <data name="&gt;&gt;PrevSleep.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="metroLabel16.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
   <data name="CaptureArea.ItemHeight" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="&gt;&gt;PreventSleep.ZOrder" xml:space="preserve">
-    <value>7</value>
+  <data name="metroLabel1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="LedsXLabel.Text" xml:space="preserve">
     <value>32</value>
@@ -5042,8 +5021,8 @@
   <data name="&gt;&gt;Default_Timings.Name" xml:space="preserve">
     <value>Default_Timings</value>
   </data>
-  <data name="InterpMode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 129</value>
+  <data name="startToolStripMenuItem.Text" xml:space="preserve">
+    <value>Start</value>
   </data>
   <data name="&gt;&gt;metroLabel17.Name" xml:space="preserve">
     <value>metroLabel17</value>
@@ -5069,35 +5048,41 @@
   <data name="metroLabel12.Size" type="System.Drawing.Size, System.Drawing">
     <value>87, 19</value>
   </data>
-  <data name="resource.AutoSize5" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="PrevAwayMode.Text" xml:space="preserve">
+    <value>Prevent awaymode</value>
   </data>
   <data name="&gt;&gt;CaptureArea.Name" xml:space="preserve">
     <value>CaptureArea</value>
   </data>
-  <data name="UpperOffset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 23</value>
-  </data>
   <data name="&gt;&gt;ComPort.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroComboBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="resource.FlatStyle5" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
+  <data name="RightOffset.Location" type="System.Drawing.Point, System.Drawing">
+    <value>143, 226</value>
   </data>
   <data name="resource.MaximumSize2" type="System.Drawing.Size, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="resource.Location2" type="System.Drawing.Point, System.Drawing">
+    <value>54, 1</value>
+  </data>
   <data name="RefreshButton.Text" xml:space="preserve">
     <value>Refresh</value>
+  </data>
+  <data name="&gt;&gt;HomeTab.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTabPage, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="resource.Size4" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
   </data>
-  <data name="resource.Dock2" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>None</value>
+  <data name="&gt;&gt;AreaTab.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTabPage, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="&gt;&gt;UseDefaultAudio.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="PrevAwayMode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;metroLabel12.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
@@ -5108,11 +5093,11 @@
   <data name="PrevSleep.Text" xml:space="preserve">
     <value>Prevent sleep</value>
   </data>
-  <data name="&gt;&gt;TrayIconMenu.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroContextMenu, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="PreventAwayMode.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="&gt;&gt;RightOffset.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="&gt;&gt;metroLabel19.Parent" xml:space="preserve">
+    <value>HomeTab</value>
   </data>
   <data name="PreventAwayMode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -5124,9 +5109,6 @@
     <value />
   </data>
   <data name="resource.Font4" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="CaptureArea.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="resource.TextAlign4" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -5141,14 +5123,11 @@
   <data name="&gt;&gt;Default_Timings.Parent" xml:space="preserve">
     <value>HomeTab</value>
   </data>
-  <data name="LeftOffset.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="metroLabel1.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="PrevAwayMode.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="RefreshButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 29</value>
   </data>
   <data name="CaptureArea.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -5171,10 +5150,13 @@
   <data name="metroLabel3.Text" xml:space="preserve">
     <value>Interpolation mode</value>
   </data>
-  <data name="metroLabel16.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
+  <data name="CaptureArea.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="TrayIconMenu.ToolTip" xml:space="preserve">
+  <data name="&gt;&gt;InterpMode.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="resource.ImageKey1" xml:space="preserve">
     <value />
   </data>
   <data name="metroLabel15.Text" xml:space="preserve">
@@ -5192,6 +5174,9 @@
   <data name="resource.TextImageRelation3" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>Overlay</value>
   </data>
+  <data name="SelectColor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>169, 84</value>
+  </data>
   <data name="&gt;&gt;PrevSleep.Name" xml:space="preserve">
     <value>PrevSleep</value>
   </data>
@@ -5204,8 +5189,8 @@
   <data name="&gt;&gt;InterpMode.Parent" xml:space="preserve">
     <value>SettingsTab</value>
   </data>
-  <data name="PreventAwayMode.ToolTip" xml:space="preserve">
-    <value />
+  <data name="resource.TabIndex2" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;PreventSleep.Name" xml:space="preserve">
     <value>PreventSleep</value>
@@ -5234,23 +5219,29 @@
   <data name="LedsYLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>198, 227</value>
   </data>
+  <data name="TrayIconMenu.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="&gt;&gt;LedsY.Name" xml:space="preserve">
     <value>LedsY</value>
   </data>
   <data name="Default_Timings.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 19</value>
   </data>
-  <data name="metroLabel13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 19</value>
+  <data name="&gt;&gt;AmbilightModes.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroComboBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="&gt;&gt;DefAudioInput.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;TrayIconMenu.Name" xml:space="preserve">
-    <value>TrayIconMenu</value>
+  <data name="PrevAwayMode.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
   </data>
-  <data name="&gt;&gt;metroLabel13.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="&gt;&gt;Default_Timings.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="metroLabel12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 168</value>
   </data>
   <data name="&gt;&gt;metroLabel11.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
@@ -5258,29 +5249,23 @@
   <data name="resource.ImageKey4" xml:space="preserve">
     <value />
   </data>
-  <data name="metroLabel11.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="StartUpLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 19</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>DynamicAmbilight</value>
   </data>
-  <data name="metroLabel16.Text" xml:space="preserve">
-    <value>Capture Area</value>
+  <data name="CaptureArea.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 22</value>
   </data>
   <data name="resource.ImageIndex5" type="System.Int32, mscorlib">
     <value>-1</value>
   </data>
-  <data name="Tray_Icon.Visible" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="metroLabel18.Text" xml:space="preserve">
+    <value>Custom Resolution</value>
   </data>
-  <data name="&gt;&gt;metroLabel19.Parent" xml:space="preserve">
-    <value>HomeTab</value>
-  </data>
-  <data name="resource.AutoSize2" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="SelectColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 29</value>
   </data>
   <data name="&gt;&gt;StartStop.Name" xml:space="preserve">
     <value>StartStop</value>
@@ -5288,11 +5273,11 @@
   <data name="&gt;&gt;RightOffset.Parent" xml:space="preserve">
     <value>AreaTab</value>
   </data>
-  <data name="resource.Location1" type="System.Drawing.Point, System.Drawing">
-    <value>59, 1</value>
+  <data name="&gt;&gt;RightOffset.ZOrder" xml:space="preserve">
+    <value>10</value>
   </data>
-  <data name="InterpMode.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+  <data name="&gt;&gt;metroLabel15.Parent" xml:space="preserve">
+    <value>AreaTab</value>
   </data>
   <data name="&gt;&gt;LedsY.Parent" xml:space="preserve">
     <value>SettingsTab</value>
@@ -5300,17 +5285,20 @@
   <data name="resource.AutoSizeMode5" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowOnly</value>
   </data>
-  <data name="&gt;&gt;LedsX.Name" xml:space="preserve">
-    <value>LedsX</value>
+  <data name="resource.AutoSizeMode4" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowOnly</value>
+  </data>
+  <data name="PrevSleep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>91, 19</value>
   </data>
   <data name="metroLabel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 53</value>
   </data>
-  <data name="ControlTabs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 63</value>
+  <data name="AudioInputs.TabIndex" type="System.Int32, mscorlib">
+    <value>76</value>
   </data>
-  <data name="resource.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>Inherit</value>
+  <data name="metroLabel17.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="resource.TabIndex1" type="System.Int32, mscorlib">
     <value>1</value>
@@ -5321,11 +5309,11 @@
   <data name="metroLabel16.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="metroLabel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 107</value>
+  <data name="ComPort.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
   </data>
-  <data name="&gt;&gt;metroLabel13.Name" xml:space="preserve">
-    <value>metroLabel13</value>
+  <data name="FadeTiming.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 57</value>
   </data>
   <data name="resource.ImageIndex3" type="System.Int32, mscorlib">
     <value>-1</value>
@@ -5351,8 +5339,8 @@
   <data name="&gt;&gt;PreventSleep.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroToggle, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;FadeTiming.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroTrackBar, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="&gt;&gt;AreaTab.Parent" xml:space="preserve">
+    <value>ControlTabs</value>
   </data>
   <data name="RightOffset.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
@@ -5360,8 +5348,11 @@
   <data name="metroLabel17.Text" xml:space="preserve">
     <value>X</value>
   </data>
-  <data name="resource.FlatStyle4" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
+  <data name="PreventSleep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 17</value>
+  </data>
+  <data name="&gt;&gt;CustomWidth.Parent" xml:space="preserve">
+    <value>AreaTab</value>
   </data>
   <data name="RefreshButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 21</value>
@@ -5369,8 +5360,8 @@
   <data name="Default_Timings.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 243</value>
   </data>
-  <data name="FadeTiming.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 21</value>
+  <data name="LedsYLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
   </data>
   <data name="&gt;&gt;SelectColor.Parent" xml:space="preserve">
     <value>HomeTab</value>
@@ -5387,8 +5378,11 @@
   <data name="ColorSelection.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
   </data>
-  <data name="&gt;&gt;PrevSleep.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="LeftOffset.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="LedsXLabel.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="resource.ImageIndex2" type="System.Int32, mscorlib">
     <value>-1</value>
@@ -5399,26 +5393,32 @@
   <data name="&gt;&gt;LeftOffset.Parent" xml:space="preserve">
     <value>AreaTab</value>
   </data>
-  <data name="resource.AccessibleDescription4" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="FadeTiming.TabIndex" type="System.Int32, mscorlib">
+    <value>60</value>
   </data>
-  <data name="AudioInputs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 211</value>
+  <data name="&gt;&gt;UpperOffset.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTextBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;BaudRate.ZOrder" xml:space="preserve">
-    <value>13</value>
+  <data name="&gt;&gt;CaptureArea.Parent" xml:space="preserve">
+    <value>AreaTab</value>
+  </data>
+  <data name="metroLabel11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="UpperOffsetLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 139</value>
   </data>
-  <data name="&gt;&gt;CustomWidth.Parent" xml:space="preserve">
-    <value>AreaTab</value>
+  <data name="InterpMode.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
   </data>
-  <data name="&gt;&gt;UpperOffsetLabel.ZOrder" xml:space="preserve">
-    <value>13</value>
+  <data name="resource.RightToLeft2" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>Inherit</value>
   </data>
-  <data name="&gt;&gt;SelectColor.ZOrder" xml:space="preserve">
-    <value>11</value>
+  <data name="resource.Font2" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UpperOffset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 23</value>
   </data>
   <data name="resource.BackgroundImage" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -5429,44 +5429,41 @@
   <data name="StartUpLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 116</value>
   </data>
-  <data name="resource.AccessibleName1" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="&gt;&gt;metroLabel14.Parent" xml:space="preserve">
+    <value>AreaTab</value>
   </data>
-  <data name="PreventAwayMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 17</value>
+  <data name="metroLabel12.Text" xml:space="preserve">
+    <value>Lower Offset</value>
   </data>
-  <data name="startToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 22</value>
-  </data>
-  <data name="&gt;&gt;Tray_Icon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="metroLabel2.Text" xml:space="preserve">
+    <value>Baudrate</value>
   </data>
   <data name="&gt;&gt;SettingsTab.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;RefreshButton.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="metroLabel12.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="LedsX.ToolTip" xml:space="preserve">
-    <value />
+  <data name="ComPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 21</value>
   </data>
   <data name="metroLabel19.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="BaudRate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 75</value>
+  <data name="LedsX.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;TrayIconMenu.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroContextMenu, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
   <data name="StartStop.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;UseDefaultAudio.Name" xml:space="preserve">
-    <value>UseDefaultAudio</value>
+  <data name="metroLabel18.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="AmbilightModes.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
-  </data>
-  <data name="&gt;&gt;ComPort.Parent" xml:space="preserve">
-    <value>SettingsTab</value>
   </data>
   <data name="PrevAwayMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 19</value>
@@ -5477,17 +5474,20 @@
   <data name="resource.AccessibleName3" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="resource.AutoSizeMode4" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowOnly</value>
+  <data name="&gt;&gt;metroLabel1.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
-  <data name="resource.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 0</value>
+  <data name="&gt;&gt;BaudRate.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
-  <data name="resource.ImageKey1" xml:space="preserve">
+  <data name="&gt;&gt;metroLabel12.Name" xml:space="preserve">
+    <value>metroLabel12</value>
+  </data>
+  <data name="PreventAwayMode.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="FadeTiming.TabIndex" type="System.Int32, mscorlib">
-    <value>60</value>
+  <data name="Default_Timings.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="resource.Location4" type="System.Drawing.Point, System.Drawing">
     <value>54, 1</value>
@@ -5495,20 +5495,20 @@
   <data name="resource.Image4" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="&gt;&gt;LedsYLabel.Name" xml:space="preserve">
-    <value>LedsYLabel</value>
+  <data name="metroLabel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>127, 19</value>
   </data>
   <data name="&gt;&gt;metroLabel1.Name" xml:space="preserve">
     <value>metroLabel1</value>
   </data>
-  <data name="openToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 22</value>
-  </data>
   <data name="resource.Visible1" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="ColorSelection.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;LowerOffset.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="UpperOffset.TabIndex" type="System.Int32, mscorlib">
+    <value>47</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>248, 371</value>
@@ -5522,32 +5522,29 @@
   <data name="HomeTab.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;LedsX.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="metroLabel15.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="&gt;&gt;LedsYLabel.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="resource.ImeMode2" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>Inherit</value>
+  <data name="resource.Image1" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="metroLabel13.Text" xml:space="preserve">
     <value>Left Offset</value>
   </data>
-  <data name="&gt;&gt;AudioInputs.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="AreaTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 264</value>
   </data>
-  <data name="metroLabel14.ToolTip" xml:space="preserve">
-    <value />
+  <data name="resource.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
   </data>
-  <data name="ComPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 21</value>
+  <data name="resource.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>Inherit</value>
   </data>
-  <data name="metroLabel10.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;metroLabel13.ZOrder" xml:space="preserve">
+    <value>16</value>
   </data>
   <data name="PreventSleep.TabIndex" type="System.Int32, mscorlib">
     <value>67</value>
@@ -5555,8 +5552,8 @@
   <data name="PrevAwayMode.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 162</value>
   </data>
-  <data name="metroLabel2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="FadeTiming.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;metroLabel2.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -5567,29 +5564,29 @@
   <data name="&gt;&gt;metroLabel16.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;metroLabel16.Parent" xml:space="preserve">
-    <value>AreaTab</value>
+  <data name="&gt;&gt;UpperOffsetLabel.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="AreaTab.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="UpperOffsetLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 19</value>
   </data>
   <data name="AmbilightModes.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="ColorSelection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 84</value>
+  <data name="resource.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="PrevAwayMode.TabIndex" type="System.Int32, mscorlib">
-    <value>70</value>
+  <data name="&gt;&gt;Default_Timings.ZOrder" xml:space="preserve">
+    <value>16</value>
   </data>
   <data name="StartStop.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 17</value>
   </data>
-  <data name="&gt;&gt;UseDefaultAudio.Parent" xml:space="preserve">
-    <value>HomeTab</value>
+  <data name="AudioInputs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 29</value>
   </data>
-  <data name="&gt;&gt;metroLabel2.Name" xml:space="preserve">
-    <value>metroLabel2</value>
+  <data name="LedsXLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>196, 183</value>
   </data>
   <data name="resource.AutoSize1" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -5603,11 +5600,11 @@
   <data name="resource.Dock4" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
-  <data name="openToolStripMenuItem.Text" xml:space="preserve">
-    <value>Hide</value>
+  <data name="metroLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 19</value>
   </data>
-  <data name="&gt;&gt;CaptureArea.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroComboBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="LowerOffset.Location" type="System.Drawing.Point, System.Drawing">
     <value>143, 168</value>
@@ -5621,11 +5618,11 @@
   <data name="&gt;&gt;CustomHeight.Parent" xml:space="preserve">
     <value>AreaTab</value>
   </data>
-  <data name="PrevSleep.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;metroLabel13.Name" xml:space="preserve">
+    <value>metroLabel13</value>
   </data>
-  <data name="resource.AutoSizeMode3" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowOnly</value>
+  <data name="&gt;&gt;PreventSleep.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="resource.ImageAlign3" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -5633,50 +5630,50 @@
   <data name="LedsXLabel.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
   </data>
-  <data name="resource.TabIndex5" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="&gt;&gt;metroLabel3.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
-  <data name="&gt;&gt;metroLabel14.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="InterpMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 29</value>
   </data>
   <data name="CustomWidth.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="ControlTabs.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="&gt;&gt;ComPort.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="metroLabel1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="UseDefaultAudio.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 17</value>
   </data>
   <data name="resource.Size" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
   </data>
-  <data name="Default_Timings.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="CustomWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 76</value>
   </data>
-  <data name="resource.RightToLeft3" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>Inherit</value>
+  <data name="metroLabel14.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="resource.RightToLeft2" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>Inherit</value>
+  <data name="&gt;&gt;BaudRate.Name" xml:space="preserve">
+    <value>BaudRate</value>
   </data>
-  <data name="resource.RightToLeft1" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>Inherit</value>
+  <data name="PrevAwayMode.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="SelectColor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>169, 84</value>
+  <data name="&gt;&gt;UpperOffsetLabel.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
   <data name="&gt;&gt;LedsXLabel.Parent" xml:space="preserve">
     <value>SettingsTab</value>
   </data>
-  <data name="resource.RightToLeft5" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>Inherit</value>
+  <data name="&gt;&gt;openToolStripMenuItem.Name" xml:space="preserve">
+    <value>openToolStripMenuItem</value>
   </data>
-  <data name="resource.RightToLeft4" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>Inherit</value>
+  <data name="&gt;&gt;AudioInputs.Parent" xml:space="preserve">
+    <value>HomeTab</value>
+  </data>
+  <data name="openToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 22</value>
   </data>
   <data name="&gt;&gt;metroLabel3.Name" xml:space="preserve">
     <value>metroLabel3</value>
@@ -5684,31 +5681,34 @@
   <data name="UseDefaultAudio.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="LedsXLabel.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;metroLabel14.Name" xml:space="preserve">
+    <value>metroLabel14</value>
   </data>
   <data name="resource.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Tile</value>
   </data>
-  <data name="UseDefaultAudio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>169, 188</value>
+  <data name="LedsX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 19</value>
   </data>
   <data name="&gt;&gt;metroLabel11.Name" xml:space="preserve">
     <value>metroLabel11</value>
   </data>
-  <data name="FadeTiming.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 57</value>
+  <data name="PrevSleep.TabIndex" type="System.Int32, mscorlib">
+    <value>68</value>
   </data>
   <data name="UpperOffsetLabel.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="LowerOffset.TabIndex" type="System.Int32, mscorlib">
+    <value>48</value>
+  </data>
   <data name="LowerOffset.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;HomeTab.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroTabPage, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="&gt;&gt;LedsX.Name" xml:space="preserve">
+    <value>LedsX</value>
   </data>
-  <data name="LowerOffset.ToolTip" xml:space="preserve">
+  <data name="resource.AccessibleDescription3" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="&gt;&gt;metroLabel1.Type" xml:space="preserve">
@@ -5729,14 +5729,14 @@
   <data name="&gt;&gt;FadeTiming.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="&gt;&gt;AreaTab.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;ComPort.Parent" xml:space="preserve">
+    <value>SettingsTab</value>
   </data>
   <data name="metroLabel17.TabIndex" type="System.Int32, mscorlib">
     <value>56</value>
   </data>
-  <data name="&gt;&gt;Default_Timings.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="&gt;&gt;metroLabel2.Name" xml:space="preserve">
+    <value>metroLabel2</value>
   </data>
   <data name="LedsYLabel.Text" xml:space="preserve">
     <value>18</value>
@@ -5744,26 +5744,26 @@
   <data name="resource.Size3" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
   </data>
-  <data name="resource.Dock3" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>None</value>
+  <data name="&gt;&gt;openToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;openToolStripMenuItem.Name" xml:space="preserve">
-    <value>openToolStripMenuItem</value>
+  <data name="&gt;&gt;LedsX.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="&gt;&gt;StartUpLabel.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroLabel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="UpperOffset.TabIndex" type="System.Int32, mscorlib">
-    <value>47</value>
+  <data name="&gt;&gt;metroLabel15.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="RightOffset.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;CustomWidth.Name" xml:space="preserve">
     <value>CustomWidth</value>
   </data>
-  <data name="RightOffset.ToolTip" xml:space="preserve">
+  <data name="metroLabel1.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="metroLabel17.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 80</value>
   </data>
   <data name="StartUpLabel.ToolTip" xml:space="preserve">
     <value />

@@ -53,54 +53,55 @@ namespace DynamicAmbilight
             {
                 COMPort(true);
                 SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = false;
-                switch (AmbilightModes.SelectedIndex)
+                switch (AmbilightModes.SelectedItem.ToString())
                 {
-                    case 0:
+                    case "Dynamic Ambilight":
                         { RGBEffects = new Thread(DXCapture) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
                         break;
-                    case 1:
+                    case "Rainbow":
                         RGBEffects = new Thread(Rainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
-                    case 2:
-                        { RGBEffects = new Thread(SingleColor) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
+                    case "Single Color":
+                        { RGBEffects = new Thread(SingleColor) { IsBackground = true, Priority = ThreadPriority.Highest }; }
                         break;
-                    case 3:
+                    case "Single Color Fade":
                         RGBEffects = new Thread(FadeInOut) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
-                    case 4:
-                        RGBEffects = new Thread(Sparkle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                    case "Multicolor Fade":
+                        RGBEffects = new Thread(MultiColorFade) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
-                    case 5:
-                        RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
-                    case 6:
-                        { RGBEffects = new Thread(FullWhite) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
-                    break;
-                    case 7:
-                        RGBEffects = new Thread(FadeCustom) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
-                    case 8:
-                        RGBEffects = new Thread(CylonBounce) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
-                    case 9:
-                        RGBEffects = new Thread(Twinkle) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
-                    case 10:
-                        RGBEffects = new Thread(TestLEDs) { IsBackground = true, Priority = ThreadPriority.Highest };
-                        break;
-                    case 11:
-                        { RGBEffects = new Thread(AudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
-                    break;
-                    case 12:
-                        { RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
-                        break;
-                    case 13:
-                        { RGBEffects = new Thread(FadeAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
-                        break;
-                    case 14:
+                    case "Multicolor Wipe":
                         RGBEffects = new Thread(ColorWipe) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
-                    case 15:
+                    case "Running Dot":
+                        RGBEffects = new Thread(TestLEDs) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case "Sparkle":
+                        RGBEffects = new Thread(Sparkle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case "Theater Chase":
+                        RGBEffects = new Thread(TheaterChaseRainbow) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case "Happy New Year":
+                        { RGBEffects = new Thread(HappyNewYear) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
+                    break;
+                    
+                    case "Cylon Bounce":
+                        RGBEffects = new Thread(CylonBounce) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case "Twinkle":
+                        RGBEffects = new Thread(Twinkle) { IsBackground = true, Priority = ThreadPriority.Highest };
+                        break;
+                    case "Single Color VU Meter":
+                        { RGBEffects = new Thread(AudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
+                    break;
+                    case "Multicolor VU Meter":
+                        { RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
+                        break;
+                    case "Fade VU Meter":
+                        { RGBEffects = new Thread(FadeAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
+                        break;
+                    case "Bouncing Ball":
                         { RGBEffects = new Thread(BouncingBall) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
                     break;
                 }
@@ -165,18 +166,18 @@ namespace DynamicAmbilight
             AmbilightModes.Items.Add("Rainbow");
             AmbilightModes.Items.Add("Single Color");
             AmbilightModes.Items.Add("Single Color Fade");
-            AmbilightModes.Items.Add("Sparkle");
-            AmbilightModes.Items.Add("Theater Chase");
-            AmbilightModes.Items.Add("Full White");
             AmbilightModes.Items.Add("Multicolor Fade");
+            AmbilightModes.Items.Add("Multicolor Wipe");
+            AmbilightModes.Items.Add("Running Dot");
             AmbilightModes.Items.Add("Cylon Bounce");
+            AmbilightModes.Items.Add("Theater Chase");
+            AmbilightModes.Items.Add("Happy New Year");
+            AmbilightModes.Items.Add("Sparkle");
             AmbilightModes.Items.Add("Twinkle");
-            AmbilightModes.Items.Add("Test LEDs");
+            AmbilightModes.Items.Add("Bouncing Ball");
             AmbilightModes.Items.Add("Single Color VU Meter");
             AmbilightModes.Items.Add("Multicolor VU Meter");
-            AmbilightModes.Items.Add("Fade VU Meter");
-            AmbilightModes.Items.Add("Multicolor Wipe");
-            AmbilightModes.Items.Add("Bouncing Ball");
+            AmbilightModes.Items.Add("Fade VU Meter"); 
         }
         private void ColorSelection_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -44,6 +44,7 @@ namespace DynamicAmbilight
         {
             var settingslist = new List<KeyValuePair<string, string>>()
             {
+                new KeyValuePair<string, string>("COMPORT", ComPort.SelectedItem.ToString()),
                 new KeyValuePair<string, string>("UpperOffset", UpperOffset.Text),
                 new KeyValuePair<string, string>("LowerOffset", LowerOffset.Text),
                 new KeyValuePair<string, string>("LeftOffset", LeftOffset.Text),
@@ -66,6 +67,7 @@ namespace DynamicAmbilight
         private void Init()
         {
             SystemEvents.PowerModeChanged += OnPowerChange;
+            if (ComPort.Items.Contains(ConfigurationManager.AppSettings["COMPORT"])) ComPort.SelectedIndex = ComPort.FindString(ConfigurationManager.AppSettings["COMPORT"]);    
             LedsX.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSX"]);
             LedsY.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSY"]);
             UpperOffset.Text = ConfigurationManager.AppSettings["UpperOffset"];

@@ -829,7 +829,7 @@
             this.ControlTabs.Controls.Add(this.SettingsTab);
             this.ControlTabs.HotTrack = true;
             this.ControlTabs.Name = "ControlTabs";
-            this.ControlTabs.SelectedIndex = 0;
+            this.ControlTabs.SelectedIndex = 2;
             this.ControlTabs.Style = MetroFramework.MetroColorStyle.Black;
             this.ControlTabs.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FadeTimingTip.SetToolTip(this.ControlTabs, resources.GetString("ControlTabs.ToolTip"));
