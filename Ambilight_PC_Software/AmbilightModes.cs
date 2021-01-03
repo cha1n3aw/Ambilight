@@ -11,7 +11,7 @@ namespace DynamicAmbilight
     {
         private Color[] LedArray = new Color[100]; //should be NumLeds() length
         private int NumLeds() { return (LedsX.Value + LedsY.Value) * 2; }
-        private void LedShow() { Color clr; for (int i = 0; i < LedArray.Length; i++) { clr = LedArray[i]; serial.Write(new byte[] { clr.R, clr.G, clr.B }, 0, 3); } }
+        private void LedShow() { Color clr; for (int i = 0; i < LedArray.Length; i++) { clr = LedArray[i]; SerialPort.Write(new byte[] { clr.R, clr.G, clr.B }, 0, 3); } }
         private Color Wheel(int WheelPos)
         {
             if (WheelPos < 85)

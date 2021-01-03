@@ -52,7 +52,7 @@ namespace DynamicAmbilight
             if (StartStop.Checked)
             {
                 COMPort(true);
-                SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = false;
+                SelectColor.Enabled = ColorSelection.Enabled =  SettingsTab.Enabled = AmbilightModes.Enabled = false;
                 switch (AmbilightModes.SelectedItem.ToString())
                 {
                     case "Dynamic Ambilight":
@@ -84,8 +84,7 @@ namespace DynamicAmbilight
                         break;
                     case "Happy New Year":
                         { RGBEffects = new Thread(HappyNewYear) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
-                    break;
-                    
+                        break;
                     case "Cylon Bounce":
                         RGBEffects = new Thread(CylonBounce) { IsBackground = true, Priority = ThreadPriority.Highest };
                         break;
@@ -94,7 +93,7 @@ namespace DynamicAmbilight
                         break;
                     case "Single Color VU Meter":
                         { RGBEffects = new Thread(AudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
-                    break;
+                        break;
                     case "Multicolor VU Meter":
                         { RGBEffects = new Thread(MultiColorAudioPeakMeter) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
                         break;
@@ -103,7 +102,7 @@ namespace DynamicAmbilight
                         break;
                     case "Bouncing Ball":
                         { RGBEffects = new Thread(BouncingBall) { IsBackground = true, Priority = ThreadPriority.Highest }; FadeTiming.Enabled = false; }
-                    break;
+                        break;
                 }
                 RGBEffects.Start();     
             }
@@ -116,15 +115,15 @@ namespace DynamicAmbilight
                     COMPort(false);
                 }
                 else Default_Timings.Text = "Press Start Up!";
-                FadeTiming.Enabled = SelectColor.Enabled = ColorSelection.Enabled = AreaTab.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
+                FadeTiming.Enabled = SelectColor.Enabled = ColorSelection.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
             }
         }
         private void RefreshButton_Click(object sender, EventArgs e) { RefreshComPorts(); }
-        private void ComPort_SelectedIndexChanged(object sender, EventArgs e) { if (ComPort.SelectedIndex != -1) serial.PortName = ComPort.Items[ComPort.SelectedIndex].ToString(); }
-        private void BaudRate_SelectedIndexChanged(object sender, EventArgs e) { if (BaudRate.SelectedIndex != -1) serial.BaudRate = Convert.ToInt32(BaudRate.Items[BaudRate.SelectedIndex]); }
+        private void ComPort_SelectedIndexChanged(object sender, EventArgs e) { if (ComPort.SelectedIndex != -1) SerialPort.PortName = ComPort.Items[ComPort.SelectedIndex].ToString(); }
+        private void BaudRate_SelectedIndexChanged(object sender, EventArgs e) { if (BaudRate.SelectedIndex != -1) SerialPort.BaudRate = Convert.ToInt32(BaudRate.Items[BaudRate.SelectedIndex]); }
         private void InterpMode_SelectedIndexChanged(object sender, EventArgs e) { if (InterpMode.SelectedIndex != -1) intrpmode = (InterpolationMode)InterpMode.Items[InterpMode.SelectedIndex]; }
-        private void LedsX_ValueChanged(object sender, EventArgs e) { LedsXLabel.Text = LedsX.Value.ToString(); }
-        private void LedsY_ValueChanged(object sender, EventArgs e) { LedsYLabel.Text = LedsY.Value.ToString(); }
+        private void LedsX_ValueChanged(object sender, EventArgs e) { ToolTip.SetToolTip(LedsX, LedsX.Value.ToString()); }
+        private void LedsY_ValueChanged(object sender, EventArgs e) { ToolTip.SetToolTip(LedsY, LedsY.Value.ToString()); }
         private void PreventSleep_CheckStateChanged(object sender, EventArgs e) { if (PreventSleep.Checked == true) PreventAwayMode.Enabled = true; else { PreventAwayMode.Checked = false; PreventAwayMode.Enabled = false; } }
         private void CaptureArea_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -177,7 +176,8 @@ namespace DynamicAmbilight
             AmbilightModes.Items.Add("Bouncing Ball");
             AmbilightModes.Items.Add("Single Color VU Meter");
             AmbilightModes.Items.Add("Multicolor VU Meter");
-            AmbilightModes.Items.Add("Fade VU Meter"); 
+            AmbilightModes.Items.Add("Fade VU Meter");
+            foreach (SharpDX.DXGI.Adapter adapters in new SharpDX.DXGI.Factory1().Adapters) CapturedDevice.Items.Add(adapters.Description.Description);
         }
         private void ColorSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -220,8 +220,18 @@ namespace DynamicAmbilight
         private void FadeTimingValueChanged(object sender, EventArgs e)
         {
             Timing = FadeTiming.Value * FadeTiming.Value / 1000.0;
-            if (Timing < 10) FadeTimingTip.SetToolTip(FadeTiming, (Math.Round(Timing, 1)).ToString());
-            else FadeTimingTip.SetToolTip(FadeTiming, ((int)Timing).ToString());
+            if (Timing < 10) ToolTip.SetToolTip(FadeTiming, (Math.Round(Timing, 1)).ToString());
+            else ToolTip.SetToolTip(FadeTiming, ((int)Timing).ToString());
+        }
+        private void CapturedDeviceSelectedIndexChanged(object sender, EventArgs e)
+        {
+            StartStop.Enabled = true;
+            if (CapturedDevice.SelectedItem.ToString() != String.Empty) CapturedMonitor.Enabled = true;
+            CapturedMonitor.Items.Clear();
+            foreach (SharpDX.DXGI.Output outputs in new SharpDX.DXGI.Factory1().Adapters[CapturedDevice.SelectedIndex].Outputs) CapturedMonitor.Items.Add(outputs.Description.DeviceName.Trim('\\', '.'));
+            if (System.Configuration.ConfigurationManager.AppSettings["CapturedMonitor"] != null && CapturedMonitor.Items.Contains(System.Configuration.ConfigurationManager.AppSettings["CapturedMonitor"])) CapturedMonitor.SelectedIndex = CapturedMonitor.FindString(System.Configuration.ConfigurationManager.AppSettings["CapturedMonitor"]);
+            else if (CapturedMonitor.Items.Count > 0) CapturedMonitor.SelectedIndex = 0;
+            else { CapturedMonitor.Enabled = StartStop.Enabled = false; }
         }
     }
 }

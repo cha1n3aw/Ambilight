@@ -23,10 +23,10 @@ namespace DynamicAmbilight
         private event EventHandler<EventArgs> ScreenRefreshed;
         private long cnt = 0, prevms = 0;
         private readonly Stopwatch sw = new Stopwatch();
-        private SerialPort serial = new SerialPort() { Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 8, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
+        private SerialPort SerialPort = new SerialPort() { Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 8, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
         private readonly string[] BaudRatesList = new string[8] { "5000000", "2000000", "1000000", "921600", "460800", "230400", "115200", "57600" };
         private InterpolationMode intrpmode;
-
+        
         private Thread SettingsThread(List<KeyValuePair<string, string>> settingslist)
         {
             Thread settingsthread = new Thread(() => SetSetting(settingslist)) { IsBackground = false };
@@ -55,6 +55,8 @@ namespace DynamicAmbilight
                 new KeyValuePair<string, string>("LedsY", LedsY.Value.ToString()),
                 new KeyValuePair<string, string>("BaudRate", BaudRate.SelectedIndex.ToString()),
                 new KeyValuePair<string, string>("InterpolationMode", InterpMode.SelectedIndex.ToString()),
+                new KeyValuePair<string, string>("CapturedDevice", CapturedDevice.SelectedItem.ToString()),
+                new KeyValuePair<string, string>("CapturedMonitor", CapturedMonitor.SelectedItem.ToString()),
                 new KeyValuePair<string, string>("FadeTiming", FadeTiming.Value.ToString()),
                 new KeyValuePair<string, string>("AmbilightModes", AmbilightModes.SelectedIndex.ToString()),
                 new KeyValuePair<string, string>("AudioDevice", AudioInputs.SelectedIndex.ToString()),
@@ -67,7 +69,8 @@ namespace DynamicAmbilight
         private void Init()
         {
             SystemEvents.PowerModeChanged += OnPowerChange;
-            if (ComPort.Items.Contains(ConfigurationManager.AppSettings["COMPORT"])) ComPort.SelectedIndex = ComPort.FindString(ConfigurationManager.AppSettings["COMPORT"]);    
+            if (ConfigurationManager.AppSettings["COMPORT"] != null && ConfigurationManager.AppSettings["COMPORT"].Contains("COM") == true && ComPort.Items.Contains(ConfigurationManager.AppSettings["COMPORT"])) ComPort.SelectedIndex = ComPort.FindString(ConfigurationManager.AppSettings["COMPORT"]);
+            else if (Convert.ToInt32(ConfigurationManager.AppSettings["COMPORT"]) == 0) ComPort.SelectedIndex = 0;
             LedsX.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSX"]);
             LedsY.Value = Convert.ToInt32(ConfigurationManager.AppSettings["LEDSY"]);
             UpperOffset.Text = ConfigurationManager.AppSettings["UpperOffset"];
@@ -84,6 +87,8 @@ namespace DynamicAmbilight
             CaptureArea.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["CaptureArea"]);
             PreventSleep.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["PreventSleep"]);
             PreventAwayMode.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["PreventAwayMode"]);
+            if (ConfigurationManager.AppSettings["CapturedDevice"] != null && CapturedDevice.Items.Contains(ConfigurationManager.AppSettings["CapturedDevice"])) CapturedDevice.SelectedIndex = CapturedDevice.FindString(ConfigurationManager.AppSettings["CapturedDevice"]);
+            else CapturedDevice.SelectedIndex = 0;
         }
         private void OnPowerChange(object s, PowerModeChangedEventArgs e)
         {
@@ -92,8 +97,8 @@ namespace DynamicAmbilight
         }
         private void COMPort(bool state)
         {
-            if (state && !serial.IsOpen) { serial.Open(); while (serial.IsOpen == false) ; Debug.WriteLine("SERIAL OPENED"); }
-            else { serial.Close(); while (serial.IsOpen == true) ; Debug.WriteLine("SERIAL CLOSED"); }
+            if (state && !SerialPort.IsOpen) { SerialPort.Open(); while (SerialPort.IsOpen == false) ; Debug.WriteLine("SERIAL OPENED"); }
+            else { SerialPort.Close(); while (SerialPort.IsOpen == true) ; Debug.WriteLine("SERIAL CLOSED"); }
         }
         private void WakeUp()
         {
@@ -102,16 +107,15 @@ namespace DynamicAmbilight
         }
         private void DXCapture()
         {
-            const int numAdapter = 0; // # of graphics card adapter
-            const int numOutput = 0; // # of output device (i.e. monitor)
-            var factory = new Factory1(); // Create DXGI Factory1
-            var adapter = factory.GetAdapter1(numAdapter); //Console.WriteLine(factory.GetAdapterCount());
-            var device = new Device(adapter); // Create device from Adapter //foreach (Adapter adapters in factory.Adapters) Console.WriteLine(adapters.Description.Description);
-            var output = adapter.GetOutput(numOutput); // Get DXGI.Output  //foreach (Output outputs in adapter.Outputs) Console.WriteLine(outputs.Description.DeviceName);
+            Adapter adapter = null;
+            CapturedDevice.Invoke((MethodInvoker)delegate { adapter = new Factory1().Adapters[CapturedDevice.SelectedIndex]; }); //Console.WriteLine(factory.GetAdapterCount());
+            var device = new Device(adapter); //Create device from Adapter //foreach (Adapter adapters in factory.Adapters) Console.WriteLine(adapters.Description.Description);
+            Output output = null; //Get DXGI.Output  //foreach (Output outputs in adapter.Outputs) Console.WriteLine(outputs.Description.DeviceName);
+            CapturedMonitor.Invoke((MethodInvoker)delegate { output = adapter.GetOutput(CapturedMonitor.SelectedIndex); });
             var output1 = output.QueryInterface<Output1>();
-            int width = output.Description.DesktopBounds.Right; // Width/Height of desktop to capture
+            int width = output.Description.DesktopBounds.Right; //Width/Height of desktop to capture
             int height = output.Description.DesktopBounds.Bottom;
-            var textureDesc = new Texture2DDescription // Create Staging texture CPU-accessible
+            Texture2DDescription textureDesc = new Texture2DDescription //Create Staging texture CPU-accessible
             {
                 CpuAccessFlags = CpuAccessFlags.Read,
                 BindFlags = BindFlags.None,
@@ -125,7 +129,7 @@ namespace DynamicAmbilight
                 Usage = ResourceUsage.Staging
             };
             var screenTexture = new Texture2D(device, textureDesc);
-            var duplicatedOutput = output1.DuplicateOutput(device); // Duplicate the output
+            var duplicatedOutput = output1.DuplicateOutput(device); //Duplicate the output
             int ledsx = LedsX.Value;
             int ledsy = LedsY.Value;
             int leftoffset = 0, upperoffset = 0, customwidth = width, customheight = height;
@@ -149,7 +153,7 @@ namespace DynamicAmbilight
             sw.Start();
             Task.Factory.StartNew(() =>
             {
-                while (StartStop.Checked && serial.IsOpen)
+                while (StartStop.Checked && SerialPort.IsOpen)
                 {
                     WakeUp();
                     try
@@ -181,22 +185,22 @@ namespace DynamicAmbilight
                                 for (int x = 0; x < ledsx; x++) //these for's take 5-7ms
                                 {
                                     color = tempbmp.GetPixel(x, ledsy - 1);
-                                    serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+                                    SerialPort.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
                                 }
                                 for (int y = ledsy - 1; y >= 0; y--)
                                 {
                                     color = tempbmp.GetPixel(ledsx - 1, y);
-                                    serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+                                    SerialPort.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
                                 }
                                 for (int x = ledsx - 1; x >= 0; x--)
                                 {
                                     color = tempbmp.GetPixel(x, 0);
-                                    serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+                                    SerialPort.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
                                 }
                                 for (int y = 0; y < ledsy; y++)
                                 {
                                     color = tempbmp.GetPixel(0, y);
-                                    serial.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
+                                    SerialPort.Write(new byte[] { color.R, color.G, color.B }, 0, 3);
                                 }
                                 ScreenRefreshed?.Invoke(this, EventArgs.Empty);
                                 GC.Collect();
@@ -211,7 +215,7 @@ namespace DynamicAmbilight
                 if (!StartStop.Checked)
                 {
                     sw.Stop();
-                    serial.Close();
+                    SerialPort.Close();
                     duplicatedOutput.Dispose();
                     screenTexture.Dispose();
                 }
