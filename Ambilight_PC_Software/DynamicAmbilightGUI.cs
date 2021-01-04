@@ -233,5 +233,6 @@ namespace DynamicAmbilight
             else if (CapturedMonitor.Items.Count > 0) CapturedMonitor.SelectedIndex = 0;
             else { CapturedMonitor.Enabled = StartStop.Enabled = false; }
         }
+        private void ComPort_Click(object sender, EventArgs e) { RefreshComPorts(); }
     }
 }
