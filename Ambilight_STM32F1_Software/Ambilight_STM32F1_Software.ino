@@ -1,5 +1,5 @@
 #include <WS2812B.h> //this lib uses SPI1, connect the ws2812b data line to MOSI
-#define ONLINE_WAIT 2000
+#define ONLINE_WAIT 60000
 #define LED_BLINK_OFFLINE 1000
 
 int lastonline = 0;
