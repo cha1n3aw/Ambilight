@@ -102,6 +102,7 @@
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Text = "Color Picker";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FadeGray)).EndInit();
             this.ResumeLayout(false);

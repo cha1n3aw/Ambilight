@@ -168,6 +168,7 @@
             this.CaptureArea.TabIndex = 94;
             this.CaptureArea.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.CaptureArea.UseSelectable = true;
+            this.CaptureArea.SelectedIndexChanged += new System.EventHandler(this.CaptureArea_SelectedIndexChanged);
             // 
             // metroLabel18
             // 
