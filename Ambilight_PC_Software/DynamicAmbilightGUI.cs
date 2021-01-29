@@ -51,6 +51,7 @@ namespace DynamicAmbilight
         {
             if (StartStop.Checked)
             {
+                startToolStripMenuItem.Text = "Stop";
                 COMPort(true);
                 SelectColor.Enabled = ColorSelection.Enabled =  SettingsTab.Enabled = AmbilightModes.Enabled = false;
                 switch (AmbilightModes.SelectedItem.ToString())
@@ -115,6 +116,7 @@ namespace DynamicAmbilight
                     COMPort(false);
                 }
                 else Default_Timings.Text = "Press Start Up!";
+                startToolStripMenuItem.Text = "Start";
                 FadeTiming.Enabled = SelectColor.Enabled = ColorSelection.Enabled = SettingsTab.Enabled = AmbilightModes.Enabled = true;
             }
         }
@@ -200,16 +202,8 @@ namespace DynamicAmbilight
         private void ColorDeletionReleased(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Delete && ColorDeletion) ColorDeletion = false; }
         private void StartStopFromTrayClicked(object sender, EventArgs e)
         {
-            if(!StartStop.Checked)
-            {
-                StartStop.Checked = true;
-                startToolStripMenuItem.Text = "Stop";
-            }
-            else
-            {
-                StartStop.Checked = false;
-                startToolStripMenuItem.Text = "Start";
-            }
+            if(!StartStop.Checked) StartStop.Checked = true;
+            else StartStop.Checked = false;  
         }
         private void OpenFromTrayClicked(object sender, EventArgs e) 
         {
@@ -232,6 +226,11 @@ namespace DynamicAmbilight
             if (System.Configuration.ConfigurationManager.AppSettings["CapturedMonitor"] != null && CapturedMonitor.Items.Contains(System.Configuration.ConfigurationManager.AppSettings["CapturedMonitor"])) CapturedMonitor.SelectedIndex = CapturedMonitor.FindString(System.Configuration.ConfigurationManager.AppSettings["CapturedMonitor"]);
             else if (CapturedMonitor.Items.Count > 0) CapturedMonitor.SelectedIndex = 0;
             else { CapturedMonitor.Enabled = StartStop.Enabled = false; }
+        }
+        private void StartOnBoot_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (StartOnBoot.Checked) AutostartOnBoot.SetValue("Dynamic Ambilight", Application.ExecutablePath);
+            else AutostartOnBoot.DeleteValue("Dynamic Ambilight", false);
         }
         private void ComPort_Click(object sender, EventArgs e) { RefreshComPorts(); }
     }

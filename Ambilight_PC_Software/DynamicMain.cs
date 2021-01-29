@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO.Ports;
-using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,6 +26,7 @@ namespace DynamicAmbilight
         private SerialPort SerialPort = new SerialPort() { Parity = (Parity)Enum.Parse(typeof(Parity), "0", true), DataBits = 8, StopBits = (StopBits)Enum.Parse(typeof(StopBits), "1", true), ReadTimeout = 500, WriteTimeout = 500 };
         private readonly string[] BaudRatesList = new string[8] { "5000000", "2000000", "1000000", "921600", "460800", "230400", "115200", "57600" };
         private InterpolationMode intrpmode;
+        RegistryKey AutostartOnBoot = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
         private Thread SettingsThread(List<KeyValuePair<string, string>> settingslist)
         {
@@ -64,6 +64,7 @@ namespace DynamicAmbilight
                 new KeyValuePair<string, string>("CaptureArea", CaptureArea.SelectedIndex.ToString()),
                 new KeyValuePair<string, string>("PreventSleep", PreventSleep.Checked.ToString()),
                 new KeyValuePair<string, string>("PreventAwayMode", PreventAwayMode.Checked.ToString()),
+                new KeyValuePair<string, string>("StartOnBoot", StartOnBoot.Checked.ToString()),
             };
             return settingslist;
         }
@@ -88,6 +89,9 @@ namespace DynamicAmbilight
             CaptureArea.SelectedIndex = Convert.ToInt32(ConfigurationManager.AppSettings["CaptureArea"]);
             PreventSleep.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["PreventSleep"]);
             PreventAwayMode.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["PreventAwayMode"]);
+            StartOnBoot.Checked = Convert.ToBoolean(ConfigurationManager.AppSettings["StartOnBoot"]);
+            if (StartOnBoot.Checked) AutostartOnBoot.SetValue("Dynamic Ambilight", Application.ExecutablePath);
+            else AutostartOnBoot.DeleteValue("Dynamic Ambilight", false);
             if (ConfigurationManager.AppSettings["CapturedDevice"] != null && CapturedDevice.Items.Contains(ConfigurationManager.AppSettings["CapturedDevice"])) CapturedDevice.SelectedIndex = CapturedDevice.FindString(ConfigurationManager.AppSettings["CapturedDevice"]);
             else CapturedDevice.SelectedIndex = 0;
         }
