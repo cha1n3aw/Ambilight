@@ -1,7 +1,7 @@
 Dynamic Ambilight for Windows
 
 Features:
-- fps is now dynamic, it can ru up to 70fps (on my i5-8600k 4.65ghz)
+- fps is now dynamic, it can run up to 70fps (on my i5-8600k 4.65ghz)
 - live framerate monitoring
 - different interpolation modes
 - different baud rates (926k+ preferably)
